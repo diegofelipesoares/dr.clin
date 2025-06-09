@@ -1,0 +1,1 @@
+# Aqui você colocará os modelos de dados (Pydantic, SQLAlchemy, etc)
