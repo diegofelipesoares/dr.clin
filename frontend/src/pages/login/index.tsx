@@ -7,7 +7,7 @@ import { Label } from "../../components/ui/label"
 
 export default function LoginPage() {
   return (
-    <div className="flex w-full max-w-sm flex-col gap-6">
+    <div className="flex w-full max-w-[400px] flex-col gap-6">
         <Tabs defaultValue="login" className="w-full"> 
             <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Login</TabsTrigger>
