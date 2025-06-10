@@ -1,86 +1,67 @@
-//Página de login (Componente principal)
-//import { useLoginMutation } from '@/services/authApi';
-//import { setCredentials } from '@/store/slices/authSlice';
-// import { useDispatch } from 'react-redux';
-// import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/ui/card';
-import { Label } from '../../components/ui/label';
-import { Input } from '../../components/ui/input';
-import { Button } from '../../components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
+
+import { Input } from "../../components/ui/input"
+import { Button } from "../../components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/ui/card"
+import { Label } from "../../components/ui/label"
 
 export default function LoginPage() {
-  //const [login, { isLoading }] = useLoginMutation();
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const res = await login({ email, password }).unwrap();
-//       dispatch(setCredentials(res));
-//       navigate('/dashboard');
-//     } catch (err) {
-//       console.error('Erro no login:', err);
-//     }
-//   };
-
   return (
-    <>
-        <div className='flex h-screen w-screen items-center justify-center'>
-            <div className="flex w-full max-w-sm flex-col gap-6">
-             <Tabs defaultValue="login"> {/* Definindo o a tab default */}
-                <TabsList>
-                <TabsTrigger value="login">Login</TabsTrigger>
-                <TabsTrigger value="register">Criar conta</TabsTrigger>
-                </TabsList>
-                <TabsContent value="login">
-                <Card>
-                    <CardHeader>
-                    <CardTitle>Login</CardTitle>
-                    <CardDescription>
-                        Faça login para continuar
-                    </CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid gap-6">
-                    
-                    </CardContent>
-                    <CardFooter>
-                    <Button>Entrar</Button>
-                    </CardFooter>
-                </Card>
-                </TabsContent>
-                <TabsContent value="register">
-                <Card>
-                    <CardHeader>
-                    <CardTitle>Criar conta</CardTitle>
-                    <CardDescription>
-                        Crie uma conta para continuar.
-                    </CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid gap-6">
-                    
-                    </CardContent>
-                    <CardFooter>
-                    <Button>Criar conta</Button>
-                    </CardFooter>
-                </Card>
-                </TabsContent>
-            </Tabs>
-            </div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+        <Tabs defaultValue="login" className="w-full max-w-xl"> {/* AQUI aumenta a largura */}
+            <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="login">Login</TabsTrigger>
+            <TabsTrigger value="register">Registrar</TabsTrigger>
+            </TabsList>
 
-        </div>
-        {/* <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-20 bg-white p-6 rounded-xl shadow">
-        <h2 className="text-2xl font-bold mb-4">Entrar no Dr.Clin</h2>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full mb-3 p-2 border rounded" placeholder="E-mail" />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full mb-3 p-2 border rounded" placeholder="Senha" />
-        <button type="submit" disabled={isLoading} className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-            {isLoading ? 'Entrando...' : 'Entrar'}
-        </button> 
-        </form>*/}
-    </>
-  );
+        {/* LOGIN */}
+        <TabsContent value="login">
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>Login</CardTitle>
+          <CardDescription>Acesse sua conta Dr.Clin</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label>Email</Label>
+            <Input type="email" className="w-full" placeholder="seu@email.com" />
+          </div>
+          <div>
+            <Label>Senha</Label>
+            <Input type="password" className="w-full" placeholder="********" />
+          </div>
+          <Button className="w-full">Entrar</Button>
+        </CardContent>
+      </Card>
+    </TabsContent>
+
+        {/* REGISTRO */}
+        <TabsContent value="register">
+          <Card>
+            <CardHeader>
+              <CardTitle>Registrar</CardTitle>
+              <CardDescription>
+                Crie uma nova conta Dr.Clin
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>Nome</Label>
+                <Input placeholder="Seu nome completo" />
+              </div>
+              <div>
+                <Label>Email</Label>
+                <Input type="email" placeholder="seu@email.com" />
+              </div>
+              <div>
+                <Label>Senha</Label>
+                <Input type="password" placeholder="********" />
+              </div>
+              <Button className="w-full">Criar conta</Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
 }
