@@ -7,8 +7,8 @@ import { Label } from "../../components/ui/label"
 
 export default function LoginPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-        <Tabs defaultValue="login" className="w-full max-w-xl"> {/* AQUI aumenta a largura */}
+    <div className="flex w-full max-w-sm flex-col gap-6">
+        <Tabs defaultValue="login" className="w-full"> 
             <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Login</TabsTrigger>
             <TabsTrigger value="register">Registrar</TabsTrigger>
@@ -16,18 +16,18 @@ export default function LoginPage() {
 
         {/* LOGIN */}
         <TabsContent value="login">
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>Acesse sua conta Dr.Clin</CardDescription>
+      <Card className="w-full max-w-xl min-w-[400px]">
+        <CardHeader className="text-left">
+          <CardTitle >Login</CardTitle>
+          <CardDescription>Digite suas credenciais de acesso.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label>Email</Label>
+        <CardContent className="grid gap-6">
+          <div className="text-left" >
+            <Label className="text-left">Email</Label>
             <Input type="email" className="w-full" placeholder="seu@email.com" />
           </div>
-          <div>
-            <Label>Senha</Label>
+          <div className="grid gap-1">
+            <Label className="text-left block">Senha</Label>
             <Input type="password" className="w-full" placeholder="********" />
           </div>
           <Button className="w-full">Entrar</Button>
@@ -37,24 +37,24 @@ export default function LoginPage() {
 
         {/* REGISTRO */}
         <TabsContent value="register">
-          <Card>
+          <Card className="w-full max-w-xl min-w-[400px]">
             <CardHeader>
-              <CardTitle>Registrar</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-left">Registrar</CardTitle>
+              <CardDescription className="text-left">
                 Crie uma nova conta Dr.Clin
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <Label>Nome</Label>
+              <div className="text-left">
+                <Label>Nome:</Label>
                 <Input placeholder="Seu nome completo" />
               </div>
-              <div>
-                <Label>Email</Label>
+              <div className="text-left">
+                <Label>Email:</Label>
                 <Input type="email" placeholder="seu@email.com" />
               </div>
-              <div>
-                <Label>Senha</Label>
+              <div className="text-left">
+                <Label>Senha:</Label>
                 <Input type="password" placeholder="********" />
               </div>
               <Button className="w-full">Criar conta</Button>
