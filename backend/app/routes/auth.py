@@ -1,41 +1,41 @@
-# backend/app/routes/auth.py
+from typing import Any, Optional, List
 from fastapi import APIRouter, HTTPException, Depends, status
+from sqlalchemy.orm import Session
 from fastapi_jwt_auth import AuthJWT
-from pydantic import BaseModel
 from passlib.hash import bcrypt
+from app import schemas, models, database
+from app.schemas.auth import UserCreate, UserLogin
 
 router = APIRouter()
 
-# ✅ Modelo dos dados que o frontend irá enviar
-class LoginModel(BaseModel):
-    email: str
-    password: str
+# 🔹 Registro de usuário
+@router.post("/register", status_code=status.HTTP_201_CREATED)
+def register(user: UserCreate, db: Session = Depends(database.SessionLocal)):
+    # Verifica se o email já está cadastrado
+    if db.query(models.user.User).filter_by(email=user.email).first():
+        raise HTTPException(status_code=400, detail="Email já cadastrado")
 
-# ✅ Simulação de um "banco de dados"
-fake_users_db = {
-    "user@example.com": {
-        "email": "user@example.com",
-        "password": bcrypt.hash("123456"),  # senha já criptografada
-    }
-}
+    # Hash da senha
+    hashed_pw = bcrypt.hash(user.password)
+    db_user = models.user.User(name=user.name, email=user.email, hashed_password=hashed_pw)
 
-# ✅ Configuração da chave secreta para JWT
-class Settings(BaseModel):
-    authjwt_secret_key: str = "minha_chave_super_secreta"
+    # Salva o usuário no banco
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
 
-@AuthJWT.load_config
-def get_config():
-    return Settings()
+    # Retorna uma mensagem simples de sucesso
+    return {"msg": "Usuário registrado com sucesso"}
 
-# ✅ Rota POST /login que valida usuário e gera JWT
+# 🔹 Login de usuário
 @router.post("/login")
-def login(user: LoginModel, Authorize: AuthJWT = Depends()):
-    db_user = fake_users_db.get(user.email)
+def login(user: UserLogin, db: Session = Depends(database.SessionLocal), Authorize: AuthJWT = Depends()):
+    db_user = db.query(models.user.User).filter_by(email=user.email).first()
 
-    # Valida se usuário existe e se senha está correta
-    if not db_user or not bcrypt.verify(user.password, db_user["password"]):
+    # Verifica credenciais
+    if not db_user or not bcrypt.verify(user.password, db_user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
 
-    # Gera token JWT com o email como subject
+    # Cria token JWT usando email como "subject"
     access_token = Authorize.create_access_token(subject=user.email)
     return {"access_token": access_token}

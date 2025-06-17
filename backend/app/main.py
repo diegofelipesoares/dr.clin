@@ -1,6 +1,12 @@
+from typing import Any, Optional, List
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import router  # importa o router centralizado
+from app.routes import router as api_router # importa o router centralizado
+from app.database import Base, engine
+import app.config  # precisa importar para JWT funcionar
+
+# Cria as tabelas automaticamente
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -14,8 +20,8 @@ app.add_middleware(
 )
 
 # Registra as rotas de autenticação
-# Isso permite que as rotas do 'auth.router' estejam acessíveis na API
-app.include_router(router)
+# Usa as rotas centralizadas
+app.include_router(api_router)
 
 @app.get("/")
 def root():

@@ -1,14 +1,13 @@
+from typing import Any, Optional, List
 #AGRUPADOR DE ROTAS DA APLICAÇÃO
 
-#Importando os routers de cada módulo
-from .auth import router as auth_router
+#Importações
 from fastapi import APIRouter
-#from .pacientes import router as pacientes_router
-#from .agendamentos import router as agendamentos_router
+from .auth import router as auth_router
+
 
 router = APIRouter()
 
-# Agrupa todas as rotas da aplicação
-router.include_router(auth_router, prefix="/auth", tags=["Autenticação"])
-#router.include_router(pacientes_router, prefix="/pacientes", tags=["Pacientes"])
-#router.include_router(agendamentos_router, prefix="/agendamentos", tags=["Agendamentos"])
+# ROTAS
+router.include_router(auth.router, prefix="/auth", tags=["Auth"])
+
