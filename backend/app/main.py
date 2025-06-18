@@ -1,4 +1,4 @@
-from typing import Any, Optional, List
+from typing import Any, List, Optional, Dict, Union
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import router as api_router # importa o router centralizado
