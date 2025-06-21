@@ -1,14 +1,13 @@
-from typing import Any, List, Optional, Dict, Union
-#AGRUPADOR DE ROTAS DA APLICAÇÃO
+#FUNÇÃO: agrupar as rotas da aplicação
 
-#Importações
-from fastapi import APIRouter
-from .auth import router as auth_router
+#Importações Gerais
+from fastapi import APIRouter #permite dividir as rotas em módulos
 
+#importação das rotas criadas
+from .auth import router as auth_router 
 
+#instância principal: agrupa todas as rotas
 router = APIRouter()
 
-# ROTAS
+# Inclusão das ROTAS
 router.include_router(auth_router, prefix="/auth", tags=["Auth"])
-
-

@@ -1,23 +1,31 @@
+# importação necessária para evitar erros de importação circular
 from __future__ import annotations  # ✅ PRIMEIRA LINHA SEMPRE
 
+# Importações necessárias para o FastAPI e autenticação JWT
 from fastapi import APIRouter, HTTPException, Depends, status
-from sqlalchemy.orm import Session
 from fastapi_jwt_auth import AuthJWT
+
+# Importação do bcrypt para hash de senhas
 from passlib.hash import bcrypt
 
+#Importações relativas ao banco de dados e modelos
 from app.database import get_db
+from sqlalchemy.orm import Session
 from app.schemas.auth import UserCreate, UserLogin
 from app.models.user import User  # ✅ Importando diretamente o modelo
 
+# Criação do roteador para as rotas de autenticação
 router = APIRouter()
 
-# 🔹 Registro de usuário
+# Criação das rotas
+# 🔹 Rota de Registro de usuário
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 def register(user: UserCreate, db: Session = Depends(get_db)):
     if db.query(User).filter_by(email=user.email).first():
         raise HTTPException(status_code=400, detail="Email já cadastrado")
 
-    hashed_pw = bcrypt.hash(user.password)
+    hashed_pw = bcrypt.hash(user.password) #criptografia da senha usando bcrypt
+    # Criação do usuário no banco de dados
     db_user = User(name=user.name, email=user.email, hashed_password=hashed_pw)
 
     db.add(db_user)
@@ -26,13 +34,17 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
     return {"msg": "Usuário registrado com sucesso"}
 
-# 🔹 Login de usuário
+# 🔹 Rota de Login de usuário
 @router.post("/login")
+#recebe email e senha do front e prepara a autenticação JWT
 def login(user: UserLogin, db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
+    #Busca usuário no banco de dados
     db_user = db.query(User).filter_by(email=user.email).first()  # ✅ Aqui também usa `User` direto
 
+    #Verifica se o usuário existe e se a senha está correta
     if not db_user or not bcrypt.verify(user.password, db_user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
 
+    #Token JWT
     access_token = Authorize.create_access_token(subject=user.email)
     return {"access_token": access_token}

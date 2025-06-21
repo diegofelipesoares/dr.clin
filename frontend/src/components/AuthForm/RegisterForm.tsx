@@ -1,5 +1,7 @@
 // Componente: Formulário de registro de usuário
 
+import { useState } from 'react';
+
 // Hook para gerenciamento de formulários no React
 import { useForm } from 'react-hook-form';
 
@@ -14,6 +16,12 @@ import { Button } from '../../components/ui/button';
 
 // Componente de campo de formulário reutilizável
 import { FormField } from './FormField';
+
+//Importando api axios
+import api from '../../lib/api';
+
+//Importando AxiosError para tratamento de erros
+import { AxiosError } from 'axios';
 
 // Define o esquema de validação para o cadastro de usuário
 const registerSchema = z
@@ -33,6 +41,7 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 // Componente do formulário de registro de usuário
 export function RegisterForm() {
+  const [loading, setLoading] = useState(false); // estado para controle de carregamento
   // Inicializa o formulário com validação Zod
   const {
     register, // função para registrar campos no formulário
@@ -44,8 +53,23 @@ export function RegisterForm() {
   });
 
   // Função chamada quando o formulário é submetido com dados válidos
-  const onSubmit = (data: RegisterFormData) => {
-    console.log('Registro:', data); // Aqui você pode fazer uma chamada à API para registrar o usuário
+  const onSubmit = async (data: RegisterFormData) => {
+    setLoading(true); // 🟡 começa carregamento
+    try {
+      const response = await api.post('/auth/register', data);
+      console.log('✅ Registro feito com sucesso:', response.data);
+      alert('Conta criada com sucesso!');
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.error('Erro ao registrar:', error.response?.data);
+        alert(error.response?.data?.detail || 'Erro ao registrar');
+      } else {
+        console.error('Erro desconhecido', error);
+        alert('Erro inesperado ao registrar');
+      }
+    } finally {
+      setLoading(false); // 🔵 encerra carregamento
+    }
   };
 
   return (
@@ -78,8 +102,8 @@ export function RegisterForm() {
       />
 
       {/* Botão de envio do formulário */}
-      <Button type='submit' className='w-full'>
-        Criar conta
+      <Button type='submit' className='w-full' disabled={loading}>
+        {loading ? 'Criando conta...' : 'Criar conta'}
       </Button>
     </form>
   );
