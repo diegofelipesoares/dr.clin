@@ -25,6 +25,9 @@ import { useNavigate } from 'react-router-dom'; // se quiser redirecionar após 
 // Importa o Axios
 import axios from 'axios';
 
+// Impotando Toastify para notificações
+import { toast } from 'react-toastify';
+
 // Define o esquema de validação com Zod para o formulário de login
 const loginSchema = z.object({
   email: z
@@ -61,15 +64,16 @@ export function LoginForm() {
 
       // Armazena o token no localStorage
       localStorage.setItem('token', token);
-
-      alert('Login realizado com sucesso!');
-      navigate('/dashboard'); // ou para onde quiser redirecionar
+      // Mensagem de sucesso
+      toast.success('Seja bem vindo! Login realizado com sucesso!');
+      // Redireciona após login
+      navigate('/dashboard');
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error(error.response?.data);
-        alert(error.response?.data?.detail || 'Erro ao fazer login');
+        toast.error(error.response?.data?.detail || 'Erro ao fazer login');
       } else {
-        alert('Erro inesperado');
+        toast.error('Erro desconhecido no login');
       }
     } finally {
       setLoading(false);

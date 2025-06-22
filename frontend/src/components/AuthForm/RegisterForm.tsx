@@ -23,6 +23,9 @@ import api from '../../lib/api';
 //Importando AxiosError para tratamento de erros
 import { AxiosError } from 'axios';
 
+// Impotando Toastify para notificações
+import { toast } from 'react-toastify';
+
 // Define o esquema de validação para o cadastro de usuário
 const registerSchema = z
   .object({
@@ -58,14 +61,14 @@ export function RegisterForm() {
     try {
       const response = await api.post('/auth/register', data);
       console.log('✅ Registro feito com sucesso:', response.data);
-      alert('Conta criada com sucesso!');
+      toast.success('Conta criada com sucesso!');
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         console.error('Erro ao registrar:', error.response?.data);
-        alert(error.response?.data?.detail || 'Erro ao registrar');
+        toast.error(error.response?.data?.detail || 'Erro ao registrar');
       } else {
         console.error('Erro desconhecido', error);
-        alert('Erro inesperado ao registrar');
+        toast.error('Erro inesperado ao registrar');
       }
     } finally {
       setLoading(false); // 🔵 encerra carregamento
