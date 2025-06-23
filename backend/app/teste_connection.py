@@ -2,9 +2,9 @@
 
 #Engine: motor de conexão com o banco de dados
 #Base: classe base que registra dos os modelos de tabelas
-from database import engine, Base
+from app.database import engine, Base
 # Importa os modelos user para que ela seja criada
-from models.user import User  
+from app.models.user import User  
 
 # Mensagem de inicio do processo
 print("⏳ Criando tabelas no banco de dados...")
