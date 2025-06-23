@@ -35,7 +35,7 @@ export default function LoginPage() {
         {/* Lista de ABAS (login e registrar), dispostas em duas colunas */}
         <TabsList className='grid w-full grid-cols-2'>
           <TabsTrigger value='login'>Login</TabsTrigger>
-          <TabsTrigger value='register'>Registrar</TabsTrigger>
+          <TabsTrigger value='register'>Criar conta</TabsTrigger>
         </TabsList>
 
         {/* CONTEÚDO da aba "Login" */}

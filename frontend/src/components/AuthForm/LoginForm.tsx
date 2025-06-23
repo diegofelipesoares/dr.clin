@@ -88,6 +88,7 @@ export function LoginForm() {
         id='email_login' // ID único (importante se houver mais de um formulário na página)
         label='Email'
         type='email'
+        placeholder='Digite seu e-mail'
         register={register('email')} // conecta ao react-hook-form
         error={errors.email} // passa o erro de validação, se houver
       />
@@ -97,6 +98,7 @@ export function LoginForm() {
         id='senha_login'
         label='Senha'
         type='password'
+        placeholder='Digite sua senha'
         register={register('password')}
         error={errors.password}
       />

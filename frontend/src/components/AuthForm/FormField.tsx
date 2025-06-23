@@ -15,6 +15,7 @@ interface FormFieldProps {
   id: string; // ID do campo (também usado no htmlFor do label)
   label: string; // Texto do rótulo exibido acima do input
   type?: string; // Tipo do input (ex: "text", "password", etc.), opcional com valor padrão
+  placeholder?: string; //Tipo para texto padrão do input
   error?: FieldError; // Objeto de erro retornado pelo react-hook-form, se houver
   register: UseFormRegisterReturn; // Registro do campo feito pelo useForm().register
 }
@@ -24,6 +25,7 @@ export function FormField({
   id,
   label,
   type = 'text',
+  placeholder,
   error,
   register,
 }: FormFieldProps) {
@@ -36,6 +38,7 @@ export function FormField({
       <Input
         id={id}
         type={type}
+        placeholder={placeholder}
         {...register} // Conecta o input ao controle do react-hook-form
         className={cn(
           'w-full', // largura total

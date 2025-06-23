@@ -29,9 +29,9 @@ import { toast } from 'react-toastify';
 // Define o esquema de validação para o cadastro de usuário
 const registerSchema = z
   .object({
-    name: z.string().min(1, 'Nome e Sobrenome é obrigatório'), // campo obrigatório
-    email: z.string().email('Email inválido'), // valida formato de e-mail
-    password: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres'), // senha mínima de 6 caracteres
+    name: z.string().trim().min(1, 'Nome e Sobrenome é obrigatório'), // campo obrigatório
+    email: z.string().trim().email('E-mail inválido').min(1,'E-mail é obrigatório'), // valida formato de e-mail
+    password: z.string().trim().min(6, 'Senha deve ter pelo menos 6 caracteres'), // senha mínima de 6 caracteres
   })
   .refine(data => data.name.trim().split(' ').length >= 2, {
     // Validação adicional: exige pelo menos dois nomes (nome completo)
@@ -47,11 +47,11 @@ export function RegisterForm() {
   const [loading, setLoading] = useState(false); // estado para controle de carregamento
   // Inicializa o formulário com validação Zod
   const {
-    register, // função para registrar campos no formulário
-    handleSubmit, // função que lida com o envio do formulário
+    register, // função do Node para registrar campos no formulário
+    handleSubmit, // função do Node que lida com o envio do formulário
     formState: { errors }, // objeto que armazena os erros de validação
   } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema), // integra o schema de validação
+    resolver: zodResolver(registerSchema), // insere o schema de validação no componente
     mode: 'onChange', // valida enquanto o usuário digita
   });
 
@@ -81,7 +81,8 @@ export function RegisterForm() {
       {/* Campo para nome completo */}
       <FormField
         id='nome_cadastro' // ID único para acessibilidade
-        label='Nome completo'
+        label='Nome'
+        placeholder='Digite seu nome completo'
         register={register('name')} // conecta o campo ao react-hook-form
         error={errors.name} // exibe o erro de validação, se houver
       />
@@ -91,6 +92,7 @@ export function RegisterForm() {
         id='email_cadastro'
         label='Email'
         type='email'
+        placeholder='Digite seu e-mail'
         register={register('email')}
         error={errors.email}
       />
@@ -100,6 +102,7 @@ export function RegisterForm() {
         id='senha_cadastro'
         label='Senha'
         type='password'
+        placeholder='Digite sua senha'
         register={register('password')}
         error={errors.password}
       />
