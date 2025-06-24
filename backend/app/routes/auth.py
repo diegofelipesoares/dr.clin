@@ -49,3 +49,23 @@ def login(user: UserLogin, db: Session = Depends(get_db), Authorize: AuthJWT = D
     access_token = Authorize.create_access_token(subject=user.email)
     return {"access_token": access_token}
 
+# 🔹 Rota para obter o usuário autenticado (GET /auth/me)
+@router.get("/me")
+def get_me(Authorize: AuthJWT = Depends(), db: Session = Depends(get_db)):
+    try:
+        Authorize.jwt_required()  # Garante que o token está presente e válido
+        email = Authorize.get_jwt_subject()  # Extrai o email do token
+        user = db.query(User).filter_by(email=email).first()
+
+        if not user:
+            raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+        return {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email
+        }
+    except Exception as e:
+        raise HTTPException(status_code=401, detail="Token inválido ou expirado")
+
+

@@ -28,6 +28,8 @@ import axios from 'axios';
 // Impotando Toastify para notificações
 import { toast } from 'react-toastify';
 
+import { useAuth } from '../../hooks/useAuth';
+
 // Define o esquema de validação com Zod para o formulário de login
 const loginSchema = z.object({
   email: z
@@ -54,6 +56,7 @@ export function LoginForm() {
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // para redirecionar após login
+  const { setUser } = useAuth();
 
   // Função chamada ao submeter o formulário com dados válidos
   const onSubmit = async (data: LoginFormData) => {
@@ -64,10 +67,17 @@ export function LoginForm() {
 
       // Armazena o token no localStorage
       localStorage.setItem('token', token);
+
+      // Define token no header da API para requisições futuras
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      // Busca os dados do usuário
+      const userResponse = await api.get('/auth/me');
+      setUser(userResponse.data); // Define o usuário no contexto
+
       // Mensagem de sucesso
       toast.success('Seja bem vindo! Login realizado com sucesso!');
-      // Redireciona após login
-      navigate('/dashboard');
+      navigate('/dashboard'); // Redireciona após login
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error(error.response?.data);
