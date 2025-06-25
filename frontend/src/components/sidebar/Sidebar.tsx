@@ -1,43 +1,32 @@
-import { Home, Calendar, Stethoscope, Users, FileText } from "lucide-react";
-import { cn } from "../../lib/utils"
-import { Link, useLocation } from "react-router-dom";
+// src/components/ui/sidebar.tsx
+import { Nav } from "../../components/ui/nav";
+import { NavItem } from "../../components/ui/nav-item";
+import {
+  Home,
+  Calendar,
+  Stethoscope,
+  Users,
+  FileText,
+} from "lucide-react";
 
-const navItems = [
-  { name: "Dashboard", icon: <Home />, path: "/dashboard" },
-  { name: "Agendamentos", icon: <Calendar />, path: "/agendamentos" },
-  { name: "Médicos", icon: <Stethoscope />, path: "/medicos" },
-  { name: "Pacientes", icon: <Users />, path: "/pacientes" },
-  { name: "Planos", icon: <FileText />, path: "/planos" },
-];
-
-export default function Sidebar() {
-  const location = useLocation();
-
+export  function AppSidebar() {
   return (
-    <aside className="w-64 h-screen bg-white border-r p-4 flex flex-col justify-between">
-      <div>
-        <h1 className="text-xl font-bold mb-6">Dr.Clin</h1>
-        <nav className="space-y-2">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              className={cn(
-                "flex items-center gap-3 p-2 rounded-md hover:bg-blue-100 transition",
-                location.pathname === item.path ? "bg-blue-100 text-blue-600" : ""
-              )}
-            >
-              {item.icon}
-              <span>{item.name}</span>
-            </Link>
-          ))}
-        </nav>
-      </div>
+    <aside className="w-64 border-r bg-background p-4 flex flex-col">
+      <h1 className="text-xl font-semibold mb-6">Dr.Clin</h1>
 
-      <div className="text-sm text-gray-500">
+      <Nav>
+        <NavItem to="/dashboard" icon={Home} label="Dashboard" />
+        <NavItem to="/agendamentos" icon={Calendar} label="Agendamentos" />
+        <NavItem to="/medicos" icon={Stethoscope} label="Médicos" />
+        <NavItem to="/pacientes" icon={Users} label="Pacientes" />
+        <NavItem to="/planos" icon={FileText} label="Planos" />
+      </Nav>
+
+      <div className="mt-auto text-sm text-muted-foreground pt-6">
         <p>Clínica Care</p>
         <p>mail@example.com</p>
       </div>
     </aside>
   );
 }
+
