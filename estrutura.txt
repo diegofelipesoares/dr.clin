@@ -1,0 +1,1017 @@
+
+/Users/diegosantos/GIT/React/dr.clin
+├── backend
+|  └── app
+|     ├── __pycache__
+|     ├── models
+|     |  └── __pycache__
+|     ├── routes
+|     |  └── __pycache__
+|     └── schemas
+|        └── __pycache__
+├── frontend
+|  ├── node_modules
+|  |  ├── @alloc
+|  |  |  └── quick-lru
+|  |  ├── @ampproject
+|  |  |  └── remapping
+|  |  |     └── dist
+|  |  ├── @babel
+|  |  |  ├── code-frame
+|  |  |  |  └── lib
+|  |  |  ├── compat-data
+|  |  |  |  └── data
+|  |  |  ├── core
+|  |  |  |  ├── lib
+|  |  |  |  ├── node_modules
+|  |  |  |  └── src
+|  |  |  ├── generator
+|  |  |  |  └── lib
+|  |  |  ├── helper-compilation-targets
+|  |  |  |  ├── lib
+|  |  |  |  └── node_modules
+|  |  |  ├── helper-module-imports
+|  |  |  |  └── lib
+|  |  |  ├── helper-module-transforms
+|  |  |  |  └── lib
+|  |  |  ├── helper-plugin-utils
+|  |  |  |  └── lib
+|  |  |  ├── helper-string-parser
+|  |  |  |  └── lib
+|  |  |  ├── helper-validator-identifier
+|  |  |  |  └── lib
+|  |  |  ├── helper-validator-option
+|  |  |  |  └── lib
+|  |  |  ├── helpers
+|  |  |  |  └── lib
+|  |  |  ├── parser
+|  |  |  |  ├── bin
+|  |  |  |  ├── lib
+|  |  |  |  └── typings
+|  |  |  ├── plugin-transform-react-jsx-self
+|  |  |  |  └── lib
+|  |  |  ├── plugin-transform-react-jsx-source
+|  |  |  |  └── lib
+|  |  |  ├── template
+|  |  |  |  └── lib
+|  |  |  ├── traverse
+|  |  |  |  ├── lib
+|  |  |  |  └── node_modules
+|  |  |  └── types
+|  |  |     └── lib
+|  |  ├── @esbuild
+|  |  |  └── darwin-x64
+|  |  |     └── bin
+|  |  ├── @eslint
+|  |  |  ├── config-array
+|  |  |  |  └── dist
+|  |  |  ├── config-helpers
+|  |  |  |  └── dist
+|  |  |  ├── core
+|  |  |  |  └── dist
+|  |  |  ├── eslintrc
+|  |  |  |  ├── conf
+|  |  |  |  ├── dist
+|  |  |  |  ├── lib
+|  |  |  |  └── node_modules
+|  |  |  ├── js
+|  |  |  |  ├── src
+|  |  |  |  └── types
+|  |  |  ├── object-schema
+|  |  |  |  └── dist
+|  |  |  └── plugin-kit
+|  |  |     └── dist
+|  |  ├── @eslint-community
+|  |  |  ├── eslint-utils
+|  |  |  |  └── node_modules
+|  |  |  └── regexpp
+|  |  ├── @floating-ui
+|  |  |  ├── core
+|  |  |  |  └── dist
+|  |  |  ├── dom
+|  |  |  |  └── dist
+|  |  |  ├── react-dom
+|  |  |  |  └── dist
+|  |  |  └── utils
+|  |  |     ├── dist
+|  |  |     └── dom
+|  |  ├── @hookform
+|  |  |  └── resolvers
+|  |  |     ├── ajv
+|  |  |     ├── arktype
+|  |  |     ├── class-validator
+|  |  |     ├── computed-types
+|  |  |     ├── dist
+|  |  |     ├── effect-ts
+|  |  |     ├── fluentvalidation-ts
+|  |  |     ├── io-ts
+|  |  |     ├── joi
+|  |  |     ├── nope
+|  |  |     ├── standard-schema
+|  |  |     ├── superstruct
+|  |  |     ├── typanion
+|  |  |     ├── typebox
+|  |  |     ├── typeschema
+|  |  |     ├── valibot
+|  |  |     ├── vest
+|  |  |     ├── vine
+|  |  |     ├── yup
+|  |  |     └── zod
+|  |  ├── @humanfs
+|  |  |  ├── core
+|  |  |  |  ├── dist
+|  |  |  |  └── src
+|  |  |  └── node
+|  |  |     ├── dist
+|  |  |     ├── node_modules
+|  |  |     └── src
+|  |  ├── @humanwhocodes
+|  |  |  ├── module-importer
+|  |  |  |  ├── dist
+|  |  |  |  └── src
+|  |  |  └── retry
+|  |  |     └── dist
+|  |  ├── @isaacs
+|  |  |  └── cliui
+|  |  |     └── build
+|  |  ├── @jridgewell
+|  |  |  ├── gen-mapping
+|  |  |  |  └── dist
+|  |  |  ├── resolve-uri
+|  |  |  |  └── dist
+|  |  |  ├── set-array
+|  |  |  |  └── dist
+|  |  |  ├── sourcemap-codec
+|  |  |  |  └── dist
+|  |  |  └── trace-mapping
+|  |  |     └── dist
+|  |  ├── @nodelib
+|  |  |  ├── fs.scandir
+|  |  |  |  └── out
+|  |  |  ├── fs.stat
+|  |  |  |  └── out
+|  |  |  └── fs.walk
+|  |  |     └── out
+|  |  ├── @pkgjs
+|  |  |  └── parseargs
+|  |  |     ├── examples
+|  |  |     └── internal
+|  |  ├── @radix-ui
+|  |  |  ├── primitive
+|  |  |  |  └── dist
+|  |  |  ├── react-arrow
+|  |  |  |  └── dist
+|  |  |  ├── react-collection
+|  |  |  |  └── dist
+|  |  |  ├── react-compose-refs
+|  |  |  |  └── dist
+|  |  |  ├── react-context
+|  |  |  |  └── dist
+|  |  |  ├── react-dialog
+|  |  |  |  └── dist
+|  |  |  ├── react-direction
+|  |  |  |  └── dist
+|  |  |  ├── react-dismissable-layer
+|  |  |  |  └── dist
+|  |  |  ├── react-focus-guards
+|  |  |  |  └── dist
+|  |  |  ├── react-focus-scope
+|  |  |  |  └── dist
+|  |  |  ├── react-id
+|  |  |  |  └── dist
+|  |  |  ├── react-label
+|  |  |  |  └── dist
+|  |  |  ├── react-popper
+|  |  |  |  └── dist
+|  |  |  ├── react-portal
+|  |  |  |  └── dist
+|  |  |  ├── react-presence
+|  |  |  |  └── dist
+|  |  |  ├── react-primitive
+|  |  |  |  └── dist
+|  |  |  ├── react-roving-focus
+|  |  |  |  └── dist
+|  |  |  ├── react-separator
+|  |  |  |  └── dist
+|  |  |  ├── react-slot
+|  |  |  |  └── dist
+|  |  |  ├── react-tabs
+|  |  |  |  └── dist
+|  |  |  ├── react-tooltip
+|  |  |  |  └── dist
+|  |  |  ├── react-use-callback-ref
+|  |  |  |  └── dist
+|  |  |  ├── react-use-controllable-state
+|  |  |  |  └── dist
+|  |  |  ├── react-use-effect-event
+|  |  |  |  ├── dist
+|  |  |  |  └── src
+|  |  |  ├── react-use-escape-keydown
+|  |  |  |  └── dist
+|  |  |  ├── react-use-layout-effect
+|  |  |  |  └── dist
+|  |  |  ├── react-use-rect
+|  |  |  |  └── dist
+|  |  |  ├── react-use-size
+|  |  |  |  └── dist
+|  |  |  ├── react-visually-hidden
+|  |  |  |  └── dist
+|  |  |  └── rect
+|  |  |     └── dist
+|  |  ├── @reduxjs
+|  |  |  └── toolkit
+|  |  |     ├── dist
+|  |  |     ├── query
+|  |  |     ├── react
+|  |  |     └── src
+|  |  ├── @rolldown
+|  |  |  └── pluginutils
+|  |  |     └── dist
+|  |  ├── @rollup
+|  |  |  └── rollup-darwin-x64
+|  |  ├── @standard-schema
+|  |  |  ├── spec
+|  |  |  |  └── dist
+|  |  |  └── utils
+|  |  |     └── dist
+|  |  ├── @swc
+|  |  ├── @types
+|  |  |  ├── babel__core
+|  |  |  ├── babel__generator
+|  |  |  ├── babel__template
+|  |  |  ├── babel__traverse
+|  |  |  ├── estree
+|  |  |  ├── json-schema
+|  |  |  ├── node
+|  |  |  |  ├── assert
+|  |  |  |  ├── compatibility
+|  |  |  |  ├── dns
+|  |  |  |  ├── fs
+|  |  |  |  ├── readline
+|  |  |  |  ├── stream
+|  |  |  |  ├── timers
+|  |  |  |  └── ts5.6
+|  |  |  ├── react
+|  |  |  |  └── ts5.0
+|  |  |  ├── react-dom
+|  |  |  |  └── test-utils
+|  |  |  └── use-sync-external-store
+|  |  |     └── shim
+|  |  ├── @typescript-eslint
+|  |  |  ├── eslint-plugin
+|  |  |  |  ├── dist
+|  |  |  |  └── node_modules
+|  |  |  ├── parser
+|  |  |  |  └── dist
+|  |  |  ├── project-service
+|  |  |  |  └── dist
+|  |  |  ├── scope-manager
+|  |  |  |  └── dist
+|  |  |  ├── tsconfig-utils
+|  |  |  |  └── dist
+|  |  |  ├── type-utils
+|  |  |  |  └── dist
+|  |  |  ├── types
+|  |  |  |  └── dist
+|  |  |  ├── typescript-estree
+|  |  |  |  ├── dist
+|  |  |  |  └── node_modules
+|  |  |  ├── utils
+|  |  |  |  └── dist
+|  |  |  └── visitor-keys
+|  |  |     └── dist
+|  |  ├── @vitejs
+|  |  |  └── plugin-react
+|  |  |     └── dist
+|  |  ├── acorn
+|  |  |  ├── bin
+|  |  |  └── dist
+|  |  ├── acorn-jsx
+|  |  ├── ajv
+|  |  |  ├── dist
+|  |  |  ├── lib
+|  |  |  |  ├── compile
+|  |  |  |  ├── dot
+|  |  |  |  ├── dotjs
+|  |  |  |  └── refs
+|  |  |  └── scripts
+|  |  ├── ansi-regex
+|  |  ├── ansi-styles
+|  |  ├── any-promise
+|  |  |  └── register
+|  |  ├── anymatch
+|  |  ├── arg
+|  |  ├── argparse
+|  |  |  └── lib
+|  |  ├── aria-hidden
+|  |  |  └── dist
+|  |  |     ├── es2015
+|  |  |     ├── es2019
+|  |  |     └── es5
+|  |  ├── asynckit
+|  |  |  └── lib
+|  |  ├── autoprefixer
+|  |  |  ├── bin
+|  |  |  ├── data
+|  |  |  └── lib
+|  |  |     └── hacks
+|  |  ├── axios
+|  |  |  ├── dist
+|  |  |  |  ├── browser
+|  |  |  |  ├── esm
+|  |  |  |  └── node
+|  |  |  └── lib
+|  |  |     ├── adapters
+|  |  |     ├── cancel
+|  |  |     ├── core
+|  |  |     ├── defaults
+|  |  |     ├── env
+|  |  |     ├── helpers
+|  |  |     └── platform
+|  |  ├── balanced-match
+|  |  ├── binary-extensions
+|  |  ├── brace-expansion
+|  |  ├── braces
+|  |  |  └── lib
+|  |  ├── browserslist
+|  |  ├── call-bind-apply-helpers
+|  |  |  └── test
+|  |  ├── callsites
+|  |  ├── camelcase-css
+|  |  ├── caniuse-lite
+|  |  |  ├── data
+|  |  |  |  ├── features
+|  |  |  |  └── regions
+|  |  |  └── dist
+|  |  |     ├── lib
+|  |  |     └── unpacker
+|  |  ├── chalk
+|  |  |  └── source
+|  |  ├── chokidar
+|  |  |  ├── lib
+|  |  |  ├── node_modules
+|  |  |  |  └── glob-parent
+|  |  |  └── types
+|  |  ├── class-variance-authority
+|  |  |  └── dist
+|  |  ├── clsx
+|  |  |  └── dist
+|  |  ├── color-convert
+|  |  ├── color-name
+|  |  ├── combined-stream
+|  |  |  └── lib
+|  |  ├── commander
+|  |  |  └── typings
+|  |  ├── concat-map
+|  |  |  ├── example
+|  |  |  └── test
+|  |  ├── convert-source-map
+|  |  ├── cookie
+|  |  |  └── dist
+|  |  ├── cross-spawn
+|  |  |  └── lib
+|  |  |     └── util
+|  |  ├── cssesc
+|  |  |  ├── bin
+|  |  |  └── man
+|  |  ├── csstype
+|  |  ├── debug
+|  |  |  └── src
+|  |  ├── deep-is
+|  |  |  ├── example
+|  |  |  └── test
+|  |  ├── delayed-stream
+|  |  |  └── lib
+|  |  ├── detect-node-es
+|  |  |  ├── es5
+|  |  |  └── esm
+|  |  ├── didyoumean
+|  |  ├── dlv
+|  |  |  └── dist
+|  |  ├── dunder-proto
+|  |  |  └── test
+|  |  ├── eastasianwidth
+|  |  ├── electron-to-chromium
+|  |  ├── emoji-regex
+|  |  |  └── es2015
+|  |  ├── es-define-property
+|  |  |  └── test
+|  |  ├── es-errors
+|  |  |  └── test
+|  |  ├── es-object-atoms
+|  |  |  └── test
+|  |  ├── es-set-tostringtag
+|  |  |  └── test
+|  |  ├── esbuild
+|  |  |  ├── bin
+|  |  |  └── lib
+|  |  ├── escalade
+|  |  |  ├── dist
+|  |  |  └── sync
+|  |  ├── escape-string-regexp
+|  |  ├── eslint
+|  |  |  ├── bin
+|  |  |  ├── conf
+|  |  |  ├── lib
+|  |  |  |  ├── cli-engine
+|  |  |  |  ├── config
+|  |  |  |  ├── eslint
+|  |  |  |  ├── languages
+|  |  |  |  ├── linter
+|  |  |  |  ├── rule-tester
+|  |  |  |  ├── rules
+|  |  |  |  ├── services
+|  |  |  |  ├── shared
+|  |  |  |  └── types
+|  |  |  └── messages
+|  |  ├── eslint-plugin-react-hooks
+|  |  |  └── cjs
+|  |  ├── eslint-plugin-react-refresh
+|  |  ├── eslint-scope
+|  |  |  ├── dist
+|  |  |  └── lib
+|  |  ├── eslint-visitor-keys
+|  |  |  ├── dist
+|  |  |  └── lib
+|  |  ├── espree
+|  |  |  ├── dist
+|  |  |  └── lib
+|  |  ├── esquery
+|  |  |  └── dist
+|  |  ├── esrecurse
+|  |  ├── estraverse
+|  |  ├── esutils
+|  |  |  └── lib
+|  |  ├── fast-deep-equal
+|  |  |  └── es6
+|  |  ├── fast-glob
+|  |  |  ├── node_modules
+|  |  |  |  └── glob-parent
+|  |  |  └── out
+|  |  |     ├── managers
+|  |  |     ├── providers
+|  |  |     ├── readers
+|  |  |     ├── types
+|  |  |     └── utils
+|  |  ├── fast-json-stable-stringify
+|  |  |  ├── benchmark
+|  |  |  ├── example
+|  |  |  └── test
+|  |  ├── fast-levenshtein
+|  |  ├── fastq
+|  |  |  └── test
+|  |  ├── file-entry-cache
+|  |  ├── fill-range
+|  |  ├── find-up
+|  |  ├── flat-cache
+|  |  |  └── src
+|  |  ├── flatted
+|  |  |  ├── cjs
+|  |  |  ├── esm
+|  |  |  ├── php
+|  |  |  ├── python
+|  |  |  └── types
+|  |  ├── follow-redirects
+|  |  ├── foreground-child
+|  |  |  └── dist
+|  |  |     ├── commonjs
+|  |  |     └── esm
+|  |  ├── form-data
+|  |  |  └── lib
+|  |  ├── fraction.js
+|  |  ├── fsevents
+|  |  ├── function-bind
+|  |  |  └── test
+|  |  ├── gensync
+|  |  |  └── test
+|  |  ├── get-intrinsic
+|  |  |  └── test
+|  |  ├── get-nonce
+|  |  |  └── dist
+|  |  |     ├── es2015
+|  |  |     └── es5
+|  |  ├── get-proto
+|  |  |  └── test
+|  |  ├── glob
+|  |  |  ├── dist
+|  |  |  |  ├── commonjs
+|  |  |  |  └── esm
+|  |  |  └── node_modules
+|  |  |     ├── brace-expansion
+|  |  |     └── minimatch
+|  |  ├── glob-parent
+|  |  ├── globals
+|  |  ├── gopd
+|  |  |  └── test
+|  |  ├── graphemer
+|  |  |  └── lib
+|  |  ├── has-flag
+|  |  ├── has-symbols
+|  |  |  └── test
+|  |  |     └── shams
+|  |  ├── has-tostringtag
+|  |  |  └── test
+|  |  |     └── shams
+|  |  ├── hasown
+|  |  ├── ignore
+|  |  ├── immer
+|  |  |  ├── dist
+|  |  |  |  └── cjs
+|  |  |  └── src
+|  |  |     ├── core
+|  |  |     ├── plugins
+|  |  |     ├── types
+|  |  |     └── utils
+|  |  ├── import-fresh
+|  |  ├── imurmurhash
+|  |  ├── is-binary-path
+|  |  ├── is-core-module
+|  |  |  └── test
+|  |  ├── is-extglob
+|  |  ├── is-fullwidth-code-point
+|  |  ├── is-glob
+|  |  ├── is-number
+|  |  ├── isexe
+|  |  |  └── test
+|  |  ├── jackspeak
+|  |  |  └── dist
+|  |  |     ├── commonjs
+|  |  |     └── esm
+|  |  ├── jiti
+|  |  |  ├── bin
+|  |  |  ├── dist
+|  |  |  |  └── plugins
+|  |  |  └── lib
+|  |  ├── js-tokens
+|  |  ├── js-yaml
+|  |  |  ├── bin
+|  |  |  ├── dist
+|  |  |  └── lib
+|  |  |     ├── schema
+|  |  |     └── type
+|  |  ├── jsesc
+|  |  |  ├── bin
+|  |  |  └── man
+|  |  ├── json-buffer
+|  |  |  └── test
+|  |  ├── json-schema-traverse
+|  |  |  └── spec
+|  |  |     └── fixtures
+|  |  ├── json-stable-stringify-without-jsonify
+|  |  |  ├── example
+|  |  |  └── test
+|  |  ├── json5
+|  |  |  ├── dist
+|  |  |  └── lib
+|  |  ├── keyv
+|  |  |  └── src
+|  |  ├── levn
+|  |  |  └── lib
+|  |  ├── lilconfig
+|  |  |  └── src
+|  |  ├── lines-and-columns
+|  |  |  └── build
+|  |  ├── locate-path
+|  |  ├── lodash.merge
+|  |  ├── lru-cache
+|  |  |  └── dist
+|  |  |     ├── commonjs
+|  |  |     └── esm
+|  |  ├── lucide-react
+|  |  |  └── dist
+|  |  |     ├── cjs
+|  |  |     ├── esm
+|  |  |     └── umd
+|  |  ├── math-intrinsics
+|  |  |  ├── constants
+|  |  |  └── test
+|  |  ├── merge2
+|  |  ├── micromatch
+|  |  ├── mime-db
+|  |  ├── mime-types
+|  |  ├── minimatch
+|  |  ├── minipass
+|  |  |  └── dist
+|  |  |     ├── commonjs
+|  |  |     └── esm
+|  |  ├── ms
+|  |  ├── mz
+|  |  ├── nanoid
+|  |  |  ├── async
+|  |  |  ├── bin
+|  |  |  ├── non-secure
+|  |  |  └── url-alphabet
+|  |  ├── natural-compare
+|  |  ├── node-releases
+|  |  |  └── data
+|  |  |     ├── processed
+|  |  |     └── release-schedule
+|  |  ├── normalize-path
+|  |  ├── normalize-range
+|  |  ├── object-assign
+|  |  ├── object-hash
+|  |  |  └── dist
+|  |  ├── optionator
+|  |  |  └── lib
+|  |  ├── p-limit
+|  |  ├── p-locate
+|  |  ├── package-json-from-dist
+|  |  |  └── dist
+|  |  |     ├── commonjs
+|  |  |     └── esm
+|  |  ├── parent-module
+|  |  ├── path-exists
+|  |  ├── path-key
+|  |  ├── path-parse
+|  |  ├── path-scurry
+|  |  |  └── dist
+|  |  |     ├── commonjs
+|  |  |     └── esm
+|  |  ├── picocolors
+|  |  ├── picomatch
+|  |  |  └── lib
+|  |  ├── pify
+|  |  ├── pirates
+|  |  |  └── lib
+|  |  ├── postcss
+|  |  |  └── lib
+|  |  ├── postcss-import
+|  |  |  └── lib
+|  |  ├── postcss-js
+|  |  ├── postcss-load-config
+|  |  |  └── src
+|  |  ├── postcss-nested
+|  |  ├── postcss-selector-parser
+|  |  |  └── dist
+|  |  |     ├── selectors
+|  |  |     └── util
+|  |  ├── postcss-value-parser
+|  |  |  └── lib
+|  |  ├── prelude-ls
+|  |  |  └── lib
+|  |  ├── proxy-from-env
+|  |  ├── punycode
+|  |  ├── queue-microtask
+|  |  ├── react
+|  |  |  └── cjs
+|  |  ├── react-dom
+|  |  |  └── cjs
+|  |  ├── react-hook-form
+|  |  |  └── dist
+|  |  |     ├── __typetest__
+|  |  |     ├── logic
+|  |  |     ├── types
+|  |  |     └── utils
+|  |  ├── react-redux
+|  |  |  ├── dist
+|  |  |  |  └── cjs
+|  |  |  └── src
+|  |  |     ├── components
+|  |  |     ├── connect
+|  |  |     ├── hooks
+|  |  |     └── utils
+|  |  ├── react-refresh
+|  |  |  └── cjs
+|  |  ├── react-remove-scroll
+|  |  |  ├── UI
+|  |  |  ├── dist
+|  |  |  |  ├── es2015
+|  |  |  |  ├── es2019
+|  |  |  |  └── es5
+|  |  |  └── sidecar
+|  |  ├── react-remove-scroll-bar
+|  |  |  ├── constants
+|  |  |  └── dist
+|  |  |     ├── es2015
+|  |  |     ├── es2019
+|  |  |     └── es5
+|  |  ├── react-router
+|  |  |  └── dist
+|  |  |     ├── development
+|  |  |     └── production
+|  |  ├── react-router-dom
+|  |  |  └── dist
+|  |  ├── react-style-singleton
+|  |  |  └── dist
+|  |  |     ├── es2015
+|  |  |     ├── es2019
+|  |  |     └── es5
+|  |  ├── react-toastify
+|  |  |  ├── addons
+|  |  |  |  └── use-notification-center
+|  |  |  └── dist
+|  |  ├── read-cache
+|  |  ├── readdirp
+|  |  ├── redux
+|  |  |  ├── dist
+|  |  |  |  └── cjs
+|  |  |  └── src
+|  |  |     ├── types
+|  |  |     └── utils
+|  |  ├── redux-thunk
+|  |  |  ├── dist
+|  |  |  |  └── cjs
+|  |  |  └── src
+|  |  ├── reselect
+|  |  |  ├── dist
+|  |  |  |  └── cjs
+|  |  |  └── src
+|  |  |     ├── autotrackMemoize
+|  |  |     ├── devModeChecks
+|  |  |     └── versionedTypes
+|  |  ├── resolve
+|  |  |  ├── bin
+|  |  |  ├── example
+|  |  |  ├── lib
+|  |  |  └── test
+|  |  |     ├── dotdot
+|  |  |     ├── module_dir
+|  |  |     ├── node_path
+|  |  |     ├── pathfilter
+|  |  |     ├── precedence
+|  |  |     ├── resolver
+|  |  |     └── shadowed_core
+|  |  ├── resolve-from
+|  |  ├── reusify
+|  |  |  └── benchmarks
+|  |  ├── rollup
+|  |  |  ├── dist
+|  |  |  |  ├── bin
+|  |  |  |  ├── es
+|  |  |  |  └── shared
+|  |  |  └── node_modules
+|  |  |     └── @types
+|  |  ├── run-parallel
+|  |  ├── scheduler
+|  |  |  └── cjs
+|  |  ├── semver
+|  |  |  ├── bin
+|  |  |  ├── classes
+|  |  |  ├── functions
+|  |  |  ├── internal
+|  |  |  └── ranges
+|  |  ├── set-cookie-parser
+|  |  |  └── lib
+|  |  ├── shebang-command
+|  |  ├── shebang-regex
+|  |  ├── signal-exit
+|  |  |  └── dist
+|  |  |     ├── cjs
+|  |  |     └── mjs
+|  |  ├── source-map-js
+|  |  |  └── lib
+|  |  ├── string-width
+|  |  ├── string-width-cjs
+|  |  |  └── node_modules
+|  |  |     ├── ansi-regex
+|  |  |     ├── emoji-regex
+|  |  |     └── strip-ansi
+|  |  ├── strip-ansi
+|  |  ├── strip-ansi-cjs
+|  |  |  └── node_modules
+|  |  |     └── ansi-regex
+|  |  ├── strip-json-comments
+|  |  ├── sucrase
+|  |  |  ├── bin
+|  |  |  ├── dist
+|  |  |  |  ├── esm
+|  |  |  |  ├── parser
+|  |  |  |  ├── transformers
+|  |  |  |  ├── types
+|  |  |  |  └── util
+|  |  |  ├── register
+|  |  |  └── ts-node-plugin
+|  |  ├── supports-color
+|  |  ├── supports-preserve-symlinks-flag
+|  |  |  └── test
+|  |  ├── tailwind-merge
+|  |  |  ├── dist
+|  |  |  |  └── es5
+|  |  |  └── src
+|  |  |     └── lib
+|  |  ├── tailwind-variants
+|  |  |  ├── dist
+|  |  |  └── node_modules
+|  |  |     └── tailwind-merge
+|  |  ├── tailwindcss
+|  |  |  ├── lib
+|  |  |  |  ├── cli
+|  |  |  |  ├── css
+|  |  |  |  ├── lib
+|  |  |  |  ├── postcss-plugins
+|  |  |  |  ├── public
+|  |  |  |  ├── util
+|  |  |  |  └── value-parser
+|  |  |  ├── nesting
+|  |  |  ├── peers
+|  |  |  ├── scripts
+|  |  |  ├── src
+|  |  |  |  ├── cli
+|  |  |  |  ├── css
+|  |  |  |  ├── lib
+|  |  |  |  ├── postcss-plugins
+|  |  |  |  ├── public
+|  |  |  |  ├── util
+|  |  |  |  └── value-parser
+|  |  |  ├── stubs
+|  |  |  └── types
+|  |  |     └── generated
+|  |  ├── tailwindcss-animate
+|  |  ├── thenify
+|  |  ├── thenify-all
+|  |  ├── tinyglobby
+|  |  |  ├── dist
+|  |  |  └── node_modules
+|  |  |     ├── fdir
+|  |  |     └── picomatch
+|  |  ├── to-regex-range
+|  |  ├── ts-api-utils
+|  |  |  └── lib
+|  |  ├── ts-interface-checker
+|  |  |  └── dist
+|  |  ├── tslib
+|  |  |  └── modules
+|  |  ├── type-check
+|  |  |  └── lib
+|  |  ├── typescript
+|  |  |  ├── bin
+|  |  |  └── lib
+|  |  |     ├── cs
+|  |  |     ├── de
+|  |  |     ├── es
+|  |  |     ├── fr
+|  |  |     ├── it
+|  |  |     ├── ja
+|  |  |     ├── ko
+|  |  |     ├── pl
+|  |  |     ├── pt-br
+|  |  |     ├── ru
+|  |  |     ├── tr
+|  |  |     ├── zh-cn
+|  |  |     └── zh-tw
+|  |  ├── typescript-eslint
+|  |  |  └── dist
+|  |  ├── undici-types
+|  |  ├── update-browserslist-db
+|  |  ├── uri-js
+|  |  |  └── dist
+|  |  |     ├── es5
+|  |  |     └── esnext
+|  |  ├── use-callback-ref
+|  |  |  └── dist
+|  |  |     ├── es2015
+|  |  |     ├── es2019
+|  |  |     └── es5
+|  |  ├── use-sidecar
+|  |  |  └── dist
+|  |  |     ├── es2015
+|  |  |     ├── es2019
+|  |  |     └── es5
+|  |  ├── use-sync-external-store
+|  |  |  ├── cjs
+|  |  |  |  └── use-sync-external-store-shim
+|  |  |  └── shim
+|  |  ├── util-deprecate
+|  |  ├── vite
+|  |  |  ├── bin
+|  |  |  ├── dist
+|  |  |  |  ├── client
+|  |  |  |  ├── node
+|  |  |  |  └── node-cjs
+|  |  |  ├── misc
+|  |  |  ├── node_modules
+|  |  |  |  ├── fdir
+|  |  |  |  └── picomatch
+|  |  |  └── types
+|  |  |     └── internal
+|  |  ├── which
+|  |  |  └── bin
+|  |  ├── word-wrap
+|  |  ├── wrap-ansi
+|  |  |  └── node_modules
+|  |  |     └── ansi-styles
+|  |  ├── wrap-ansi-cjs
+|  |  |  └── node_modules
+|  |  |     ├── ansi-regex
+|  |  |     ├── emoji-regex
+|  |  |     ├── string-width
+|  |  |     └── strip-ansi
+|  |  ├── yallist
+|  |  ├── yaml
+|  |  |  ├── browser
+|  |  |  |  └── dist
+|  |  |  └── dist
+|  |  |     ├── compose
+|  |  |     ├── doc
+|  |  |     ├── nodes
+|  |  |     ├── parse
+|  |  |     ├── schema
+|  |  |     └── stringify
+|  |  ├── yocto-queue
+|  |  └── zod
+|  |     ├── dist
+|  |     |  ├── cjs
+|  |     |  ├── esm
+|  |     |  └── types
+|  |     ├── v3
+|  |     ├── v4
+|  |     |  ├── core
+|  |     |  └── locales
+|  |     └── v4-mini
+|  ├── public
+|  └── src
+|     ├── assets
+|     ├── components
+|     |  ├── AuthForm
+|     |  ├── layout
+|     |  ├── medico
+|     |  ├── sidebar
+|     |  └── ui
+|     ├── context
+|     ├── hooks
+|     ├── layouts
+|     ├── lib
+|     ├── pages
+|     |  ├── dashboard
+|     |  ├── login
+|     |  └── medicos
+|     ├── routes
+|     ├── services
+|     ├── store
+|     |  └── slices
+|     └── types
+└── venv
+   ├── bin
+   ├── include
+   |  ├── python3.13
+   |  └── site
+   |     └── python3.13
+   |        └── greenlet
+   └── lib
+      └── python3.13
+         └── site-packages
+            ├── PyJWT-1.7.1.dist-info
+            ├── PyYAML-6.0.2.dist-info
+            ├── __pycache__
+            ├── _yaml
+            ├── annotated_types
+            ├── annotated_types-0.7.0.dist-info
+            ├── anyio
+            ├── anyio-4.9.0.dist-info
+            ├── bcrypt
+            ├── bcrypt-4.3.0.dist-info
+            ├── click
+            ├── click-8.2.1.dist-info
+            ├── dns
+            ├── dnspython-2.7.0.dist-info
+            ├── dotenv
+            ├── email_validator
+            ├── email_validator-2.2.0.dist-info
+            ├── fastapi
+            ├── fastapi-0.115.12.dist-info
+            ├── fastapi_jwt_auth
+            ├── fastapi_jwt_auth-0.5.0.dist-info
+            ├── greenlet
+            ├── greenlet-3.2.3.dist-info
+            ├── h11
+            ├── h11-0.16.0.dist-info
+            ├── httptools
+            ├── httptools-0.6.4.dist-info
+            ├── idna
+            ├── idna-3.10.dist-info
+            ├── jwt
+            ├── passlib
+            ├── passlib-1.7.4.dist-info
+            ├── pip
+            ├── pip-25.1.1.dist-info
+            ├── psycopg2
+            ├── psycopg2_binary-2.9.10.dist-info
+            ├── pydantic
+            ├── pydantic-1.10.22.dist-info
+            ├── pydantic_core
+            ├── pydantic_core-2.33.2.dist-info
+            ├── python_dotenv-1.1.0.dist-info
+            ├── sniffio
+            ├── sniffio-1.3.1.dist-info
+            ├── sqlalchemy
+            ├── sqlalchemy-2.0.41.dist-info
+            ├── starlette
+            ├── starlette-0.46.2.dist-info
+            ├── typing_extensions-4.14.0.dist-info
+            ├── typing_inspection
+            ├── typing_inspection-0.4.1.dist-info
+            ├── uvicorn
+            ├── uvicorn-0.34.3.dist-info
+            ├── uvloop
+            ├── uvloop-0.21.0.dist-info
+            ├── watchfiles
+            ├── watchfiles-1.0.5.dist-info
+            ├── websockets
+            ├── websockets-15.0.1.dist-info
+            └── yaml
+
+directory: 1009
+
+
+
+[2K[1G

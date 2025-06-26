@@ -1,10 +1,14 @@
-//Define componente que envolve a aplicação e fornece o estado do usuário logado a componentes filhos
+import type { FC, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import type { User } from '../types/AuthContextType';
 import api from '../lib/api';
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -20,16 +24,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  //LOGOUT para quando tiver a página de dashboard
-  // const logout = () => {
-  //   localStorage.removeItem("token");
-  //   setUser(null);
-  //   navigate("/login");
-  // };
-
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
