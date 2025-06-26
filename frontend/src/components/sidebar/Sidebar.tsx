@@ -1,11 +1,12 @@
 // src/components/sidebar.tsx
+import { Sidebar } from '../../components/ui/sidebar'; // <-- Importa o Sidebar correto
 import { Nav } from '../../components/ui/nav';
 import { NavItem } from '../../components/ui/nav-item';
 import { Home, Calendar, Stethoscope, Users, FileText } from 'lucide-react';
 
 export function AppSidebar() {
   return (
-    <aside className='w-64 border-r bg-background p-4 flex flex-col'>
+    <Sidebar className='w-64 border-r bg-background p-4 flex flex-col'>
       <h1 className='text-xl font-semibold mb-6'>Dr.Clin</h1>
 
       <Nav>
@@ -20,6 +21,6 @@ export function AppSidebar() {
         <p>Clínica Care</p>
         <p>mail@example.com</p>
       </div>
-    </aside>
+    </Sidebar>
   );
 }
