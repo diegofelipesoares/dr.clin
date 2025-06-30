@@ -2,16 +2,13 @@
 //Faz o carregamento das rotas
 //ponde conter Providers Globais
 
-import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { AppProviders } from './context';
 import { AppRoutes } from './routes/AppRoutes';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppProviders>
+    <>
         <AppRoutes />
         <ToastContainer
           position='top-center'
@@ -22,8 +19,7 @@ function App() {
           draggable
           theme='light'
         />
-      </AppProviders>
-    </BrowserRouter>
+    </>
   );
 }
 
