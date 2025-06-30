@@ -1,3 +1,4 @@
+//Centraliza as rotas
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from '../pages/login/LoginPage';
 import DashboardPage from '../pages/dashboard/DashboardPage';

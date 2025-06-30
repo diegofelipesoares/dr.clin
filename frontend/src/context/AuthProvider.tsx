@@ -1,3 +1,7 @@
+//Criando o provider (Informação q vai dentro do CONTEXT)
+//É o elemento que será compartilhado para toda a aplicação.
+//Permite que toda a aplicação veja se o usuário está ou não logado.
+
 import type { FC, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { AuthContext } from './AuthContext';

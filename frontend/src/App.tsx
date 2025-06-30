@@ -1,3 +1,7 @@
+//Componente raiz da amplicação, sendo chamado pleo main.tsx
+//Faz o carregamento das rotas
+//ponde conter Providers Globais
+
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { AppProviders } from './context';

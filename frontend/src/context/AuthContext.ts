@@ -1,3 +1,4 @@
+//CRIANDO O CONTEXTO
 //Cria o objeto do contexto (AuthContext) que será utilizado em toda a aplicação
 import { createContext } from 'react';
 import type { AuthContextType } from '../types/AuthContextType';
