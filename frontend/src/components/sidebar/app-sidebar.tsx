@@ -16,20 +16,23 @@ import {
 import { useSidebar } from '../ui/sidebar';
 import { Link } from 'react-router-dom';
 import {
-  Home,
-  Calendar,
+  LayoutDashboard,
+  CalendarDays,
   Stethoscope,
   Users,
-  FileText,
+  Gem,
 } from 'lucide-react';
 import Logo from '../../assets/logo.svg'; // <- ou use "public/logo.svg" com <img src="/logo.svg" />
 
 const menuItems = [
-  { title: 'Dashboard', path: '/dashboard', icon: Home },
-  { title: 'Agendamentos', path: '/agendamentos', icon: Calendar },
+  { title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+  { title: 'Agendamentos', path: '/agendamentos', icon: CalendarDays },
   { title: 'Médicos', path: '/medicos', icon: Stethoscope },
   { title: 'Pacientes', path: '/pacientes', icon: Users },
-  { title: 'Planos', path: '/planos', icon: FileText },
+];
+
+const outrosItems = [
+  { title: 'Planos', path: '/planos', icon: Gem },
 ];
 
 export function AppSidebar() {
@@ -38,7 +41,7 @@ export function AppSidebar() {
   return (
     <Sidebar
       collapsible="icon"
-      className="w-64 border-r bg-background"
+      className="w-64 bg-[hsl(var(--sidebar-background))] text-[hsl(var(--sidebar-foreground))]"
     >
       <SidebarHeader>
         <div className="flex items-center gap-2 py-4 overflow-hidden">
@@ -65,10 +68,27 @@ export function AppSidebar() {
       
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
+          <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map(({ title, path, icon: Icon }) => (
+                <SidebarMenuItem key={title}>
+                  <SidebarMenuButton asChild>
+                    <Link to={path} className="flex items-center gap-2">
+                      <Icon className="w-5 h-5" />
+                      <span>{title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Outros</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {outrosItems.map(({ title, path, icon: Icon }) => (
                 <SidebarMenuItem key={title}>
                   <SidebarMenuButton asChild>
                     <Link to={path} className="flex items-center gap-2">
@@ -87,8 +107,8 @@ export function AppSidebar() {
 
       <SidebarFooter>
         <div className="px-4 py-4 text-sm text-muted-foreground mt-auto">
-          <p>Clínica Care</p>
-          <p>mail@example.com</p>
+          <p>Clínica Araújo Falcão</p>
+          <p>araujofalcao@gmail.com</p>
         </div>
       </SidebarFooter>
       

@@ -6,7 +6,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     <div className='flex min-h-screen bg-background'>
       <SidebarProvider>
         <AppSidebar />
-        <main className='flex-1 p-6 overflow-auto'>
+        <main className='flex-1 p-6 overflow-auto bg-gray-50'>
           <SidebarTrigger /> {/* abre e fecha sidebar */}
           {children}
         </main>
