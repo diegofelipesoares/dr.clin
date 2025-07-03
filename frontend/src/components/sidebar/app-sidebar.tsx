@@ -31,33 +31,31 @@ const menuItems = [
   { title: 'Pacientes', path: '/pacientes', icon: Users },
 ];
 
-const outrosItems = [
-  { title: 'Planos', path: '/planos', icon: Gem },
-];
+const outrosItems = [{ title: 'Planos', path: '/planos', icon: Gem }];
 
 export function AppSidebar() {
   const { state } = useSidebar(); // ← detecta se o sidebar está aberto ou colapsado
 
   return (
     <Sidebar
-      collapsible="icon"
-      className="w-64 bg-[hsl(var(--sidebar-background))] text-[hsl(var(--sidebar-foreground))]"
+      collapsible='icon'
+      className='w-64 bg-sidebar-background text-sidebar-foreground'
     >
       <SidebarHeader>
-        <div className="flex items-center gap-2 py-4 overflow-hidden">
-          <div className="shrink-0">
+        <div className='flex items-center gap-2 py-4 overflow-hidden'>
+          <div className='shrink-0'>
             <img
               src={Logo}
-              alt="Logo Dr.Clin"
+              alt='Logo Dr.Clin'
               className={`object-contain shrink-0 transition-all duration-300 ${
                 state === 'expanded' ? 'w-8 h-8' : 'w-6 h-6'
               }`}
               style={{ minWidth: 32 }}
-             />    
+            />
           </div>
 
           {state === 'expanded' && (
-            <span className="text-xl font-semibold whitespace-nowrap">
+            <span className='text-xl font-semibold whitespace-nowrap'>
               Dr.Clin
             </span>
           )}
@@ -65,7 +63,7 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarSeparator />
-      
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
@@ -74,8 +72,8 @@ export function AppSidebar() {
               {menuItems.map(({ title, path, icon: Icon }) => (
                 <SidebarMenuItem key={title}>
                   <SidebarMenuButton asChild>
-                    <Link to={path} className="flex items-center gap-2">
-                      <Icon className="w-5 h-5" />
+                    <Link to={path} className='flex items-center gap-2'>
+                      <Icon className='w-5 h-5' />
                       <span>{title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -91,8 +89,8 @@ export function AppSidebar() {
               {outrosItems.map(({ title, path, icon: Icon }) => (
                 <SidebarMenuItem key={title}>
                   <SidebarMenuButton asChild>
-                    <Link to={path} className="flex items-center gap-2">
-                      <Icon className="w-5 h-5" />
+                    <Link to={path} className='flex items-center gap-2'>
+                      <Icon className='w-5 h-5' />
                       <span>{title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -106,12 +104,11 @@ export function AppSidebar() {
       <SidebarSeparator />
 
       <SidebarFooter>
-        <div className="px-4 py-4 text-sm text-muted-foreground mt-auto">
+        <div className='px-4 py-4 text-sm text-muted-foreground mt-auto'>
           <p>Clínica Araújo Falcão</p>
           <p>araujofalcao@gmail.com</p>
         </div>
       </SidebarFooter>
-      
     </Sidebar>
   );
 }
