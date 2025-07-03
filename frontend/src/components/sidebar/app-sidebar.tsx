@@ -1,4 +1,5 @@
 // src/components/sidebar.tsx
+//Componentes Personalidados do Sidebar do Shadcn/ui
 import {
   Sidebar,
   SidebarContent,
@@ -14,6 +15,7 @@ import {
 } from '../ui/sidebar';
 
 import { useSidebar } from '../ui/sidebar';
+
 import { Link } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -104,10 +106,12 @@ export function AppSidebar() {
       <SidebarSeparator />
 
       <SidebarFooter>
-        <div className='px-4 py-4 text-sm text-muted-foreground mt-auto'>
-          <p>Clínica Araújo Falcão</p>
-          <p>araujofalcao@gmail.com</p>
-        </div>
+        {state === 'expanded' && (
+          <div className='px-4 py-4 text-sm text-muted-foreground mt-auto whitespace-nowrap'>
+            <p>Clínica Araújo Falcão</p>
+            <p>araujofalcao@gmail.com</p>
+          </div>
+        )}
       </SidebarFooter>
     </Sidebar>
   );
