@@ -5,7 +5,7 @@ export default function MedicosPage() {
   return (
     <div className='flex'>
       {/* <Sidebar /> */}
-      <main className='flex-1 p-2 bg-gray-50 min-h-screen'>
+      <main className='flex-1 p-2 bg-background min-h-screen'>
         <div className='flex justify-between items-center mb-6'>
           <div>
             <h2 className='text-2xl font-bold'>Médicos</h2>

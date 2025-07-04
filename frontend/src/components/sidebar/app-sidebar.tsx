@@ -1,4 +1,6 @@
 // src/components/sidebar.tsx
+
+// IMPORTAÇÕES
 //Componentes Personalidados do Sidebar do Shadcn/ui
 import {
   Sidebar,
@@ -14,8 +16,10 @@ import {
   SidebarSeparator,
 } from '../ui/sidebar';
 
+//Hook de Contexto do Shadcn que fornece estado atual do sidebar (Expanded ou Collapsed)
 import { useSidebar } from '../ui/sidebar';
 
+//Importação dos ícones da biblioteca Lucide-react
 import { Link } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -24,8 +28,12 @@ import {
   Users,
   Gem,
 } from 'lucide-react';
-import Logo from '../../assets/logo.svg'; // <- ou use "public/logo.svg" com <img src="/logo.svg" />
 
+//Importação do logo da aplicação
+import Logo from '../../assets/logo.svg';
+
+//DEFINIÇÃO DOS ITENS DO MENU (Array de Objetos JS/TS)
+// Aqui você define os itens do menu principal e outros itens que deseja exibir no sidebar
 const menuItems = [
   { title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { title: 'Agendamentos', path: '/agendamentos', icon: CalendarDays },
@@ -39,13 +47,18 @@ export function AppSidebar() {
   const { state } = useSidebar(); // ← detecta se o sidebar está aberto ou colapsado
 
   return (
+    //Container Principal do Sidebar
+    // Aqui você pode definir a largura, cor de fundo e outras propriedades do sidebar
     <Sidebar
       collapsible='icon'
       className='w-64 bg-sidebar-background text-sidebar-foreground'
     >
+      {/* Cabeçalho do Sidebar */}
+      {/* Aqui você pode colocar o logo, título da aplicação e outras informações */}
       <SidebarHeader>
         <div className='flex items-center gap-2 py-4 overflow-hidden'>
           <div className='shrink-0'>
+            {/* O logo só será exibido quando o sidebar estiver expandido */}
             <img
               src={Logo}
               alt='Logo Dr.Clin'
@@ -56,6 +69,8 @@ export function AppSidebar() {
             />
           </div>
 
+          {/* Título da aplicação */}
+          {/* O título só será exibido quando o sidebar estiver expandido */}
           {state === 'expanded' && (
             <span className='text-xl font-semibold whitespace-nowrap'>
               Dr.Clin
@@ -64,10 +79,14 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
 
+      {/* Separador opcional entre o cabeçalho e o conteúdo do sidebar */}
       <SidebarSeparator />
 
+      {/* Conteúdo do Sidebar */}
+      {/* Aqui você pode colocar os grupos de menu e outros itens que deseja exibir */}
       <SidebarContent>
         <SidebarGroup>
+          {/* Grupo - Menu principal */}
           <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -85,6 +104,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
+          {/* Grupo - Outros */}
           <SidebarGroupLabel>Outros</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

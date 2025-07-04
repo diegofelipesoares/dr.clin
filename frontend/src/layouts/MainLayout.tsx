@@ -12,7 +12,7 @@ export function MainLayout() {
         {/* Container principal para o cabeçalho e o conteúdo */}
         <div className='flex flex-col flex-1 overflow-hidden'>
           {/* Cabeçalho da aplicação: aqui o SidebarTrigger e o Breadcrumb ficarão lado a lado */}
-          <header className='h-14 flex items-center px-4 bg-background z-10'>
+          <header className='h-10 pt-4 flex items-center px-4 bg-background z-10'>
             {/* SidebarTrigger: o botão para abrir/fechar o sidebar */}
             <SidebarTrigger className='mr-4' />
 
@@ -23,7 +23,7 @@ export function MainLayout() {
           </header>
 
           {/* Área principal de conteúdo das rotas */}
-          <main className='flex-1 p-6 overflow-y-auto bg-background'>
+          <main className='flex-1 p-3 overflow-y-auto bg-background'>
             {/* <Outlet /> ou {children} - use um ou outro, dependendo da sua necessidade */}
             <Outlet /> {/* Recomendo usar Outlet para rotas aninhadas */}
             {/* {children} */}{' '}
