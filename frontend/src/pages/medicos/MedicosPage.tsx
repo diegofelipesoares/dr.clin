@@ -1,7 +1,10 @@
 import { Button } from '../../components/ui/button';
 import { MedicoList } from '../../components/medico/medicoList';
+import { useNavigate } from 'react-router-dom';
 
 export default function MedicosPage() {
+  const navigate = useNavigate();
+
   return (
     <div className='flex'>
       {/* <Sidebar /> */}
@@ -13,7 +16,9 @@ export default function MedicosPage() {
               Acesse os detalhes dos profissionais da clínica
             </p>
           </div>
-          <Button>+ Adicionar médico</Button>
+          <Button onClick={() => navigate('/medicos/cadastrar')}>
+            + Adicionar médico
+          </Button>
         </div>
         <MedicoList />
       </main>

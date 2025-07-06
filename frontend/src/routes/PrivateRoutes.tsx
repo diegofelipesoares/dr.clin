@@ -1,5 +1,5 @@
 //Gerencia acesso e aplica layout para rotas privadas.
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { MainLayout } from '../layouts/MainLayout';
 
@@ -11,9 +11,5 @@ export function PrivateRoutes() {
   if (!user) return <Navigate to='/login' />;
 
   //Aplica Layout e indica conteúdo da rota filha
-  return (
-    <MainLayout>
-      <Outlet /> 
-    </MainLayout>
-  );
+  return <MainLayout />;
 }

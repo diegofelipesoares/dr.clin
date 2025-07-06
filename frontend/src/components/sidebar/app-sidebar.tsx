@@ -16,6 +16,12 @@ import {
   SidebarSeparator,
 } from '../ui/sidebar';
 
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '../ui/collapsible';
+
 //Hook de Contexto do Shadcn que fornece estado atual do sidebar (Expanded ou Collapsed)
 import { useSidebar } from '../ui/sidebar';
 
@@ -27,6 +33,7 @@ import {
   Stethoscope,
   Users,
   Gem,
+  ChevronDown,
 } from 'lucide-react';
 
 //Importação do logo da aplicação
@@ -37,7 +44,6 @@ import Logo from '../../assets/logo.svg';
 const menuItems = [
   { title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { title: 'Agendamentos', path: '/agendamentos', icon: CalendarDays },
-  { title: 'Médicos', path: '/medicos', icon: Stethoscope },
   { title: 'Pacientes', path: '/pacientes', icon: Users },
 ];
 
@@ -90,6 +96,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              {/* Itens do menu principal via map */}
               {menuItems.map(({ title, path, icon: Icon }) => (
                 <SidebarMenuItem key={title}>
                   <SidebarMenuButton asChild>
@@ -100,6 +107,38 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+
+              {/* Meu Médicos com Collapsible */}
+              <Collapsible className='group/collapsible'>
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton className='flex items-center justify-between w-full focus:outline-none focus:ring-0 ring-0 hover:ring-0 group-hover:ring-0 border-none'>
+                      <div className='flex items-center gap-2'>
+                        <Stethoscope className='w-4 h-4' />
+                        <span className='font-normal'>Médicos</span>
+                      </div>
+                      {/* Seta rotaciona ao expandir */}
+                      <ChevronDown className='w-4 h-4 transition-transform group-data-[state=open]/collapsible:rotate-180' />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+
+                  {/* Transição de abertura dos submenus */}
+                  <CollapsibleContent className='overflow-hidden transition-all duration-300 data-[state=closed]:max-h-0 data-[state=open]:max-h-40'>
+                    <SidebarMenu className='gap-0'>
+                      <SidebarMenuItem className='pl-6 m-0'>
+                        <SidebarMenuButton asChild>
+                          <Link to='/medicos'>Listar</Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                      <SidebarMenuItem className='pl-6 m-0'>
+                        <SidebarMenuButton asChild>
+                          <Link to='/medicos/cadastrar'>Cadastrar</Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    </SidebarMenu>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

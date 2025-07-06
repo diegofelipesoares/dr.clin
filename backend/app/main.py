@@ -8,6 +8,10 @@ from app.database import Base, engine
 # precisa importar para JWT funcionar, mesmo sem usar diretamente
 import app.config 
 
+# ⚠️ Importa o model para que a tabela seja reconhecida
+from app.models import medico_model
+from app.models import user
+
 # Cria todas as tabelas automaticamente com base nos modelos definidos
 Base.metadata.create_all(bind=engine)
 
