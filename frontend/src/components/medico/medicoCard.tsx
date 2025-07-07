@@ -1,7 +1,9 @@
 import { Button } from '../../components/ui/button';
 import { Calendar, Clock, BanknoteArrowDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface MedicoCardProps {
+  id: number;
   nome: string;
   especialidade: string;
   foto: string;
@@ -11,6 +13,7 @@ interface MedicoCardProps {
 }
 
 export function MedicoCard({
+  id,
   nome,
   especialidade,
   foto,
@@ -18,6 +21,8 @@ export function MedicoCard({
   horario,
   percentual,
 }: MedicoCardProps) {
+  const navigate = useNavigate();
+
   return (
     <div className='bg-white rounded-xl shadow p-4 flex flex-col gap-2 items-center w-full max-w-xl'>
       <img
@@ -41,7 +46,12 @@ export function MedicoCard({
           <BanknoteArrowDown size={16} /> {percentual} %
         </div>
       </div>
-      <Button className='mt-2 w-full'>Ver detalhes</Button>
+      <Button
+        className='mt-2 w-full'
+        onClick={() => navigate(`/medicos/${id}`)}
+      >
+        Ver detalhes
+      </Button>
     </div>
   );
 }

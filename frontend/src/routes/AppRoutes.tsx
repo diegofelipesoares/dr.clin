@@ -4,6 +4,7 @@ import LoginPage from '../pages/login/LoginPage';
 import DashboardPage from '../pages/dashboard/DashboardPage';
 import MedicosPage from '../pages/medicos/MedicosPage';
 import CadastrarMedico from '../pages/medicos/CadastrarMedico';
+import EditarMedico from '../pages/medicos/EditarMedico';
 import { PrivateRoutes } from './PrivateRoutes';
 import { PublicRoutes } from './PublicRoutes';
 
@@ -22,6 +23,7 @@ export function AppRoutes() {
         <Route path='/dashboard' element={<DashboardPage />} />
         <Route path='/medicos' element={<MedicosPage />} />
         <Route path='/medicos/cadastrar' element={<CadastrarMedico />} />
+        <Route path='/medicos/:id' element={<EditarMedico />} />
       </Route>
 
       {/* Rota inválida → redireciona */}

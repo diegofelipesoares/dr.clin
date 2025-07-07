@@ -38,6 +38,7 @@ export function MedicoList() {
       {medicos.map(medico => (
         <MedicoCard
           key={medico.id}
+          id={medico.id}
           nome={`${medico.pronomeTratamento} ${medico.nome}`}
           especialidade={medico.especialidade}
           foto={medico.foto}
