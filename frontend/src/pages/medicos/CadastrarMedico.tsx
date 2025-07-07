@@ -27,9 +27,11 @@ import { Card, CardContent } from '../../components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const formSchema = z.object({
   nome: z.string().min(3, 'Nome é obrigatório'),
+  pronomeTratamento: z.enum(['Dr.', 'Dra.']),
   especialidade: z.string().min(2, 'Especialidade é obrigatória'),
   crm: z.string().min(4, 'CRM é obrigatório'),
   email: z.string().email('E-mail inválido'),
@@ -42,23 +44,11 @@ const formSchema = z.object({
   tipoConta: z.enum(['Corrente', 'Poupança', 'Pagamento']),
   percentualRepasse: z.string(),
   diasAtendimento: z
-    .array(
-      z.enum([
-        'segunda',
-        'terca',
-        'quarta',
-        'quinta',
-        'sexta',
-        'sabado',
-        'domingo',
-      ]),
-    )
+    .array(z.enum(['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom']))
     .nonempty('Selecione pelo menos um dia'),
   horarioInicio: z.string(),
   horarioFim: z.string(),
-  duracaoConsulta: z.string(),
   intervalo: z.string(),
-  preco: z.string(),
   foto: z.any().refine(file => file instanceof File && file.size > 0, {
     message: 'A foto é obrigatória',
   }),
@@ -74,6 +64,7 @@ export default function CadastrarMedico() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       nome: '',
+      pronomeTratamento: 'Dr.',
       especialidade: '',
       crm: '',
       email: '',
@@ -88,9 +79,7 @@ export default function CadastrarMedico() {
       diasAtendimento: [],
       horarioInicio: '',
       horarioFim: '',
-      duracaoConsulta: '',
       intervalo: '',
-      preco: '',
       foto: undefined,
     },
   });
@@ -99,6 +88,7 @@ export default function CadastrarMedico() {
     const formData = new FormData();
 
     formData.append('nome', data.nome);
+    formData.append('pronomeTratamento', data.pronomeTratamento);
     formData.append('especialidade', data.especialidade);
     formData.append('crm', data.crm);
     formData.append('email', data.email);
@@ -112,9 +102,7 @@ export default function CadastrarMedico() {
     formData.append('percentualRepasse', data.percentualRepasse);
     formData.append('horarioInicio', data.horarioInicio);
     formData.append('horarioFim', data.horarioFim);
-    formData.append('duracaoConsulta', data.duracaoConsulta);
     formData.append('intervalo', data.intervalo);
-    formData.append('preco', data.preco);
 
     data.diasAtendimento.forEach(dia =>
       formData.append('diasAtendimento', dia),
@@ -124,30 +112,29 @@ export default function CadastrarMedico() {
       formData.append('foto', data.foto);
     }
 
-    console.log('FormData preparado:', formData);
-    // Aqui você enviaria com axios
     try {
-      const response = await axios.post(
-        'http://localhost:8000/medicos',
-        formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        },
-      );
-      console.log('Médico cadastrado com sucesso:', response.data);
+      await axios.post('http://localhost:8000/medicos', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      toast.success('Médico cadastrado com sucesso!');
+      navigate('/medicos');
     } catch (error) {
       console.error('Erro ao cadastrar médico:', error);
+      toast.error(
+        'Erro ao cadastrar médico. Verifique os dados e tente novamente.',
+      );
     }
   }
 
   const diasDaSemana = [
-    { label: 'Segunda', value: 'segunda' },
-    { label: 'Terça', value: 'terca' },
-    { label: 'Quarta', value: 'quarta' },
-    { label: 'Quinta', value: 'quinta' },
-    { label: 'Sexta', value: 'sexta' },
-    { label: 'Sábado', value: 'sabado' },
-    { label: 'Domingo', value: 'domingo' },
+    { label: 'Segunda', value: 'Seg' },
+    { label: 'Terça', value: 'Ter' },
+    { label: 'Quarta', value: 'Qua' },
+    { label: 'Quinta', value: 'Qui' },
+    { label: 'Sexta', value: 'Sex' },
+    { label: 'Sábado', value: 'Sab' },
+    { label: 'Domingo', value: 'Dom' },
   ] as const;
 
   return (
@@ -165,40 +152,84 @@ export default function CadastrarMedico() {
                 name='nome'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nome</FormLabel>
+                    <FormLabel>Nome completo</FormLabel>
                     <FormControl>
-                      <Input placeholder='Dr. João da Silva' {...field} />
+                      <Input
+                        placeholder='Henrique dos Santos Soares'
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name='especialidade'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Especialidade</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Cardiologista' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='crm'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>CRM</FormLabel>
-                    <FormControl>
-                      <Input placeholder='CRM-SP 123456' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className='grid grid-cols-2 gap-4'>
+                <FormField
+                  control={form.control}
+                  name='pronomeTratamento'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Pronome de tratamento</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Selecione' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value='Dr.'>Dr.</SelectItem>
+                          <SelectItem value='Dra.'>Dra.</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='especialidade'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Especialidade</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Cardiologista' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid grid-cols-2 gap-4'>
+                <FormField
+                  control={form.control}
+                  name='crm'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>CRM</FormLabel>
+                      <FormControl>
+                        <Input placeholder='CRM-SP 123456' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='telefone'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Telefone</FormLabel>
+                      <FormControl>
+                        <Input placeholder='(11) 91234-5678' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
                 name='email'
@@ -212,19 +243,7 @@ export default function CadastrarMedico() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name='telefone'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Telefone</FormLabel>
-                    <FormControl>
-                      <Input placeholder='(11) 91234-5678' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
               <FormField
                 control={form.control}
                 name='foto'
@@ -282,44 +301,46 @@ export default function CadastrarMedico() {
           <Card>
             <CardContent className='p-6 space-y-4'>
               <h3 className='text-lg font-semibold'>Dados para Pagamento</h3>
-              <FormField
-                control={form.control}
-                name='tipoContratacao'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tipo de Contratação</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+              <div className='grid grid-cols-2 gap-4'>
+                <FormField
+                  control={form.control}
+                  name='cpfCnpj'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>CPF/CNPJ</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder='Selecione' />
-                        </SelectTrigger>
+                        <Input placeholder='000.000.000-00' {...field} />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value='CLT'>CLT</SelectItem>
-                        <SelectItem value='PJ'>PJ</SelectItem>
-                        <SelectItem value='Autônomo'>Autônomo</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='cpfCnpj'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>CPF/CNPJ</FormLabel>
-                    <FormControl>
-                      <Input placeholder='000.000.000-00' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='tipoContratacao'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tipo de Contratação</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Selecione' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value='CLT'>CLT</SelectItem>
+                          <SelectItem value='PJ'>PJ</SelectItem>
+                          <SelectItem value='Autônomo'>Autônomo</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <div className='grid grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
@@ -496,7 +517,7 @@ export default function CadastrarMedico() {
                 )}
               />
 
-              <div className='grid grid-cols-2 gap-4'>
+              <div className='grid grid-cols-3 gap-4'>
                 <FormField
                   control={form.control}
                   name='horarioInicio'
@@ -523,20 +544,20 @@ export default function CadastrarMedico() {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name='intervalo'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Intervalo entre atendimentos (min)</FormLabel>
+                      <FormControl>
+                        <Input type='number' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-              <FormField
-                control={form.control}
-                name='intervalo'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Intervalo entre atendimentos (min)</FormLabel>
-                    <FormControl>
-                      <Input type='number' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </CardContent>
           </Card>
 

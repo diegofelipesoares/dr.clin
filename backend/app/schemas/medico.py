@@ -3,6 +3,7 @@ from typing import List, Optional
 
 class MedicoCreate(BaseModel):
     nome: str
+    pronomeTratamento: Optional[str]
     especialidade: str
     crm: str
     email: str
@@ -17,7 +18,5 @@ class MedicoCreate(BaseModel):
     diasAtendimento: List[str]
     horarioInicio: Optional[str]
     horarioFim: Optional[str]
-    duracaoConsulta: Optional[str]
     intervalo: Optional[str]
-    preco: Optional[str]
     # foto será processada separadamente como arquivo

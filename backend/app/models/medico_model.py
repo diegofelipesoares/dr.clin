@@ -6,6 +6,7 @@ class Medico(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     nome = Column(String, nullable=False)
+    pronomeTratamento = Column(Enum("Dr.", "Dra.", name="pronome_tratamento"), nullable=False)
     especialidade = Column(String, nullable=False)
     crm = Column(String, nullable=False)
     email = Column(String, nullable=False)
@@ -20,7 +21,5 @@ class Medico(Base):
     diasAtendimento = Column(ARRAY(String))
     horarioInicio = Column(String)
     horarioFim = Column(String)
-    duracaoConsulta = Column(String)
     intervalo = Column(String)
-    preco = Column(String)
     foto = Column(String)  # caminho do arquivo salvo

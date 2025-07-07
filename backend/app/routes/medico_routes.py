@@ -1,4 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Form
+from fastapi.responses import JSONResponse
 from app.models.medico_model import Medico
 from app.database import SessionLocal
 import shutil
@@ -6,9 +7,32 @@ import os
 
 router = APIRouter(prefix="/medicos")
 
+@router.get("/")
+def listar_medicos():
+    db = SessionLocal()
+    medicos = db.query(Medico).all()
+
+    # Converte para dicionário serializável (evita erro com objetos SQLAlchemy)
+    resultado = [
+        {
+            "id": medico.id,
+            "nome": medico.nome,
+            "pronomeTratamento": medico.pronomeTratamento,
+            "especialidade": medico.especialidade,
+            "foto": medico.foto,
+            "diasAtendimento": medico.diasAtendimento,
+            "horarioInicio": medico.horarioInicio,
+            "horarioFim": medico.horarioFim,
+            "percentualRepasse": medico.percentualRepasse,
+        }
+        for medico in medicos
+    ]
+    return JSONResponse(content=resultado)
+
 @router.post("/")
 async def criar_medico(
     nome: str = Form(...),
+    pronomeTratamento: str = Form(...),
     especialidade: str = Form(...),
     crm: str = Form(...),
     email: str = Form(...),
@@ -23,9 +47,7 @@ async def criar_medico(
     diasAtendimento: list[str] = Form(...),
     horarioInicio: str = Form(None),
     horarioFim: str = Form(None),
-    duracaoConsulta: str = Form(None),
     intervalo: str = Form(None),
-    preco: str = Form(None),
     foto: UploadFile = File(...)
 ):
     db = SessionLocal()
@@ -36,6 +58,7 @@ async def criar_medico(
 
     novo_medico = Medico(
         nome=nome,
+        pronomeTratamento=pronomeTratamento,
         especialidade=especialidade,
         crm=crm,
         email=email,
@@ -50,9 +73,7 @@ async def criar_medico(
         diasAtendimento=diasAtendimento,
         horarioInicio=horarioInicio,
         horarioFim=horarioFim,
-        duracaoConsulta=duracaoConsulta,
         intervalo=intervalo,
-        preco=preco,
         foto=foto_path
     )
 

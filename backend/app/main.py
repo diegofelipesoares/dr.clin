@@ -5,6 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes import router as api_router # importa o router centralizado
 #Base: define modelos de tabelas e engine: motor de conexão com o banco de dados
 from app.database import Base, engine 
+# StaticFiles: permite servir arquivos estáticos (como imagens, CSS, JS)
+from fastapi.staticfiles import StaticFiles
 # precisa importar para JWT funcionar, mesmo sem usar diretamente
 import app.config 
 
@@ -27,6 +29,11 @@ app.add_middleware(
     allow_methods=["*"], # permitem todos os métodos.
     allow_headers=["*"], # permitem todos os cabeçalhos.
 )
+# RETORNA AS IMAGENS SALVAS DOS MÉDICOS CADASTRADOS
+# Configura o diretório de uploads para servir arquivos estáticos
+# Isso permite acessar arquivos enviados pelo usuário (como fotos de médicos) via URL
+# Exemplo de acesso: http://localhost:8000/uploads/nome_da_foto.jpg
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Registra as rotas importadas via api_router
 app.include_router(api_router)

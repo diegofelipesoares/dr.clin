@@ -1,34 +1,50 @@
 import { MedicoCard } from './medicoCard';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 //recebe os dados dos médicos
 // você pode substituir por uma chamada de API ou props
 // para obter os dados dinamicamente
 // aqui estamos usando um array estático como exemplo
-const medicos = [
-  {
-    nome: 'Dr. Lucas Araújo',
-    especialidade: 'Bucomaxilofacial',
-    foto: '/img/DrLucas.jpg',
-    dias: 'Segunda a Sexta',
-    horario: 'Das 8 às 17',
-    preco: '200.00',
-  },
-  {
-    nome: 'Dra. Letícia Soares',
-    especialidade: 'Ortodontia',
-    foto: '/img/DraLeticia.jpg',
-    dias: 'Segunda a Sexta',
-    horario: 'Das 8 às 17',
-    preco: '200.00',
-  },
-  // ...outros médicos
-];
+type Medico = {
+  id: number;
+  nome: string;
+  pronomeTratamento: string;
+  especialidade: string;
+  foto: string;
+  diasAtendimento: string[];
+  horarioInicio: string;
+  horarioFim: string;
+  percentualRepasse: string;
+};
 
 export function MedicoList() {
+  const [medicos, setMedicos] = useState<Medico[]>([]);
+
+  useEffect(() => {
+    async function fetchMedicos() {
+      try {
+        const response = await axios.get('http://localhost:8000/medicos');
+        setMedicos(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar médicos:', error);
+      }
+    }
+    fetchMedicos();
+  }, []);
+
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 pb-12'>
-      {medicos.map((medico, index) => (
-        <MedicoCard key={index} {...medico} />
+      {medicos.map(medico => (
+        <MedicoCard
+          key={medico.id}
+          nome={`${medico.pronomeTratamento} ${medico.nome}`}
+          especialidade={medico.especialidade}
+          foto={medico.foto}
+          dias={medico.diasAtendimento.join(', ')}
+          horario={`${medico.horarioInicio} às ${medico.horarioFim}`}
+          percentual={medico.percentualRepasse}
+        />
       ))}
     </div>
   );
