@@ -104,9 +104,7 @@ export default function CadastrarMedico() {
     formData.append('horarioFim', data.horarioFim);
     formData.append('intervalo', data.intervalo);
 
-    data.diasAtendimento.forEach(dia =>
-      formData.append('diasAtendimento', dia),
-    );
+    formData.append('diasAtendimento', JSON.stringify(data.diasAtendimento));
 
     if (data.foto) {
       formData.append('foto', data.foto);
@@ -441,11 +439,11 @@ export default function CadastrarMedico() {
                         {diasDaSemana
                           .filter(d =>
                             [
-                              'segunda',
-                              'terca',
-                              'quarta',
-                              'quinta',
-                              'sexta',
+                              'Seg',
+                              'Ter',
+                              'Quar',
+                              'Qui',
+                              'Sex',
                             ].includes(d.value),
                           )
                           .map(dia => (
@@ -481,7 +479,7 @@ export default function CadastrarMedico() {
                       {/* Coluna 2: sábado e domingo */}
                       <div className='flex flex-col gap-2'>
                         {diasDaSemana
-                          .filter(d => ['sabado', 'domingo'].includes(d.value))
+                          .filter(d => ['Sab', 'Dom'].includes(d.value))
                           .map(dia => (
                             <FormField
                               key={dia.value}
