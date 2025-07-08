@@ -4,11 +4,13 @@
 
 import { ToastContainer } from 'react-toastify';
 import { AppRoutes } from './routes/AppRoutes';
+import { ScrollToTop } from './components/ScrollToTop/ScrollToTop';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <>
+      <ScrollToTop />
       <AppRoutes />
       <ToastContainer
         position='top-right'
