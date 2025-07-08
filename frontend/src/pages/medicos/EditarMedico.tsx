@@ -139,7 +139,7 @@ export default function EditarMedico() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      toast.success('Médico cadastrado com sucesso!');
+      toast.success('Cadastrado alterado com sucesso!');
       navigate('/medicos');
     } catch (error) {
       console.error('Erro ao cadastrar médico:', error);

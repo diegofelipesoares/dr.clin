@@ -24,7 +24,7 @@ export function MedicoCard({
   const navigate = useNavigate();
 
   return (
-    <div className='bg-white rounded-xl shadow p-4 flex flex-col gap-2 items-center w-full max-w-xl'>
+    <div className='bg-white rounded-xl shadow p-4 flex flex-col gap-2 items-center w-full'>
       <img
         src={`http://localhost:8000/${foto}`}
         alt={nome}
@@ -35,14 +35,14 @@ export function MedicoCard({
         <p className='text-gray-500 text-sm'>{especialidade}</p>
       </div>
 
-      <div className='flex flex-col gap-1 text-sm text-black w-full'>
-        <div className='flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-xl w-full'>
+      <div className='flex flex-col gap-1 text-sm text-black min-w-[2px] w-full'>
+        <div className='flex items-center h-10 gap-2 px-3 py-1 bg-gray-100 rounded-xl w-full'>
           <Calendar size={16} /> {dias}
         </div>
         <div className='flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-xl w-full'>
           <Clock size={16} /> {horario}
         </div>
-        <div className='flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-xl'>
+        <div className='flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-xl w-full'>
           <BanknoteArrowDown size={16} /> {percentual} %
         </div>
       </div>
