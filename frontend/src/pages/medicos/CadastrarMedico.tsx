@@ -542,7 +542,9 @@ export default function CadastrarMedico() {
                     <FormItem>
                       <FormLabel>Hora de início do expediente</FormLabel>
                       <FormControl>
-                        <Input type='time' {...field} />
+                        {/* Input com class para retirar ícone de relógio */}
+                        <Input type='time' {...field} 
+                        className='[appearance:textfield] [&::-webkit-calendar-picker-indicator]:hidden' /> 
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -555,7 +557,8 @@ export default function CadastrarMedico() {
                     <FormItem>
                       <FormLabel>Hora do fim do expediente</FormLabel>
                       <FormControl>
-                        <Input type='time' {...field} />
+                        <Input type='time' {...field} 
+                        className='[appearance:textfield] [&::-webkit-calendar-picker-indicator]:hidden' />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
