@@ -1,9 +1,12 @@
 // frontend/src/pages/medicos/EditarMedico.tsx
 
-import { useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+//IMPORT BIBLIOTECAS, COMPONENTS E HOOKS
+import { useEffect, useRef } from 'react'; // Hooks do React
+import { useForm } from 'react-hook-form'; // Hook para lidar com formulários
+import { z } from 'zod'; // Biblioteca para validação de esquemas
+import { zodResolver } from '@hookform/resolvers/zod'; // Integração Zod + React Hook Form
+
+//IMPORTS SHADCN
 import {
   Form,
   FormField,
@@ -24,30 +27,37 @@ import {
 } from '../../components/ui/select';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent } from '../../components/ui/card';
-import { useNavigate, useParams } from 'react-router-dom';
+
+//IMPORTS DE ROTEAMENTO E NOTIFICAÇÕES
+import { useNavigate, useParams } from 'react-router-dom'; // Navegação e extração de parâmetros da URL
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import InputMaskControlled from '../../components/Form/InputMaskControlled';
+import CpfMaskInput from '@/components/Form/CpfMaskInput';
+import CrmMaskInput from '@/components/Form/CrmMaskInput';
 
+// FUNÇÃO PRINCIPAL
 export default function EditarMedico() {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const fileInputRef = useRef<HTMLInputElement | null>(null); // Referência para input de arquivo
+  const [preview, setPreview] = useState<string | null>(null); // Preview da imagem
+  const navigate = useNavigate(); // Hook de navegação
+  const [loading, setLoading] = useState(true); // Estado de carregamento
 
   // Usado para obter o ID do médico a ser editado
   // A rota deve ser definida como /medicos/:id para capturar o ID
-  const { id } = useParams();
-  //Usado para buscar os dados do médico a ser editado
+  const { id } = useParams(); // Pega o ID da URL
+ 
+  //Buscar os dados do médico no BANCO
   useEffect(() => {
     async function fetchMedico() {
       const response = await axios.get(`http://localhost:8000/medicos/${id}`);
       const dados = response.data;
-      form.reset(dados);
+      form.reset(dados); // Preenche o formulário com os dados recebidos
       if (dados.foto) {
         setPreview(`http://localhost:8000/${dados.foto}`);
       }
-      setLoading(false);
+      setLoading(false); // Finaliza carregamento
     }
 
     fetchMedico();
@@ -57,6 +67,7 @@ export default function EditarMedico() {
   //Valida se estamos editando ou criando um médico
   const isEdit = Boolean(id);
 
+  //ESQUEMA DE VALIDAÇÃO COM ZOD
   const formSchema = z.object({
     nome: z.string().min(3, 'Nome é obrigatório'),
     pronomeTratamento: z.enum(['Dr.', 'Dra.']),
@@ -84,6 +95,7 @@ export default function EditarMedico() {
         }),
   });
 
+  //INICIALIZAÇÃO DO FORMULÁRIO COM VALORES PADRÃO
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -108,9 +120,11 @@ export default function EditarMedico() {
     },
   });
 
+  //FUNÇÃO DE ENVIO (PUT)
   async function onSubmit(data: FormValues) {
     const formData = new FormData();
 
+    //Adiciona todos os campos no formato FormData
     formData.append('nome', data.nome);
     formData.append('pronomeTratamento', data.pronomeTratamento);
     formData.append('especialidade', data.especialidade);
@@ -149,6 +163,7 @@ export default function EditarMedico() {
     }
   }
 
+  //Dias da semana como constantes
   const diasDaSemana = [
     { label: 'Segunda', value: 'Seg' },
     { label: 'Terça', value: 'Ter' },
@@ -159,6 +174,7 @@ export default function EditarMedico() {
     { label: 'Domingo', value: 'Dom' },
   ] as const;
 
+  //Carregamento
   if (loading) {
     return (
       <div className='flex justify-center items-center h-64'>
@@ -170,6 +186,7 @@ export default function EditarMedico() {
     );
   }
 
+  //RENDERIZAÇÃO DO FORMULÁRIO
   return (
     <div className='p-6 max-w-4xl mx-auto'>
       <h2 className='text-2xl font-bold mb-4'>Editar Médico</h2>
@@ -238,12 +255,17 @@ export default function EditarMedico() {
               <div className='grid grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
-                  name='crm'
+                  name="crm"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>CRM</FormLabel>
                       <FormControl>
-                        <Input placeholder='CRM-SP 123456' {...field} />
+                        <CrmMaskInput
+                          value={field.value}
+                          onChange={field.onChange}
+                          name={field.name}
+                          ref={field.ref}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -251,12 +273,18 @@ export default function EditarMedico() {
                 />
                 <FormField
                   control={form.control}
-                  name='telefone'
+                  name="telefone"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Telefone</FormLabel>
                       <FormControl>
-                        <Input placeholder='(11) 91234-5678' {...field} />
+                        <InputMaskControlled
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder="(xx) xxxxx-xxxx"
+                          name={field.name}
+                          ref={field.ref}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -337,12 +365,17 @@ export default function EditarMedico() {
               <div className='grid grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
-                  name='cpfCnpj'
+                  name="cpfCnpj"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>CPF/CNPJ</FormLabel>
+                      <FormLabel>CPF</FormLabel>
                       <FormControl>
-                        <Input placeholder='000.000.000-00' {...field} />
+                        <CpfMaskInput
+                          value={field.value}
+                          onChange={field.onChange}
+                          name={field.name}
+                          ref={field.ref}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

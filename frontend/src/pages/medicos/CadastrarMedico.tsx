@@ -28,6 +28,9 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import InputMaskControlled from '@/components/Form/InputMaskControlled';
+import CpfMaskInput from '@/components/Form/CpfMaskInput';
+import CrmMaskInput from '@/components/Form/CrmMaskInput';
 
 const formSchema = z.object({
   nome: z.string().min(3, 'Nome é obrigatório'),
@@ -203,12 +206,17 @@ export default function CadastrarMedico() {
               <div className='grid grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
-                  name='crm'
+                  name="crm"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>CRM</FormLabel>
                       <FormControl>
-                        <Input placeholder='CRM-SP 123456' {...field} />
+                        <CrmMaskInput
+                          value={field.value}
+                          onChange={field.onChange}
+                          name={field.name}
+                          ref={field.ref}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -216,12 +224,18 @@ export default function CadastrarMedico() {
                 />
                 <FormField
                   control={form.control}
-                  name='telefone'
+                  name="telefone"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Telefone</FormLabel>
                       <FormControl>
-                        <Input placeholder='(11) 91234-5678' {...field} />
+                        <InputMaskControlled
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder="(XX) XXXXX-XXXX"
+                          name={field.name}
+                          ref={field.ref}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -302,12 +316,17 @@ export default function CadastrarMedico() {
               <div className='grid grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
-                  name='cpfCnpj'
+                  name="cpfCnpj"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>CPF/CNPJ</FormLabel>
+                      <FormLabel>CPF</FormLabel>
                       <FormControl>
-                        <Input placeholder='000.000.000-00' {...field} />
+                        <CpfMaskInput
+                          value={field.value}
+                          onChange={field.onChange}
+                          name={field.name}
+                          ref={field.ref}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
