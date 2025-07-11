@@ -24,7 +24,7 @@ export function MedicoCard({
   const navigate = useNavigate();
 
   return (
-    <div className='bg-white rounded-xl shadow p-4 flex flex-col gap-2 items-center w-full'>
+    <div className='bg-white rounded-xl shadow p-4 flex flex-col gap-2 items-center w-[250px]'>
       <img
         src={`http://localhost:8000/${foto}`}
         alt={nome}
@@ -47,7 +47,7 @@ export function MedicoCard({
         </div>
       </div>
       <Button
-        className='mt-2 w-full'
+        className='mt-auto w-full'
         onClick={() => navigate(`/medicos/${id}`)}
       >
         Ver detalhes
