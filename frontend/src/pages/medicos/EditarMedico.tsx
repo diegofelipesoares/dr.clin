@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react'; // Hooks do React
 import { useForm } from 'react-hook-form'; // Hook para lidar com formulários
 import { z } from 'zod'; // Biblioteca para validação de esquemas
 import { zodResolver } from '@hookform/resolvers/zod'; // Integração Zod + React Hook Form
+import { cn } from '@/lib/utils'; // função de utilidade do shadcn
 
 //IMPORTS SHADCN
 import {
@@ -47,7 +48,7 @@ export default function EditarMedico() {
   // Usado para obter o ID do médico a ser editado
   // A rota deve ser definida como /medicos/:id para capturar o ID
   const { id } = useParams(); // Pega o ID da URL
- 
+
   //Buscar os dados do médico no BANCO
   useEffect(() => {
     async function fetchMedico() {
@@ -255,7 +256,7 @@ export default function EditarMedico() {
               <div className='grid grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
-                  name="crm"
+                  name='crm'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>CRM</FormLabel>
@@ -265,6 +266,10 @@ export default function EditarMedico() {
                           onChange={field.onChange}
                           name={field.name}
                           ref={field.ref}
+                          className={cn(
+                            'flex h-10 w-full rounded-md border border-input bg-card px-3 py-2 text-sm ring-offset-background',
+                            'placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                          )}
                         />
                       </FormControl>
                       <FormMessage />
@@ -273,17 +278,21 @@ export default function EditarMedico() {
                 />
                 <FormField
                   control={form.control}
-                  name="telefone"
+                  name='telefone'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Telefone</FormLabel>
+                      <FormLabel>Celular</FormLabel>
                       <FormControl>
                         <InputMaskControlled
                           value={field.value}
                           onChange={field.onChange}
-                          placeholder="(xx) xxxxx-xxxx"
+                          placeholder='(xx) xxxxx-xxxx'
                           name={field.name}
                           ref={field.ref}
+                          className={cn(
+                            'flex h-10 w-full rounded-md border border-input bg-card px-3 py-2 text-sm ring-offset-background',
+                            'placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                          )}
                         />
                       </FormControl>
                       <FormMessage />
@@ -365,7 +374,7 @@ export default function EditarMedico() {
               <div className='grid grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
-                  name="cpfCnpj"
+                  name='cpfCnpj'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>CPF</FormLabel>
@@ -375,6 +384,10 @@ export default function EditarMedico() {
                           onChange={field.onChange}
                           name={field.name}
                           ref={field.ref}
+                          className={cn(
+                            'flex h-10 w-full rounded-md border border-input bg-card px-3 py-2 text-sm ring-offset-background',
+                            'placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                          )}
                         />
                       </FormControl>
                       <FormMessage />
@@ -587,8 +600,11 @@ export default function EditarMedico() {
                     <FormItem>
                       <FormLabel>Hora de início do expediente</FormLabel>
                       <FormControl>
-                        <Input type='time' {...field} 
-                        className='[appearance:textfield] [&::-webkit-calendar-picker-indicator]:hidden'/>
+                        <Input
+                          type='time'
+                          {...field}
+                          className='[appearance:textfield] [&::-webkit-calendar-picker-indicator]:hidden'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -601,8 +617,11 @@ export default function EditarMedico() {
                     <FormItem>
                       <FormLabel>Hora do fim do expediente</FormLabel>
                       <FormControl>
-                        <Input type='time' {...field} 
-                        className='[appearance:textfield] [&::-webkit-calendar-picker-indicator]:hidden'/>
+                        <Input
+                          type='time'
+                          {...field}
+                          className='[appearance:textfield] [&::-webkit-calendar-picker-indicator]:hidden'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

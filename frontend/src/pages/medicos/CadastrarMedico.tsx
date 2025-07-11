@@ -12,6 +12,7 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui/form';
+import { cn } from '@/lib/utils'; // função de utilidade do shadcn
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -206,7 +207,7 @@ export default function CadastrarMedico() {
               <div className='grid grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
-                  name="crm"
+                  name='crm'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>CRM</FormLabel>
@@ -216,6 +217,10 @@ export default function CadastrarMedico() {
                           onChange={field.onChange}
                           name={field.name}
                           ref={field.ref}
+                          className={cn(
+                            'flex h-10 w-full rounded-md border border-input bg-card px-3 py-2 text-sm ring-offset-background',
+                            'placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                          )}
                         />
                       </FormControl>
                       <FormMessage />
@@ -224,17 +229,21 @@ export default function CadastrarMedico() {
                 />
                 <FormField
                   control={form.control}
-                  name="telefone"
+                  name='telefone'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Telefone</FormLabel>
+                      <FormLabel>Celular</FormLabel>
                       <FormControl>
                         <InputMaskControlled
                           value={field.value}
                           onChange={field.onChange}
-                          placeholder="(XX) XXXXX-XXXX"
+                          placeholder='(XX) XXXXX-XXXX'
                           name={field.name}
                           ref={field.ref}
+                          className={cn(
+                            'flex h-10 w-full rounded-md border border-input bg-card px-3 py-2 text-sm ring-offset-background',
+                            'placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                          )}
                         />
                       </FormControl>
                       <FormMessage />
@@ -316,7 +325,7 @@ export default function CadastrarMedico() {
               <div className='grid grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
-                  name="cpfCnpj"
+                  name='cpfCnpj'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>CPF</FormLabel>
@@ -326,6 +335,10 @@ export default function CadastrarMedico() {
                           onChange={field.onChange}
                           name={field.name}
                           ref={field.ref}
+                          className={cn(
+                            'flex h-10 w-full rounded-md border border-input bg-card px-3 py-2 text-sm ring-offset-background',
+                            'placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                          )}
                         />
                       </FormControl>
                       <FormMessage />
@@ -457,13 +470,9 @@ export default function CadastrarMedico() {
                       <div className='flex flex-col gap-2'>
                         {diasDaSemana
                           .filter(d =>
-                            [
-                              'Seg',
-                              'Ter',
-                              'Quar',
-                              'Qui',
-                              'Sex',
-                            ].includes(d.value),
+                            ['Seg', 'Ter', 'Quar', 'Qui', 'Sex'].includes(
+                              d.value,
+                            ),
                           )
                           .map(dia => (
                             <FormField
@@ -543,8 +552,11 @@ export default function CadastrarMedico() {
                       <FormLabel>Hora de início do expediente</FormLabel>
                       <FormControl>
                         {/* Input com class para retirar ícone de relógio */}
-                        <Input type='time' {...field} 
-                        className='[appearance:textfield] [&::-webkit-calendar-picker-indicator]:hidden' /> 
+                        <Input
+                          type='time'
+                          {...field}
+                          className='[appearance:textfield] [&::-webkit-calendar-picker-indicator]:hidden'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -557,8 +569,11 @@ export default function CadastrarMedico() {
                     <FormItem>
                       <FormLabel>Hora do fim do expediente</FormLabel>
                       <FormControl>
-                        <Input type='time' {...field} 
-                        className='[appearance:textfield] [&::-webkit-calendar-picker-indicator]:hidden' />
+                        <Input
+                          type='time'
+                          {...field}
+                          className='[appearance:textfield] [&::-webkit-calendar-picker-indicator]:hidden'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
