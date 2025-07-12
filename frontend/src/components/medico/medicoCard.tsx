@@ -26,6 +26,7 @@ export function MedicoCard({
   return (
     <div className='bg-white rounded-xl shadow p-4 flex flex-col gap-2 items-center w-[250px]'>
       <img
+        loading='lazy'
         src={`http://localhost:8000/${foto}`}
         alt={nome}
         className='w-20 h-20 rounded-full object-cover object-top'

@@ -1,6 +1,7 @@
 
 from fastapi import APIRouter, UploadFile, File, Form
 from fastapi.responses import JSONResponse
+from app.utils.image_utils import salvar_foto
 from fastapi import HTTPException
 from app.models.medico_model import Medico
 from app.database import SessionLocal
@@ -9,6 +10,7 @@ import os
 import json
 
 router = APIRouter(prefix="/medicos")
+UPLOAD_DIR = "uploads/medicos"
 
 @router.get("/")
 def listar_medicos():
@@ -65,9 +67,14 @@ async def criar_medico(
 
     db = SessionLocal()
     try:
-        foto_path = f"uploads/{foto.filename}"
-        with open(foto_path, "wb") as buffer:
-            shutil.copyfileobj(foto.file, buffer)
+        if not os.path.exists(UPLOAD_DIR):
+            os.makedirs(UPLOAD_DIR)
+
+        foto_filename = foto.filename.replace(" ", "_")
+        foto_path = os.path.join(UPLOAD_DIR, foto_filename)
+
+        # ⬇️ Redimensiona e salva otimizando a imagem
+        salvar_foto(foto, foto_path)
 
         novo_medico = Medico(
             nome=nome,
@@ -187,9 +194,14 @@ async def atualizar_medico(
         medico.intervalo = intervalo
 
         if foto:
-            foto_path = f"uploads/{foto.filename}"
-            with open(foto_path, "wb") as buffer:
-                shutil.copyfileobj(foto.file, buffer)
+            if not os.path.exists(UPLOAD_DIR):
+                os.makedirs(UPLOAD_DIR)
+
+            foto_filename = foto.filename.replace(" ", "_")
+            foto_path = os.path.join(UPLOAD_DIR, foto_filename)
+
+            salvar_foto(foto, foto_path)
+
             medico.foto = foto_path
 
         db.commit()

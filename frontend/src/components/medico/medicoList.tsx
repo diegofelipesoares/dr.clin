@@ -20,6 +20,7 @@ type Medico = {
 
 export function MedicoList() {
   const [medicos, setMedicos] = useState<Medico[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchMedicos() {
@@ -28,6 +29,8 @@ export function MedicoList() {
         setMedicos(response.data);
       } catch (error) {
         console.error('Erro ao buscar médicos:', error);
+      } finally {
+        setLoading(false); // ← finaliza carregamento
       }
     }
     fetchMedicos();
@@ -39,6 +42,18 @@ export function MedicoList() {
     const primeiro = partes[0];
     const ultimo = partes[partes.length - 1];
     return `${primeiro} ${ultimo}`;
+  }
+
+  // Mostrar loading
+  if (loading) {
+    return (
+      <div className='flex justify-center items-center h-64'>
+        <div className='flex items-center gap-2 text-muted-foreground'>
+          <div className='w-4 h-4 border-2 border-t-transparent border-primary rounded-full animate-spin' />
+          <span>Carregando médicos...</span>
+        </div>
+      </div>
+    );
   }
 
   return (
