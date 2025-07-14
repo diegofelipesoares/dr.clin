@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter, UploadFile, File, Form
+from fastapi import APIRouter, UploadFile, File, Form, Depends
 from fastapi.responses import JSONResponse
 from app.utils.image_utils import salvar_foto
 from fastapi import HTTPException
@@ -206,6 +206,26 @@ async def atualizar_medico(
 
         db.commit()
         return {"message": "Médico atualizado com sucesso"}
+    finally:
+        db.close()
+
+@router.delete("/{id}")
+def deletar_medico(id: int):
+    db = SessionLocal()
+    try:
+        medico = db.query(Medico).filter(Medico.id == id).first()
+
+        if not medico:
+            raise HTTPException(status_code=404, detail="Médico não encontrado")
+
+        # Deleta o arquivo da foto, se existir
+        if medico.foto and os.path.exists(medico.foto):
+            os.remove(medico.foto)
+
+        db.delete(medico)
+        db.commit()
+
+        return {"message": "Médico excluído com sucesso"}
     finally:
         db.close()
 

@@ -4,6 +4,7 @@
     "@types/react-input-mask": "^3.0.6"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.14",
     "react-imask": "^7.6.1"
   }
 }

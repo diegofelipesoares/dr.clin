@@ -119,10 +119,6 @@ export default function EditarMedico() {
   }
 
   async function excluirMedico() {
-  const confirmacao = window.confirm('Tem certeza que deseja excluir este médico?');
-
-  if (!confirmacao) return;
-
   try {
     await axios.delete(`http://localhost:8000/medicos/${id}`);
     toast.success('Médico excluído com sucesso!');

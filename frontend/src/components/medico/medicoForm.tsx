@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { UseFormReturn } from 'react-hook-form';
 import { RefObject } from 'react';
 import { MedicoFormValues } from '@/schemas/medicoSchema';
+import { ConfirmDeleteDialog } from './ConfirmDeleteDialog';
 
 export const diasDaSemana = [
   { label: 'Segunda', value: 'Seg' },
@@ -524,13 +525,11 @@ export function MedicoForm({
               {isEdit ? 'Salvar Alterações' : 'Cadastrar Médico'}
             </Button>
             {isEdit && onDelete && (
-                <Button
-                    type="button"
-                    variant="destructive"
-                    onClick={onDelete}
-                    className="ml-auto">
-                    Excluir Médico
-                </Button>
+                <ConfirmDeleteDialog onConfirm={onDelete}>
+                    <Button type="button" variant="destructive" className="ml-auto">
+                        Excluir Médico
+                    </Button>
+                </ConfirmDeleteDialog>
             )}
           </div>
         </form>
