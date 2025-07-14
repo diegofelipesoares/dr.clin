@@ -40,6 +40,7 @@ interface MedicoFormProps {
   fileInputRef: RefObject<HTMLInputElement | null>;
   isSubmitting?: boolean;
   isLoading?: boolean;
+  onDelete?: () => void;
 }
 
 export function MedicoForm({
@@ -51,6 +52,7 @@ export function MedicoForm({
   fileInputRef,
   isSubmitting,
   isLoading,
+  onDelete,
 }: MedicoFormProps) {
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -521,6 +523,15 @@ export function MedicoForm({
             <Button type="submit" disabled={isSubmitting || isLoading}>
               {isEdit ? 'Salvar Alterações' : 'Cadastrar Médico'}
             </Button>
+            {isEdit && onDelete && (
+                <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={onDelete}
+                    className="ml-auto">
+                    Excluir Médico
+                </Button>
+            )}
           </div>
         </form>
       </Form>

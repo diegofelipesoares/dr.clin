@@ -118,6 +118,21 @@ export default function EditarMedico() {
     );
   }
 
+  async function excluirMedico() {
+  const confirmacao = window.confirm('Tem certeza que deseja excluir este médico?');
+
+  if (!confirmacao) return;
+
+  try {
+    await axios.delete(`http://localhost:8000/medicos/${id}`);
+    toast.success('Médico excluído com sucesso!');
+    navigate('/medicos');
+  } catch (error) {
+    console.error('Erro ao excluir médico:', error);
+    toast.error('Erro ao excluir médico. Tente novamente.');
+  }
+}
+
   return (
     <MedicoForm
       form={form}
@@ -126,6 +141,7 @@ export default function EditarMedico() {
       preview={preview}
       setPreview={setPreview}
       fileInputRef={fileInputRef}
+      onDelete={excluirMedico}
     />
   );
 }
