@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, Enum, Float, ARRAY
-from app.database import Base
+#backend/app/models/medico_model.py
+from sqlalchemy import Column, Integer, String, Enum, Float, ARRAY, ForeignKey, JSON
+from sqlalchemy.orm import relationship
+from app.models.base import Base
 
 class Medico(Base):
     __tablename__ = "medicos"
@@ -23,3 +25,6 @@ class Medico(Base):
     horarioFim = Column(String)
     intervalo = Column(String)
     foto = Column(String)  # caminho do arquivo salvo
+
+    clinica_id = Column(Integer, ForeignKey("clinicas.id"))
+    clinica = relationship("Clinica", back_populates="medicos")

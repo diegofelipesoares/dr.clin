@@ -1,18 +1,16 @@
 //Type para Contexto de Autenticação
 
-// Define o tipo do usuário autenticado
+// Type para o usuário autenticado, já incluindo perfil e id (mais campos que seu backend devolve)
 export type User = {
+  id: number;
   name: string;
   email: string;
+  perfil: 'paciente' | 'medico' | 'ajudante' | 'secretario' | 'admin';
+  clinica_id?: number | null;
 };
 
-// Define o tipo do contexto de autenticação usado em toda a aplicação
+// Tipo do contexto de autenticação com o usuário e o setter
 export type AuthContextType = {
-  user: {
-    name: string;
-    email: string;
-  } | null;
-  setUser: React.Dispatch<
-    React.SetStateAction<{ name: string; email: string } | null>
-  >;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };

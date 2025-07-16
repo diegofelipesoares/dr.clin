@@ -12,7 +12,7 @@ from passlib.hash import bcrypt
 from app.database import get_db
 from sqlalchemy.orm import Session
 from app.schemas.auth import UserCreate, UserLogin
-from app.models.user import User  # ✅ Importando diretamente o modelo
+from app.models.user_model import User  # ✅ Importando diretamente o modelo
 
 # Criação do roteador para as rotas de autenticação
 router = APIRouter()

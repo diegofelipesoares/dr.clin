@@ -59,7 +59,10 @@ export function RegisterForm() {
   const onSubmit = async (data: RegisterFormData) => {
     setLoading(true); // 🟡 começa carregamento
     try {
-      const response = await api.post('/auth/register', data);
+      const response = await api.post('/auth/register', {
+        ...data,
+        perfil: 'paciente', // força perfil = "paciente"
+      });
       console.log('✅ Registro feito com sucesso:', response.data);
       toast.success('Conta criada com sucesso!');
     } catch (error: unknown) {

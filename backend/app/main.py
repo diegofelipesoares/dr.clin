@@ -12,7 +12,9 @@ import app.config
 
 # ⚠️ Importa o model para que a tabela seja reconhecida
 from app.models import medico_model
-from app.models import user
+from app.models import user_model
+from app.models import clinica_model
+from app.models import consultorio_model
 
 # Cria todas as tabelas automaticamente com base nos modelos definidos
 Base.metadata.create_all(bind=engine)

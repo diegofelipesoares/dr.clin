@@ -1,33 +1,32 @@
-#FUNÇÃO: Configuração do BANCO DE DADOS com SQLAlchemy e fornecendo sessões para uso em rotas
+# FUNÇÃO: Configuração do BANCO DE DADOS com SQLAlchemy e fornecendo sessões para uso em rotas
 
-#IMPORTAÇÕES
+# IMPORTAÇÕES
 from sqlalchemy import create_engine 
 from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.ext.declarative import declarative_base
 import os
-from dotenv import load_dotenv #importa função para carregar variáveis de ambiente do arquivo .env
+from dotenv import load_dotenv
+from app.models.base import Base  # ✅ Base centralizada
 
-load_dotenv() #carrega os dados do .env
+# Carrega as variáveis de ambiente do arquivo .env
+load_dotenv()
 
-# Recupera (get) o valor DATABASE_URL que está no .env de forma segura
+# Recupera a URL do banco de dados do .env
 DATABASE_URL = os.getenv("DATABASE_URL")
-# Criar a conexão com o banco de dados PostgreSQL
-# Usando a URL: DATABASE_URL 
+
+# Cria o engine do SQLAlchemy (conexão com o banco)
 engine = create_engine(DATABASE_URL)
-# Criar uma fábrica de sessões para interagir com o banco de dados
+
+# Cria a fábrica de sessões
 SessionLocal = sessionmaker(
-    autocommit=False, # Eu defino quando salvar no banco
-    autoflush=False, # Eu defino quando atualizar os dados
-    bind=engine) # Conecta a sessão ao banco de dados
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
 
-#Cria a classe base para os modelos do banco de dados
-Base = declarative_base()
-
-#Garantge que a conexão com o banco de dados seja fechada após o uso
-# Função para obter uma sessão do banco de dados
+# Função para fornecer uma sessão de banco de dados nas rotas
 def get_db() -> Session:
-    db = SessionLocal() # Cria uma nova sessão
+    db = SessionLocal()
     try:
-        yield db # Entrega a sessão para uso (em rotas, por exemplo)
+        yield db
     finally:
-        db.close() # Fecha a sessão depois do uso (boa prática!)
+        db.close()

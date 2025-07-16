@@ -4,7 +4,7 @@
 #Base: classe base que registra dos os modelos de tabelas
 from app.database import engine, Base
 # Importa os modelos user para que ela seja criada
-from app.models.user import User  
+from backend.app.models.user_model import User  
 
 # Mensagem de inicio do processo
 print("⏳ Criando tabelas no banco de dados...")
