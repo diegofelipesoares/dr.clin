@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Calendar, FileText, CreditCard } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -22,7 +23,12 @@ export default function HomePage() {
           </div>
           <nav className="hidden md:flex gap-6 items-center text-sm">
             <a href="#">Recursos</a>
-            <a href="#">Planos</a>
+            <Link
+              to="/planos"
+              className="py-2 hover:text-blue-600 transition-colors"
+            >
+              Planos
+            </Link>
             <a href="#">Contato</a>
             <Button
               onClick={() => navigate("/cadastro")}
