@@ -1,89 +1,111 @@
-import React from 'react';
-
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { Calendar, FileText, CreditCard } from "lucide-react";
 
 export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white text-gray-800">
-      {/* HERO SECTION */}
-      <header className="bg-blue-600 text-white py-20 px-6 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
-          Tecnologia de Ponta para sua Clínica
-        </h1>
-        <p className="text-lg md:text-xl mb-6">
-          O sistema de gestão mais moderno para clínicas médicas e odontológicas
-        </p>
-        <Button
-          onClick={() => navigate("/cadastro")}
-          className="text-lg px-8 py-4 rounded-full"
-        >
-          Experimente Agora
-        </Button>
-      </header>
-
-      {/* BENEFÍCIOS */}
-      <section className="py-16 px-6 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          Por que escolher o Dr.Clin?
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            {
-              title: "Automatize a Gestão",
-              desc: "Controle financeiro, agendamentos, pacientes e mais em um só lugar."
-            },
-            {
-              title: "Portal Personalizado",
-              desc: "Cada clínica ganha seu próprio site com domínio e login para clientes."
-            },
-            {
-              title: "100% Online e Seguro",
-              desc: "Acesse de onde estiver, com segurança e performance garantida."
-            }
-          ].map((item, index) => (
-            <div
-              key={index}
-              className="bg-blue-50 p-6 rounded-xl shadow text-center"
+    <div className="min-h-screen bg-white text-gray-800 font-sans">
+      {/* CONTAINER CENTRALIZADOR GERAL */}
+      <div className="max-w-7xl mx-auto px-20">
+        {/* CABEÇALHO COM MENU */}
+        <header className="flex items-center justify-between py-4 ">
+          <div className="flex items-center gap-4">
+            <img
+              src="/logo/logo_DrClin.svg"
+              alt="Dr.Clin - Logo"
+              className="h-10"
+            />
+            <h1 className="text-2xl font-bold text-blue-600">Dr.Clin</h1>
+          </div>
+          <nav className="hidden md:flex gap-6 items-center text-sm">
+            <a href="#">Recursos</a>
+            <a href="#">Planos</a>
+            <a href="#">Contato</a>
+            <Button
+              onClick={() => navigate("/cadastro")}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
             >
-              <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-              <p className="text-gray-600">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+              Começar Agora
+            </Button>
+          </nav>
+        </header>
 
-      {/* DEPOIMENTOS */}
-      <section className="py-16 bg-gray-100 px-6">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          O que dizem nossos clientes
-        </h2>
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          {[
-            {
-              nome: "Clínica Saúde+",
-              texto:
-                "O Dr.Clin revolucionou nossa rotina! Agendamentos mais rápidos e zero papelada."
-            },
-            {
-              nome: "OdontoMais",
-              texto:
-                "A integração com o portal da clínica e o design limpo conquistou nossos pacientes."
-            }
-          ].map((depo, index) => (
-            <div key={index} className="bg-white p-6 rounded-xl shadow">
-              <p className="italic text-gray-700 mb-4">"{depo.texto}"</p>
-              <p className="text-right font-semibold">- {depo.nome}</p>
+        {/* HERO SECTION */}
+        <section className="flex flex-col-reverse md:flex-row items-center py-20 gap-10">
+          {/* TEXTO À ESQUERDA */}
+          <div className="flex-1 text-center md:text-left">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+              Simplifique a gestão da sua clínica
+            </h2>
+            <p className="text-lg text-gray-600 mb-6">
+              Plataforma que te ajuda a otimizar agendamentos, prontuários,
+              faturamento e muito mais.
+            </p>
+            <div className="flex justify-center md:justify-start gap-2">
+              <Button
+                onClick={() => navigate("/cadastro")}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Começar Agora
+              </Button>
+              <Button
+                variant="link"
+                onClick={() => {
+                  // futuro: abrir modal ou redirecionar para vídeo
+                }}
+                className="text-blue-600 hover:text-blue-700"
+              >
+                Ver demonstração
+              </Button>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      {/* RODAPÉ */}
-      <footer className="bg-blue-600 text-white py-8 text-center">
-        <p className="text-sm">© {new Date().getFullYear()} Dr.Clin — Todos os direitos reservados.</p>
+          {/* IMAGEM À DIREITA */}
+          <div className="flex-1 max-w-sm mx-auto">
+            <img
+              src="/img/DraPortalDrClin.jpg"
+              alt="Médica sorrindo"
+              className="w-full h-auto object-contain"
+            />
+          </div>
+        </section>
+
+        {/* FUNCIONALIDADES */}
+        <section className="py-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div>
+            <Calendar className="w-10 h-10 text-blue-600 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">
+              Agendamento de Consultas
+            </h3>
+            <p className="text-gray-600">
+              Gerencie facilmente os atendimentos e reduza faltas.
+            </p>
+          </div>
+          <div>
+            <FileText className="w-10 h-10 text-blue-600 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">
+              Prontuários de Pacientes
+            </h3>
+            <p className="text-gray-600">
+              Armazene e acesse informações de forma segura.
+            </p>
+          </div>
+          <div>
+            <CreditCard className="w-10 h-10 text-blue-600 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">Faturamento Médico</h3>
+            <p className="text-gray-600">
+              Automatize cobranças e o processo de pagamento.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      {/* RODAPÉ FORA DO CONTAINER (FULL WIDTH, MAS PODE CENTRALIZAR TAMBÉM SE QUISER) */}
+      <footer className="bg-gray-100 text-center py-6 text-sm text-gray-600 mt-10">
+        © {new Date().getFullYear()} Dr.Clin — Todos os direitos reservados.
       </footer>
     </div>
   );
