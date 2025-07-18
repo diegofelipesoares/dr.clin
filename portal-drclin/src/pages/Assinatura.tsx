@@ -60,32 +60,6 @@ export default function AssinaturaPage() {
     }
   };
 
-  const validarAdmin = async (): Promise<boolean> => {
-    try {
-      setErroAdmin(null); // limpa erro anterior
-
-      await axios.post("http://localhost:8000/api/validar-admin", {
-        email: admin.email,
-        dominio: dadosClinica.dominio,
-      });
-
-      return true;
-    } catch (error) {
-      const err = error as AxiosError;
-      const detail = (err.response?.data as { detail?: string })?.detail;
-
-      if (detail === "email_existente") {
-        setErroAdmin("Este e-mail já está cadastrado nesta clínica.");
-      } else if (detail === "clinica_nao_encontrada") {
-        setErroAdmin("Clínica não encontrada para este domínio.");
-      } else {
-        alert("Erro ao validar administrador.");
-      }
-
-      return false;
-    }
-  };
-
   const finalizarCadastro = async () => {
     const confirmado = window.confirm(
       "💳 Pagamento simulado com sucesso!\n\nDeseja prosseguir com a criação da clínica?"
