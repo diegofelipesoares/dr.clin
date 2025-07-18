@@ -2,10 +2,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export default function AssinaturaPage() {
   const [etapa, setEtapa] = useState(1);
+  const [erroAdmin, setErroAdmin] = useState<string | null>(null);
 
   const proximaEtapa = () => setEtapa((prev) => Math.min(prev + 1, 4));
   const etapaAnterior = () => setEtapa((prev) => Math.max(prev - 1, 1));
@@ -24,7 +25,74 @@ export default function AssinaturaPage() {
     senha: "",
   });
 
+  const [errosClinica, setErrosClinica] = useState<{
+    nome?: string;
+    cnpj?: string;
+    dominio?: string;
+  }>({});
+
+  const validarClinica = async (): Promise<boolean> => {
+    try {
+      await axios.post("http://localhost:8000/api/validar-clinica", {
+        nome: dadosClinica.nome,
+        cnpj: dadosClinica.cnpj,
+        dominio: dadosClinica.dominio,
+      });
+
+      return true;
+    } catch (error) {
+      const err = error as AxiosError;
+      const field = (err.response?.data as { detail?: string })?.detail;
+
+      if (field === "nome") {
+        setErrosClinica({ nome: "Este nome de clínica já está em uso." });
+      } else if (field === "cnpj") {
+        setErrosClinica({ cnpj: "Este CNPJ já está cadastrado." });
+      } else if (field === "dominio") {
+        setErrosClinica({
+          dominio: "Este endereço de subdomínio já está em uso.",
+        });
+      } else {
+        alert("Erro desconhecido ao validar clínica.");
+      }
+
+      return false;
+    }
+  };
+
+  const validarAdmin = async (): Promise<boolean> => {
+    try {
+      setErroAdmin(null); // limpa erro anterior
+
+      await axios.post("http://localhost:8000/api/validar-admin", {
+        email: admin.email,
+        dominio: dadosClinica.dominio,
+      });
+
+      return true;
+    } catch (error) {
+      const err = error as AxiosError;
+      const detail = (err.response?.data as { detail?: string })?.detail;
+
+      if (detail === "email_existente") {
+        setErroAdmin("Este e-mail já está cadastrado nesta clínica.");
+      } else if (detail === "clinica_nao_encontrada") {
+        setErroAdmin("Clínica não encontrada para este domínio.");
+      } else {
+        alert("Erro ao validar administrador.");
+      }
+
+      return false;
+    }
+  };
+
   const finalizarCadastro = async () => {
+    const confirmado = window.confirm(
+      "💳 Pagamento simulado com sucesso!\n\nDeseja prosseguir com a criação da clínica?"
+    );
+
+    if (!confirmado) return;
+
     try {
       const payload = {
         plano: planoSelecionado,
@@ -33,23 +101,34 @@ export default function AssinaturaPage() {
         admin,
       };
 
-      console.log("Enviando dados...", payload); // para debug
+      setErroAdmin(null);
+      setErrosClinica({}); // limpa erros anteriores
 
-      // Envia os dados ao backend
       const response = await axios.post<{ subdominio: string }>(
         "http://localhost:8000/api/registro-clinica",
         payload
       );
-      // Supondo que o backend responda com o subdomínio criado
-      const { subdominio } = response.data;
 
-      // Redireciona para o subdomínio
+      const { subdominio } = response.data;
       window.location.href = `https://${subdominio}.drclin.com`;
     } catch (error) {
-      console.error("Erro ao finalizar cadastro:", error);
-      alert("Erro ao finalizar. Tente novamente.");
+      const err = error as AxiosError;
+      const detail = (err.response?.data as { detail?: string })?.detail;
+
+      if (detail === "Subdomínio já está em uso") {
+        setErrosClinica({ dominio: "Este subdomínio já está em uso." });
+      } else if (detail === "Nome da clínica já está em uso") {
+        setErrosClinica({ nome: "Este nome de clínica já está em uso." });
+      } else if (detail === "CNPJ já cadastrado") {
+        setErrosClinica({ cnpj: "Este CNPJ já está cadastrado." });
+      } else if (detail === "Este e-mail já está em uso nesta clínica.") {
+        setErroAdmin("Este e-mail já está em uso nesta clínica.");
+      } else {
+        alert("Erro inesperado: " + (detail || "Tente novamente."));
+      }
     }
   };
+  // Renderização do componente
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
@@ -99,9 +178,13 @@ export default function AssinaturaPage() {
           <EtapaClinica
             dadosClinica={dadosClinica}
             setDadosClinica={setDadosClinica}
+            errosClinica={errosClinica}
+            setErrosClinica={setErrosClinica}
           />
         )}
-        {etapa === 4 && <EtapaAdmin admin={admin} setAdmin={setAdmin} />}
+        {etapa === 4 && (
+          <EtapaAdmin admin={admin} setAdmin={setAdmin} erroAdmin={erroAdmin} />
+        )}
       </div>
 
       {/* Botões */}
@@ -123,7 +206,16 @@ export default function AssinaturaPage() {
           </Button>
         </div>
         <Button
-          onClick={etapa === 4 ? finalizarCadastro : proximaEtapa}
+          onClick={async () => {
+            if (etapa === 3) {
+              const valido = await validarClinica();
+              if (valido) proximaEtapa();
+            } else if (etapa === 4) {
+              await finalizarCadastro(); // remove validação do admin
+            } else {
+              proximaEtapa();
+            }
+          }}
           disabled={
             (etapa === 1 && !planoSelecionado) ||
             (etapa === 2 && !formaPagamento) ||
@@ -241,12 +333,17 @@ function EtapaPagamento({
 function EtapaClinica({
   dadosClinica,
   setDadosClinica,
+  errosClinica,
+  setErrosClinica,
 }: {
   dadosClinica: { nome: string; cnpj: string; dominio: string };
   setDadosClinica: (dados: typeof dadosClinica) => void;
+  errosClinica: { nome?: string; cnpj?: string; dominio?: string };
+  setErrosClinica: React.Dispatch<React.SetStateAction<typeof errosClinica>>;
 }) {
   const atualizarCampo = (campo: keyof typeof dadosClinica, valor: string) => {
     setDadosClinica({ ...dadosClinica, [campo]: valor });
+    setErrosClinica({ ...errosClinica, [campo]: undefined }); // limpa erro ao digitar
   };
 
   return (
@@ -261,6 +358,9 @@ function EtapaClinica({
           placeholder="Ex: Clínica São José"
           required
         />
+        {errosClinica.nome && (
+          <p className="text-sm text-red-500 mt-1">{errosClinica.nome}</p>
+        )}
       </div>
 
       <div>
@@ -272,6 +372,9 @@ function EtapaClinica({
           className="w-full border rounded-md px-4 py-2"
           placeholder="00.000.000/0000-00"
         />
+        {errosClinica.cnpj && (
+          <p className="text-sm text-red-500 mt-1">{errosClinica.cnpj}</p>
+        )}
       </div>
 
       <div>
@@ -285,7 +388,7 @@ function EtapaClinica({
             onChange={(e) => {
               const valor = e.target.value
                 .toLowerCase()
-                .replace(/[^a-z0-9-]/g, ""); // remove espaços e caracteres inválidos
+                .replace(/[^a-z0-9-]/g, "");
               atualizarCampo("dominio", valor);
             }}
             className="w-full border rounded-md px-4 py-2"
@@ -294,6 +397,9 @@ function EtapaClinica({
           />
           <span className="text-gray-600 text-sm">.drclin.com</span>
         </div>
+        {errosClinica.dominio && (
+          <p className="text-sm text-red-500 mt-1">{errosClinica.dominio}</p>
+        )}
       </div>
     </div>
   );
@@ -302,9 +408,11 @@ function EtapaClinica({
 function EtapaAdmin({
   admin,
   setAdmin,
+  erroAdmin,
 }: {
   admin: { nome: string; email: string; senha: string };
   setAdmin: (dados: typeof admin) => void;
+  erroAdmin: string | null;
 }) {
   const atualizarCampo = (campo: keyof typeof admin, valor: string) => {
     setAdmin({ ...admin, [campo]: valor });
@@ -334,6 +442,7 @@ function EtapaAdmin({
           placeholder="joao@email.com"
           required
         />
+        {erroAdmin && <p className="text-sm text-red-500 mt-1">{erroAdmin}</p>}
       </div>
 
       <div>

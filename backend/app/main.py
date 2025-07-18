@@ -1,3 +1,12 @@
+# backend/app/main.py
+# Este é o ponto de entrada principal para o backend da aplicação Dr.Clin
+
+# Importa o módulo de logging para registrar eventos e erros
+# Isso é útil para depuração e monitoramento da aplicação
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
+
 #classe principal do FastAPI
 from fastapi import FastAPI 
 #Permite React se comunicar com o backend
@@ -38,7 +47,7 @@ app.add_middleware(
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Registra as rotas importadas via api_router
-app.include_router(api_router)
+app.include_router(api_router, prefix="/api")
 
 # Rota raiz: retorna uma mensagem de boas-vindas'
 # Esta rota é acessível em http://localhost:8000/
