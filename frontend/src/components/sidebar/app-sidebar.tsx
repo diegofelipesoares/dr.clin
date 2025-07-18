@@ -1,4 +1,4 @@
-// src/components/sidebar.tsx
+// src/components/app-sidebar.tsx
 
 // IMPORTAÇÕES
 //Componentes Personalidados do Sidebar do Shadcn/ui
@@ -26,7 +26,7 @@ import {
 import { useSidebar } from '../ui/sidebar';
 
 //Importação dos ícones da biblioteca Lucide-react
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
   LayoutDashboard,
   CalendarDays,
@@ -38,19 +38,30 @@ import {
 
 //Importação do logo da aplicação
 import Logo from '../../assets/logo.svg';
-
-//DEFINIÇÃO DOS ITENS DO MENU (Array de Objetos JS/TS)
-// Aqui você define os itens do menu principal e outros itens que deseja exibir no sidebar
-const menuItems = [
-  { title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-  { title: 'Agendamentos', path: '/agendamentos', icon: CalendarDays },
-  { title: 'Pacientes', path: '/pacientes', icon: Users },
-];
-
-const outrosItems = [{ title: 'Planos', path: '/planos', icon: Gem }];
+import { useClinica } from '@/hooks/useClinica';
 
 export function AppSidebar() {
   const { state } = useSidebar(); // ← detecta se o sidebar está aberto ou colapsado
+  const nomeClinica = useClinica();
+  const { clinica } = useParams();
+
+  // Aqui você define os itens do menu principal e os path para rotas
+  const menuItems = [
+    {
+      title: 'Dashboard',
+      path: `/${clinica}/dashboard`,
+      icon: LayoutDashboard,
+    },
+    {
+      title: 'Agendamentos',
+      path: `/${clinica}/agendamentos`,
+      icon: CalendarDays,
+    },
+    { title: 'Pacientes', path: `/${clinica}/pacientes`, icon: Users },
+  ];
+  const outrosItems = [
+    { title: 'Planos', path: `/${clinica}/planos`, icon: Gem },
+  ];
 
   return (
     //Container Principal do Sidebar
@@ -79,7 +90,7 @@ export function AppSidebar() {
           {/* O título só será exibido quando o sidebar estiver expandido */}
           {state === 'expanded' && (
             <span className='text-xl font-semibold whitespace-nowrap'>
-              Dr.Clin
+              {nomeClinica || 'Carregando...'}
             </span>
           )}
         </div>
@@ -127,12 +138,14 @@ export function AppSidebar() {
                     <SidebarMenu className='gap-0'>
                       <SidebarMenuItem className='pl-6 m-0'>
                         <SidebarMenuButton asChild>
-                          <Link to='/medicos'>Listar</Link>
+                          <Link to={`/${clinica}/medicos`}>Listar</Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                       <SidebarMenuItem className='pl-6 m-0'>
                         <SidebarMenuButton asChild>
-                          <Link to='/medicos/cadastrar'>Cadastrar</Link>
+                          <Link to={`/${clinica}/medicos/cadastrar`}>
+                            Cadastrar
+                          </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     </SidebarMenu>
@@ -166,9 +179,18 @@ export function AppSidebar() {
 
       <SidebarFooter>
         {state === 'expanded' && (
-          <div className='px-4 py-4 text-sm text-muted-foreground mt-auto whitespace-nowrap'>
-            <p>Clínica Araújo Falcão</p>
-            <p>araujofalcao@gmail.com</p>
+          <div className='px-4 py-4 flex items-center gap-2 text-sm text-muted-foreground mt-auto'>
+            <img
+              src={Logo}
+              alt='Logo Dr.Clin'
+              className='w-6 h-6 object-contain'
+            />
+            <div className='flex flex-col leading-tight'>
+              <span className='font-semibold'>Dr.Clin</span>
+              <span className='text-xs text-muted-foreground'>
+                www.drclin.com.br
+              </span>
+            </div>
           </div>
         )}
       </SidebarFooter>

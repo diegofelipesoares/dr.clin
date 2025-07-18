@@ -38,6 +38,7 @@ def listar_medicos():
 
 @router.post("/")
 async def criar_medico(
+    clinica_id: int = Form(...),
     nome: str = Form(...),
     pronomeTratamento: str = Form(...),
     especialidade: str = Form(...),
@@ -51,13 +52,12 @@ async def criar_medico(
     conta: str = Form(None),
     tipoConta: str = Form(None),
     percentualRepasse: str = Form(None),
-    diasAtendimento: str = Form(...),  # Alterado para string
+    diasAtendimento: str = Form(...),
     horarioInicio: str = Form(None),
     horarioFim: str = Form(None),
     intervalo: str = Form(None),
     foto: UploadFile = File(...)
 ):
-    # Conversão segura do JSON recebido como string
     try:
         diasAtendimento = json.loads(diasAtendimento)
         if not isinstance(diasAtendimento, list):
@@ -73,7 +73,6 @@ async def criar_medico(
         foto_filename = foto.filename.replace(" ", "_")
         foto_path = os.path.join(UPLOAD_DIR, foto_filename)
 
-        # ⬇️ Redimensiona e salva otimizando a imagem
         salvar_foto(foto, foto_path)
 
         novo_medico = Medico(
@@ -94,7 +93,8 @@ async def criar_medico(
             horarioInicio=horarioInicio,
             horarioFim=horarioFim,
             intervalo=intervalo,
-            foto=foto_path
+            foto=foto_path,
+            clinica_id=clinica_id,
         )
 
         db.add(novo_medico)

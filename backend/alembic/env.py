@@ -6,6 +6,7 @@ from alembic import context
 
 # Importar sua Base para que Alembic saiba onde estão os modelos
 from app.models.base import Base  # <- ajustar conforme seu caminho real
+from app.models import medico_model, clinica_model, user_model, consultorio_model
 
 # Configuração do arquivo alembic.ini
 config = context.config

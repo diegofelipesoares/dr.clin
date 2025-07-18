@@ -2,11 +2,13 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from '../pages/login/LoginPage';
 import DashboardPage from '../pages/dashboard/DashboardPage';
+import AgendamentosPage from '../pages/agendamentos/AgendamentosPage';
 import MedicosPage from '../pages/medicos/MedicosPage';
 import CadastrarMedico from '../pages/medicos/CadastrarMedico';
 import EditarMedico from '../pages/medicos/EditarMedico';
 import { PrivateRoutes } from './PrivateRoutes';
 import { PublicRoutes } from './PublicRoutes';
+import PacientesPage from '@/pages/pacientes/PacientesPage';
 
 export function AppRoutes() {
   return (
@@ -24,6 +26,8 @@ export function AppRoutes() {
         {/* Privadas */}
         <Route element={<PrivateRoutes />}>
           <Route path='dashboard' element={<DashboardPage />} />
+          <Route path='agendamentos' element={<AgendamentosPage />} />
+          <Route path='pacientes' element={<PacientesPage />} />
           <Route path='medicos' element={<MedicosPage />} />
           <Route path='medicos/cadastrar' element={<CadastrarMedico />} />
           <Route path='medicos/:id' element={<EditarMedico />} />

@@ -44,6 +44,7 @@ export default function CadastrarMedico() {
   async function onSubmit(data: MedicoFormValues) {
     const formData = new FormData();
 
+    formData.append('clinica_id', clinica || '');
     formData.append('nome', data.nome || '');
     formData.append('pronomeTratamento', data.pronomeTratamento || '');
     formData.append('especialidade', data.especialidade || '');
