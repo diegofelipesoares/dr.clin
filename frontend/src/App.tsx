@@ -5,23 +5,27 @@
 import { ToastContainer } from 'react-toastify';
 import { AppRoutes } from './routes/AppRoutes';
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop';
+import { AppProviders } from './context'; // ✅ Usa AppProviders centralizado
+import { ClinicaProvider } from './context/ClinicaContext';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <>
-      <ScrollToTop />
-      <AppRoutes />
-      <ToastContainer
-        position='top-right'
-        autoClose={5000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        theme='light'
-      />
-    </>
+    <AppProviders>
+      <ClinicaProvider>
+        <ScrollToTop />
+        <AppRoutes />
+        <ToastContainer
+          position='top-right'
+          autoClose={5000}
+          hideProgressBar={false}
+          closeOnClick
+          pauseOnHover
+          draggable
+          theme='light'
+        />
+      </ClinicaProvider>
+    </AppProviders>
   );
 }
 

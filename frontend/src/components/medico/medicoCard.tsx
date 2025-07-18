@@ -1,6 +1,6 @@
 import { Button } from '../../components/ui/button';
 import { Calendar, Clock, BanknoteArrowDown } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface MedicoCardProps {
   id: number;
@@ -32,6 +32,8 @@ export function MedicoCard({
     .split(',')
     .map(d => d.trim())
     .filter(Boolean);
+
+  const { clinica } = useParams();
 
   // Ordena o array conforme a ordemDias
   diasArray.sort((a, b) => {
@@ -72,7 +74,7 @@ export function MedicoCard({
       </div>
       <Button
         className='mt-auto w-full'
-        onClick={() => navigate(`/medicos/${id}`)}
+        onClick={() => navigate(`/${clinica}/medicos/${id}`)}
       >
         Ver detalhes
       </Button>

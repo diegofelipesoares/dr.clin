@@ -16,6 +16,7 @@ export default function EditarMedico() {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(true);
+  const { clinica } = useParams();
 
   const form = useForm<MedicoFormValues>({
     resolver: zodResolver(medicoSchema),
@@ -62,56 +63,61 @@ export default function EditarMedico() {
   }, [id, form]);
 
   async function onSubmit(data: MedicoFormValues) {
-  const formData = new FormData();
+    const formData = new FormData();
 
-  formData.append('nome', data.nome || '');
-  formData.append('pronomeTratamento', data.pronomeTratamento || '');
-  formData.append('especialidade', data.especialidade || '');
-  formData.append('crm', data.crm || '');
-  formData.append('email', data.email || '');
-  formData.append('telefone', data.telefone || '');
-  formData.append('tipoContratacao', data.tipoContratacao || '');
-  formData.append('cpfCnpj', data.cpfCnpj || '');
-  formData.append('banco', data.banco || '');
-  formData.append('agencia', data.agencia || '');
-  formData.append('conta', data.conta || '');
-  formData.append('tipoConta', data.tipoConta || '');
-  formData.append('percentualRepasse', data.percentualRepasse || '');
-  formData.append('horarioInicio', data.horarioInicio || '');
-  formData.append('horarioFim', data.horarioFim || '');
-  formData.append('intervalo', data.intervalo || '');
+    formData.append('nome', data.nome || '');
+    formData.append('pronomeTratamento', data.pronomeTratamento || '');
+    formData.append('especialidade', data.especialidade || '');
+    formData.append('crm', data.crm || '');
+    formData.append('email', data.email || '');
+    formData.append('telefone', data.telefone || '');
+    formData.append('tipoContratacao', data.tipoContratacao || '');
+    formData.append('cpfCnpj', data.cpfCnpj || '');
+    formData.append('banco', data.banco || '');
+    formData.append('agencia', data.agencia || '');
+    formData.append('conta', data.conta || '');
+    formData.append('tipoConta', data.tipoConta || '');
+    formData.append('percentualRepasse', data.percentualRepasse || '');
+    formData.append('horarioInicio', data.horarioInicio || '');
+    formData.append('horarioFim', data.horarioFim || '');
+    formData.append('intervalo', data.intervalo || '');
 
-  // JSON.stringify garante compatibilidade com FastAPI
-  formData.append('diasAtendimento', JSON.stringify(data.diasAtendimento || []));
+    // JSON.stringify garante compatibilidade com FastAPI
+    formData.append(
+      'diasAtendimento',
+      JSON.stringify(data.diasAtendimento || []),
+    );
 
-  // Foto: só adiciona se for um File
-  if (data.foto && data.foto instanceof File) {
-    formData.append('foto', data.foto);
-  }
+    // Foto: só adiciona se for um File
+    if (data.foto && data.foto instanceof File) {
+      formData.append('foto', data.foto);
+    }
 
-  // Debug: veja exatamente o que está sendo enviado
-  console.log('FormData enviado:');
-  for (const pair of formData.entries()) {
-    console.log(pair[0], pair[1]);
-  }
+    // Debug: veja exatamente o que está sendo enviado
+    console.log('FormData enviado:');
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
 
     try {
       await axios.put(`http://localhost:8000/medicos/${id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       toast.success('Cadastro alterado com sucesso!');
-      navigate('/medicos');
+      navigate(`/${clinica}/medicos`);
     } catch (error) {
       console.error('Erro ao editar médico:', error);
-      toast.error('Erro ao editar médico. Verifique os dados e tente novamente.');
+      toast.error(
+        'Erro ao editar médico. Verifique os dados e tente novamente.',
+      );
     }
   }
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <div className="w-4 h-4 border-2 border-t-transparent border-primary rounded-full animate-spin" />
+      <div className='flex justify-center items-center h-64'>
+        <div className='flex items-center gap-2 text-muted-foreground'>
+          <div className='w-4 h-4 border-2 border-t-transparent border-primary rounded-full animate-spin' />
           <span>Carregando dados do médico...</span>
         </div>
       </div>
@@ -119,15 +125,15 @@ export default function EditarMedico() {
   }
 
   async function excluirMedico() {
-  try {
-    await axios.delete(`http://localhost:8000/medicos/${id}`);
-    toast.success('Médico excluído com sucesso!');
-    navigate('/medicos');
-  } catch (error) {
-    console.error('Erro ao excluir médico:', error);
-    toast.error('Erro ao excluir médico. Tente novamente.');
+    try {
+      await axios.delete(`http://localhost:8000/medicos/${id}`);
+      toast.success('Médico excluído com sucesso!');
+      navigate('/medicos');
+    } catch (error) {
+      console.error('Erro ao excluir médico:', error);
+      toast.error('Erro ao excluir médico. Tente novamente.');
+    }
   }
-}
 
   return (
     <MedicoForm

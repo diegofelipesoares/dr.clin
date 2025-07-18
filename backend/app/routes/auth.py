@@ -13,20 +13,34 @@ from app.database import get_db
 from sqlalchemy.orm import Session
 from app.schemas.auth import UserCreate, UserLogin
 from app.models.user_model import User  # ✅ Importando diretamente o modelo
+from app.models.clinica_model import Clinica  # ✅ Importando o modelo de Clínica
 
 # Criação do roteador para as rotas de autenticação
 router = APIRouter()
 
 # Criação das rotas
 # 🔹 Rota de Registro de usuário
-@router.post("/register", status_code=status.HTTP_201_CREATED)
-def register(user: UserCreate, db: Session = Depends(get_db)):
+@router.post("/clinicas/{nome}/register")
+def register(nome: str, user: UserCreate, db: Session = Depends(get_db)):
+
+    # Verifica se a clínica existe
+    clinica = db.query(Clinica).filter_by(dominio=nome).first()
+    if not clinica:
+        raise HTTPException(status_code=404, detail="Clínica não encontrada")
+
+    # Verifica se o email já foi cadastrado
     if db.query(User).filter_by(email=user.email).first():
         raise HTTPException(status_code=400, detail="Email já cadastrado")
 
-    hashed_pw = bcrypt.hash(user.password) #criptografia da senha usando bcrypt
-    # Criação do usuário no banco de dados
-    db_user = User(name=user.name, email=user.email, hashed_password=hashed_pw)
+    # Cria o novo usuário vinculado à clínica
+    hashed_pw = bcrypt.hash(user.password)
+    db_user = User(
+        name=user.name,
+        email=user.email,
+        hashed_password=hashed_pw,
+        perfil="paciente",
+        clinica_id=clinica.id
+    )
 
     db.add(db_user)
     db.commit()

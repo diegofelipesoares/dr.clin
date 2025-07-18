@@ -47,7 +47,7 @@ app.add_middleware(
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Registra as rotas importadas via api_router
-app.include_router(api_router, prefix="/api")
+app.include_router(api_router)
 
 # Rota raiz: retorna uma mensagem de boas-vindas'
 # Esta rota é acessível em http://localhost:8000/

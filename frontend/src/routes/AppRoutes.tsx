@@ -11,23 +11,27 @@ import { PublicRoutes } from './PublicRoutes';
 export function AppRoutes() {
   return (
     <Routes>
-      <Route path='/' element={<Navigate to='/login' replace />} />
+      {/* Redirecionamento raiz para clínica genérica */}
+      <Route path='/' element={<Navigate to='/clinicanova/login' replace />} />
 
-      {/* Rotas públicas (sem autenticação) */}
-      <Route element={<PublicRoutes />}>
-        <Route path='/login' element={<LoginPage />} />
-      </Route>
+      {/* Rotas com nome da clínica */}
+      <Route path='/:clinica'>
+        {/* Públicas */}
+        <Route element={<PublicRoutes />}>
+          <Route path='login' element={<LoginPage />} />
+        </Route>
 
-      {/* Rotas privadas (com layout e autenticação) */}
-      <Route element={<PrivateRoutes />}>
-        <Route path='/dashboard' element={<DashboardPage />} />
-        <Route path='/medicos' element={<MedicosPage />} />
-        <Route path='/medicos/cadastrar' element={<CadastrarMedico />} />
-        <Route path='/medicos/:id' element={<EditarMedico />} />
+        {/* Privadas */}
+        <Route element={<PrivateRoutes />}>
+          <Route path='dashboard' element={<DashboardPage />} />
+          <Route path='medicos' element={<MedicosPage />} />
+          <Route path='medicos/cadastrar' element={<CadastrarMedico />} />
+          <Route path='medicos/:id' element={<EditarMedico />} />
+        </Route>
       </Route>
 
       {/* Rota inválida → redireciona */}
-      <Route path='*' element={<Navigate to='/dashboard' replace />} />
+      <Route path='*' element={<Navigate to='/clinicanova/login' replace />} />
     </Routes>
   );
 }
