@@ -43,8 +43,6 @@ export default function CadastrarMedico() {
 
   async function onSubmit(data: MedicoFormValues) {
     const formData = new FormData();
-
-    formData.append('clinica_id', clinica || '');
     formData.append('nome', data.nome || '');
     formData.append('pronomeTratamento', data.pronomeTratamento || '');
     formData.append('especialidade', data.especialidade || '');
@@ -73,7 +71,7 @@ export default function CadastrarMedico() {
     }
 
     try {
-      await axios.post('http://localhost:8000/medicos', formData, {
+      await axios.post(`http://localhost:8000/${clinica}/medicos`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       toast.success('Médico cadastrado com sucesso!');

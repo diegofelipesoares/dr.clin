@@ -2,10 +2,6 @@ import { MedicoCard } from './medicoCard';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-//recebe os dados dos médicos
-// você pode substituir por uma chamada de API ou props
-// para obter os dados dinamicamente
-// aqui estamos usando um array estático como exemplo
 type Medico = {
   id: number;
   nome: string;
@@ -25,12 +21,18 @@ export function MedicoList() {
   useEffect(() => {
     async function fetchMedicos() {
       try {
-        const response = await axios.get('http://localhost:8000/medicos');
+        // 🟡 Extrair subdomínio da URL
+        const hostname = window.location.hostname; // ex: clinicanova.drclin.com.br
+        const subdominio = hostname.split('.')[0]; // clinicanova
+
+        const response = await axios.get(
+          `http://localhost:8000/${subdominio}/medicos`,
+        );
         setMedicos(response.data);
       } catch (error) {
         console.error('Erro ao buscar médicos:', error);
       } finally {
-        setLoading(false); // ← finaliza carregamento
+        setLoading(false);
       }
     }
     fetchMedicos();
@@ -38,13 +40,12 @@ export function MedicoList() {
 
   function getPrimeiroEUltimoNome(nomeCompleto: string) {
     const partes = nomeCompleto.trim().split(' ');
-    if (partes.length === 1) return partes[0]; // Nome único
+    if (partes.length === 1) return partes[0];
     const primeiro = partes[0];
     const ultimo = partes[partes.length - 1];
     return `${primeiro} ${ultimo}`;
   }
 
-  // Mostrar loading
   if (loading) {
     return (
       <div className='flex justify-center items-center h-64'>

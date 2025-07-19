@@ -4,12 +4,13 @@ from fastapi.responses import JSONResponse
 from app.utils.image_utils import salvar_foto
 from fastapi import HTTPException
 from app.models.medico_model import Medico
+from app.models.clinica_model import Clinica
 from app.database import SessionLocal
 import shutil
 import os
 import json
 
-router = APIRouter(prefix="/medicos")
+router = APIRouter(prefix="/{clinica}/medicos")
 UPLOAD_DIR = "uploads/medicos"
 
 @router.get("/")
@@ -38,7 +39,7 @@ def listar_medicos():
 
 @router.post("/")
 async def criar_medico(
-    clinica_id: int = Form(...),
+    clinica: str,
     nome: str = Form(...),
     pronomeTratamento: str = Form(...),
     especialidade: str = Form(...),
@@ -67,6 +68,10 @@ async def criar_medico(
 
     db = SessionLocal()
     try:
+        clinica_db = db.query(Clinica).filter(Clinica.dominio == clinica).first()
+        if not clinica_db:
+            raise HTTPException(status_code=404, detail="Clínica não encontrada")
+
         if not os.path.exists(UPLOAD_DIR):
             os.makedirs(UPLOAD_DIR)
 
@@ -94,7 +99,7 @@ async def criar_medico(
             horarioFim=horarioFim,
             intervalo=intervalo,
             foto=foto_path,
-            clinica_id=clinica_id,
+            clinica_id=clinica_db.id,
         )
 
         db.add(novo_medico)
@@ -104,6 +109,7 @@ async def criar_medico(
         return {"message": "Médico cadastrado com sucesso"}
     finally:
         db.close()
+
 
 @router.get("/{id}")
 def obter_medico(id: int):
