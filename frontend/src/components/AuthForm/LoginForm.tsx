@@ -47,7 +47,7 @@ export function LoginForm() {
       if (userResponse.data.role === 'admin') {
         navigate(`/${clinica}/dashboard`);
       } else {
-        navigate(`/${clinica}/meus-agendamentos`);
+        navigate(`/${clinica}/agendamentos`);
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

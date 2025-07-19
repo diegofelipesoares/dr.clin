@@ -50,18 +50,25 @@ def register(nome: str, user: UserCreate, db: Session = Depends(get_db)):
 
 # 🔹 Rota de Login de usuário
 @router.post("/login")
-#recebe email e senha do front e prepara a autenticação JWT
 def login(user: UserLogin, db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
-    #Busca usuário no banco de dados
-    db_user = db.query(User).filter_by(email=user.email).first()  # ✅ Aqui também usa `User` direto
+    db_user = db.query(User).filter_by(email=user.email).first()
 
-    #Verifica se o usuário existe e se a senha está correta
     if not db_user or not bcrypt.verify(user.password, db_user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
 
-    #Token JWT
     access_token = Authorize.create_access_token(subject=user.email)
-    return {"access_token": access_token}
+
+    # 🔹 Busca o domínio da clínica associada ao usuário
+    clinica = db.query(Clinica).filter(Clinica.id == db_user.clinica_id).first()
+
+    return {
+        "access_token": access_token,
+        "clinica_dominio": clinica.dominio,  # ← esse valor deve ser usado no frontend para redirecionar
+        "perfil": db_user.perfil,
+        "name": db_user.name,
+        "email": db_user.email
+    }
+
 
 # 🔹 Rota para obter o usuário autenticado (GET /auth/me)
 @router.get("/me")
