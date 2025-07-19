@@ -45,7 +45,9 @@ export default function EditarMedico() {
   useEffect(() => {
     async function fetchMedico() {
       try {
-        const response = await axios.get(`http://localhost:8000/medicos/${id}`);
+        const response = await axios.get(
+          `http://localhost:8000/${clinica}/medicos/${id}`,
+        );
         const dados = response.data;
         form.reset(dados);
         if (dados.foto) {
@@ -100,9 +102,13 @@ export default function EditarMedico() {
     }
 
     try {
-      await axios.put(`http://localhost:8000/medicos/${id}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      await axios.put(
+        `http://localhost:8000/${clinica}/medicos/${id}`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        },
+      );
       toast.success('Cadastro alterado com sucesso!');
       navigate(`/${clinica}/medicos`);
     } catch (error) {
@@ -126,9 +132,9 @@ export default function EditarMedico() {
 
   async function excluirMedico() {
     try {
-      await axios.delete(`http://localhost:8000/medicos/${id}`);
+      await axios.delete(`http://localhost:8000/${clinica}/medicos/${id}`);
       toast.success('Médico excluído com sucesso!');
-      navigate('/medicos');
+      navigate(`/${clinica}/medicos`);
     } catch (error) {
       console.error('Erro ao excluir médico:', error);
       toast.error('Erro ao excluir médico. Tente novamente.');

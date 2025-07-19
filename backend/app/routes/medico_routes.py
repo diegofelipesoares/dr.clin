@@ -112,7 +112,7 @@ async def criar_medico(
 
 
 @router.get("/{id}")
-def obter_medico(id: int):
+def obter_medico(clinica: str, id: int):
     db = SessionLocal()
     try:
         medico = db.query(Medico).filter(Medico.id == id).first()

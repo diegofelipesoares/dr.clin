@@ -35,15 +35,14 @@ export function AppBreadcrumb() {
           const to = `/${pathnames.slice(0, index + 1).join('/')}`;
           const isLast = index === pathnames.length - 1;
 
-          // Lógica especial para rotas como /medicos/:id
+          // Tenta obter nome direto por rota
           let displayName = routeNames[to];
 
           if (!displayName) {
-            // Se não encontrar nome fixo, verifica se é uma rota de edição
+            // 🛠 Corrigido: se for ID de médico, mostra "Editar Médico"
             if (
-              pathnames[0] === 'medicos' &&
-              pathnames.length === 2 &&
-              index === 1
+              pathnames.includes('medicos') &&
+              !isNaN(Number(value)) // se for número
             ) {
               displayName = 'Editar Médico';
             } else {
