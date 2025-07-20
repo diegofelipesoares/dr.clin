@@ -16,6 +16,7 @@ class User(Base): #Classe user como tabela baseada na classe Base do SQLAlchemy
     clinica_id = Column(Integer, ForeignKey("clinicas.id"))
 
     clinica = relationship("Clinica", back_populates="usuarios")  # Relacionamento com a tabela Clinica
+    paciente = relationship("Paciente", uselist=False, back_populates="user")
 
     __table_args__ = (
             UniqueConstraint("email", "clinica_id", name="uix_email_clinica"),

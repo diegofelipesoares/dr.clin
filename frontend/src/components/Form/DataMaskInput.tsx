@@ -1,10 +1,9 @@
-// src/components/Form/CpfMaskInput.tsx
-
+// src/components/Form/DataMaskInput.tsx
 import React from 'react';
 import { IMaskInput } from 'react-imask';
 import { cn } from '@/lib/utils';
 
-interface CpfMaskInputProps {
+interface DataMaskInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
@@ -12,11 +11,11 @@ interface CpfMaskInputProps {
   className?: string;
 }
 
-const CpfMaskInput = React.forwardRef<HTMLInputElement, CpfMaskInputProps>(
+const DataMaskInput = React.forwardRef<HTMLInputElement, DataMaskInputProps>(
   ({ value, onChange, placeholder, name, className }, ref) => {
     return (
       <IMaskInput
-        mask='000.000.000-00'
+        mask='00/00/0000'
         value={value}
         onAccept={(val: string) => {
           const event = {
@@ -29,7 +28,7 @@ const CpfMaskInput = React.forwardRef<HTMLInputElement, CpfMaskInputProps>(
         }}
         overwrite
         inputRef={ref}
-        placeholder={placeholder ?? '000.000.000-00'}
+        placeholder={placeholder ?? 'dd/mm/aaaa'}
         name={name}
         className={cn(
           'flex h-10 w-full rounded-md border border-input bg-card px-3 py-2 text-sm',
@@ -43,6 +42,6 @@ const CpfMaskInput = React.forwardRef<HTMLInputElement, CpfMaskInputProps>(
   },
 );
 
-CpfMaskInput.displayName = 'CpfMaskInput';
+DataMaskInput.displayName = 'DataMaskInput';
 
-export default CpfMaskInput;
+export default DataMaskInput;
