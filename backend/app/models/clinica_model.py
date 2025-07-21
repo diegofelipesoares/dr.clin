@@ -15,10 +15,13 @@ class Clinica(Base):
     endereco = Column(String)
     data_criacao = Column(DateTime, default=datetime.datetime.utcnow)
 
-    # ✅ Adicione os campos abaixo:
     plano = Column(String, nullable=False)
     forma_pagamento = Column(String, nullable=False)
 
     consultorios = relationship("Consultorio", back_populates="clinica")
     usuarios = relationship("User", back_populates="clinica")
     medicos = relationship("Medico", back_populates="clinica")
+
+    # ✅ Adicione essa linha:
+    pacientes = relationship("Paciente", back_populates="clinica")
+
