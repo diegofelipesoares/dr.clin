@@ -242,7 +242,7 @@ function EtapaPlano({
           <button
             key={plano.id}
             onClick={() => setPlanoSelecionado(plano.id)}
-            className={`rounded-xl border p-6 text-left shadow-sm transition-all duration-300 ${
+            className={`rounded-xl border p-6 text-left shadow-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
               selecionado
                 ? "border-blue-600 bg-blue-50"
                 : "border-gray-200 hover:border-blue-400"
@@ -279,7 +279,7 @@ function EtapaPagamento({
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
       {opcoes.map((opcao) => {
         const ativo = opcao.id === formaPagamento;
 
@@ -287,7 +287,7 @@ function EtapaPagamento({
           <button
             key={opcao.id}
             onClick={() => setFormaPagamento(opcao.id)}
-            className={`rounded-xl border p-6 text-left shadow-sm transition-all duration-300 ${
+            className={`rounded-xl border p-6 text-left shadow-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
               ativo
                 ? "border-blue-600 bg-blue-50"
                 : "border-gray-200 hover:border-blue-400"
