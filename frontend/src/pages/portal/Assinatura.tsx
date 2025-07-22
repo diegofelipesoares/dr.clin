@@ -34,7 +34,7 @@ export default function AssinaturaPage() {
 
   const validarClinica = async (): Promise<boolean> => {
     try {
-      await axios.post("http://localhost:8000/api/validar-clinica", {
+      await axios.post("http://localhost:8000/validar-clinica", {
         nome: dadosClinica.nome,
         cnpj: dadosClinica.cnpj,
         dominio: dadosClinica.dominio,
