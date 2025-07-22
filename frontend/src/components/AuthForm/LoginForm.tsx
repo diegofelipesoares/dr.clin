@@ -82,6 +82,14 @@ export function LoginForm() {
       <Button type='submit' className='w-full' disabled={loading}>
         {loading ? 'Entrando...' : 'Entrar'}
       </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        className="w-full text-blue-600 hover:text-blue-800"
+        onClick={() => navigate("/")}
+      >
+        Voltar para o início
+      </Button>
     </form>
   );
 }

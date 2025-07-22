@@ -120,6 +120,14 @@ export function RegisterForm() {
       <Button type='submit' className='w-full' disabled={loading}>
         {loading ? 'Criando conta...' : 'Criar conta'}
       </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        className="w-full text-blue-600 hover:text-blue-800"
+        onClick={() => navigate("/")}
+      >
+        Voltar para o início
+      </Button>
     </form>
   );
 }
