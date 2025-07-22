@@ -16,6 +16,7 @@ import ValidarClinica from '../pages/clinicas/validarClinica';
 import HomePage from '@/pages/portal/Home';
 import CriarClinicaPage from '@/pages/portal/CriarClinica';
 import AssinaturaPage from '@/pages/portal/Assinatura';
+import ClinicaNaoEncontrada from '@/pages/clinicas/ClinicaNaoEncontrada';
 
 import { ClinicaProvider } from '@/context/ClinicaContext';
 
@@ -26,6 +27,7 @@ export function AppRoutes() {
       <Route path="/" element={<HomePage />} />
       <Route path="/cadastro" element={<CriarClinicaPage />} />
       <Route path="/planos" element={<AssinaturaPage />} />
+      <Route path="/clinica-nao-encontrada" element={<ClinicaNaoEncontrada />} />
 
       {/* Valida qualquer nome de clínica digitado (antes do login) */}
       <Route path="/:clinica" element={<ValidarClinica />} />
