@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
+import CnpjMaskInput from "@/components/Form/CnpjMaskInput";
 
 export default function AssinaturaPage() {
   const [etapa, setEtapa] = useState(1);
@@ -189,11 +190,11 @@ export default function AssinaturaPage() {
             } else {
               proximaEtapa();
             }
-          }}
+          }}//Validação para habilitar o botão
           disabled={
             (etapa === 1 && !planoSelecionado) ||
             (etapa === 2 && !formaPagamento) ||
-            (etapa === 3 && (!dadosClinica.nome || !dadosClinica.dominio)) ||
+            (etapa === 3 && (!dadosClinica.nome || !dadosClinica.dominio || !dadosClinica.cnpj)) ||
             (etapa === 4 && (!admin.nome || !admin.email || !admin.senha))
           }
         >
@@ -338,12 +339,11 @@ function EtapaClinica({
       </div>
 
       <div>
-        <label className="block font-medium mb-1">CNPJ (opcional)</label>
-        <input
-          type="text"
+        <label className="block font-medium mb-1">CNPJ *</label>
+        <CnpjMaskInput
           value={dadosClinica.cnpj}
           onChange={(e) => atualizarCampo("cnpj", e.target.value)}
-          className="w-full border rounded-md px-4 py-2"
+          name="cnpj"
           placeholder="00.000.000/0000-00"
         />
         {errosClinica.cnpj && (
