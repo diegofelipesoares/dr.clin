@@ -9,12 +9,17 @@ import PacientesPage from '@/pages/pacientes/PacientesPage';
 import { PrivateRoutes } from './PrivateRoutes';
 import { PublicRoutes } from './PublicRoutes';
 import ValidarClinica from '../pages/clinicas/validarClinica';
+import HomePage from '@/pages/portal/Home';
+import CriarClinicaPage from '@/pages/portal/CriarClinica';
+import AssinaturaPage from '@/pages/portal/Assinatura';
 
 export function AppRoutes() {
   return (
     <Routes>
       {/* Rota principal → redireciona para portal */}
-      <Route path='/' element={<Navigate to="http://localhost:5174" replace />} />
+      <Route path='/' element={<HomePage />} />
+      <Route path='/cadastro' element={<CriarClinicaPage />} />
+      <Route path="/planos" element={<AssinaturaPage />} />
 
       {/* Valida qualquer nome de clínica digitado */}
       <Route path='/:clinica' element={<ValidarClinica />} />
@@ -37,8 +42,8 @@ export function AppRoutes() {
         </Route>
       </Route>
 
-      {/* Rota inválida → portal */}
-      <Route path='*' element={<Navigate to="http://localhost:5174" replace />} />
+      {/* Rota 404 inválida → portal */}
+      <Route path='*' element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
