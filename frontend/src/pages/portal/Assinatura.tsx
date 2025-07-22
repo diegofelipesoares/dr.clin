@@ -85,7 +85,7 @@ export default function AssinaturaPage() {
       );
 
       const { subdominio } = response.data;
-      window.location.href = `https://${subdominio}.drclin.com`;
+      window.location.href = `http://localhost:5173/${subdominio}/login`;
     } catch (error) {
       const err = error as AxiosError;
       const detail = (err.response?.data as { detail?: string })?.detail;
