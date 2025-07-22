@@ -80,7 +80,7 @@ export default function AssinaturaPage() {
       setErrosClinica({}); // limpa erros anteriores
 
       const response = await axios.post<{ subdominio: string }>(
-        "http://localhost:8000/api/registro-clinica",
+        "http://localhost:8000/registro-clinica",
         payload
       );
 
