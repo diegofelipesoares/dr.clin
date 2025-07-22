@@ -6,13 +6,11 @@ import { ToastContainer } from 'react-toastify';
 import { AppRoutes } from './routes/AppRoutes';
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop';
 import { AppProviders } from './context'; // ✅ Usa AppProviders centralizado
-import { ClinicaProvider } from './context/ClinicaContext';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <AppProviders>
-      <ClinicaProvider>
         <ScrollToTop />
         <AppRoutes />
         <ToastContainer
@@ -24,7 +22,6 @@ function App() {
           draggable
           theme='light'
         />
-      </ClinicaProvider>
     </AppProviders>
   );
 }
