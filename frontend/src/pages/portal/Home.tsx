@@ -31,10 +31,10 @@ export default function HomePage() {
             </Link>
             <a href="#">Contato</a>
             <Button
-              onClick={() => navigate("/planos")}
+              onClick={() => navigate("/entrar")}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
-              Começar Agora
+              Login
             </Button>
           </nav>
         </header>

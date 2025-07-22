@@ -1,13 +1,13 @@
-# app/routes/clinica_router.py
-
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
+from typing import List
 from app.database import get_db
 from app.models.clinica_model import Clinica
+from app.schemas.clinica_schema import ClinicaOut
 
-router = APIRouter(prefix="/clinicas")  # <- adiciona prefixo para rotas organizadas
+router = APIRouter(prefix="/clinicas")
 
-# Rota para obter uma clínica por domínio (já existente)
+# Rota para obter uma clínica por domínio
 @router.get("/{dominio}")
 def obter_clinica_por_dominio(dominio: str, db: Session = Depends(get_db)):
     clinica = db.query(Clinica).filter_by(dominio=dominio).first()
@@ -21,22 +21,12 @@ def obter_clinica_por_dominio(dominio: str, db: Session = Depends(get_db)):
         "forma_pagamento": clinica.forma_pagamento
     }
 
-# 🆕 Rota para listar todas as clínicas
-@router.get("/")
+# ✅ Rota profissional com response_model
+@router.get("/", response_model=List[ClinicaOut])
 def listar_clinicas(db: Session = Depends(get_db)):
-    clinicas = db.query(Clinica).all()
-    return [
-        {
-            "id": c.id,
-            "nome": c.nome,
-            "dominio": c.dominio,
-            "plano": c.plano,
-            "forma_pagamento": c.forma_pagamento
-        }
-        for c in clinicas
-    ]
+    return db.query(Clinica).all()
 
-# 🆕 Rota para listar planos disponíveis
+# Rota para planos disponíveis
 @router.get("/planos")
 def listar_planos_disponiveis():
     return [
