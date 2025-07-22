@@ -31,7 +31,7 @@ export default function HomePage() {
             </Link>
             <a href="#">Contato</a>
             <Button
-              onClick={() => navigate("/cadastro")}
+              onClick={() => navigate("/planos")}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               Começar Agora
@@ -52,7 +52,7 @@ export default function HomePage() {
             </p>
             <div className="flex justify-center md:justify-start gap-2">
               <Button
-                onClick={() => navigate("/cadastro")}
+                onClick={() => navigate("/planos")}
                 className="bg-blue-600 hover:bg-blue-700 text-white"
               >
                 Começar Agora
