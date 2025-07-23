@@ -14,10 +14,15 @@ router = APIRouter(prefix="/{clinica}/medicos")
 UPLOAD_DIR = "uploads/medicos"
 
 @router.get("/")
-def listar_medicos():
+def listar_medicos(clinica: str):
     db = SessionLocal()
     try:
-        medicos = db.query(Medico).all()
+        clinica_db = db.query(Clinica).filter(Clinica.dominio == clinica).first()
+
+        if not clinica_db:
+            raise HTTPException(status_code=404, detail="Clínica não encontrada")
+
+        medicos = db.query(Medico).filter(Medico.clinica_id == clinica_db.id).all()
 
         resultado = [
             {
@@ -35,7 +40,7 @@ def listar_medicos():
         ]
         return JSONResponse(content=resultado)
     finally:
-            db.close()
+        db.close()
 
 @router.post("/")
 async def criar_medico(

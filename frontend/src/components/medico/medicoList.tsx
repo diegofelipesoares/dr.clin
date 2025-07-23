@@ -1,6 +1,7 @@
 import { MedicoCard } from './medicoCard';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 type Medico = {
   id: number;
@@ -15,18 +16,17 @@ type Medico = {
 };
 
 export function MedicoList() {
+  const { clinica } = useParams(); // ✅ useParams aqui no topo
   const [medicos, setMedicos] = useState<Medico[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchMedicos() {
-      try {
-        // 🟡 Extrair subdomínio da URL
-        const hostname = window.location.hostname; // ex: clinicanova.drclin.com.br
-        const subdominio = hostname.split('.')[0]; // clinicanova
+    async function fetchMedicos(clinica: string | undefined) {
+      if (!clinica) return;
 
+      try {
         const response = await axios.get(
-          `http://localhost:8000/${subdominio}/medicos`,
+          `http://localhost:8000/${clinica}/medicos`
         );
         setMedicos(response.data);
       } catch (error) {
@@ -35,8 +35,9 @@ export function MedicoList() {
         setLoading(false);
       }
     }
-    fetchMedicos();
-  }, []);
+
+    fetchMedicos(clinica); // ✅ passa clinica como parâmetro
+  }, [clinica]);
 
   function getPrimeiroEUltimoNome(nomeCompleto: string) {
     const partes = nomeCompleto.trim().split(' ');
@@ -48,9 +49,9 @@ export function MedicoList() {
 
   if (loading) {
     return (
-      <div className='flex justify-center items-center h-64'>
-        <div className='flex items-center gap-2 text-muted-foreground'>
-          <div className='w-4 h-4 border-2 border-t-transparent border-primary rounded-full animate-spin' />
+      <div className="flex justify-center items-center h-64">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <div className="w-4 h-4 border-2 border-t-transparent border-primary rounded-full animate-spin" />
           <span>Carregando médicos...</span>
         </div>
       </div>
@@ -58,13 +59,13 @@ export function MedicoList() {
   }
 
   return (
-    <div className='flex flex-wrap gap-6 pb-12'>
-      {medicos.map(medico => (
+    <div className="flex flex-wrap gap-6 pb-12">
+      {medicos.map((medico) => (
         <MedicoCard
           key={medico.id}
           id={medico.id}
           nome={`${medico.pronomeTratamento} ${getPrimeiroEUltimoNome(
-            medico.nome,
+            medico.nome
           )}`}
           especialidade={medico.especialidade}
           foto={medico.foto}

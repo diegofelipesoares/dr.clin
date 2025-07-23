@@ -51,9 +51,12 @@ export function AppRoutes() {
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="agendamentos" element={<AgendamentosPage />} />
                 <Route path="pacientes" element={<PacientesPage />} />
+                {/* <Route path="/pacientes" element={<ListaPacientesPage />} /> */}
+                <Route path="/pacientes/cadastrar" element={<PacientesPage />} />
+                {/* <Route path="/pacientes/:id/editar" element={<EditarPacientePage />} /> */}
                 <Route path="medicos" element={<MedicosPage />} />
                 <Route path="medicos/cadastrar" element={<CadastrarMedico />} />
-                <Route path="medicos/:id" element={<EditarMedico />} />
+                <Route path="/medicos/:id" element={<EditarMedico />} />
               </Route>
             </Routes>
           </ClinicaProvider>
