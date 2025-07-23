@@ -57,7 +57,22 @@ export function AppSidebar() {
       path: `/${clinica}/agendamentos`,
       icon: CalendarDays,
     },
-    { title: 'Pacientes', path: `/${clinica}/pacientes`, icon: Users },
+    {
+      title: 'Pacientes',
+      icon: Users,
+      submenu: [
+        { title: 'Listar', path: `/${clinica}/pacientes` },
+        { title: 'Cadastrar', path: `/${clinica}/pacientes/cadastrar` },
+      ],
+    },
+    {
+      title: 'Medicos',
+      icon: Stethoscope,
+      submenu: [
+        { title: 'Listar', path: `/${clinica}/medicos` },
+        { title: 'Cadastrar', path: `/${clinica}/medicos/cadastrar` },
+      ],
+    },
   ];
   const outrosItems = [
     { title: 'Planos', path: `/${clinica}/planos`, icon: Gem },
@@ -107,51 +122,44 @@ export function AppSidebar() {
           <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {/* Itens do menu principal via map */}
-              {menuItems.map(({ title, path, icon: Icon }) => (
-                <SidebarMenuItem key={title}>
-                  <SidebarMenuButton asChild>
-                    <Link to={path} className='flex items-center gap-2'>
-                      <Icon className='w-5 h-5' />
-                      <span>{title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-
-              {/* Meu Médicos com Collapsible */}
-              <Collapsible className='group/collapsible'>
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton className='flex items-center justify-between w-full focus:outline-none focus:ring-0 ring-0 hover:ring-0 group-hover:ring-0 border-none'>
-                      <div className='flex items-center gap-2'>
-                        <Stethoscope className='w-4 h-4' />
-                        <span className='font-normal'>Médicos</span>
-                      </div>
-                      {/* Seta rotaciona ao expandir */}
-                      <ChevronDown className='w-4 h-4 transition-transform group-data-[state=open]/collapsible:rotate-180' />
+              {/* Itens do menu principal via MAP */}
+              {menuItems.map(({ title, path, icon: Icon, submenu }) => (
+                submenu ? (
+                  <Collapsible key={title} className='group/collapsible'>
+                    <SidebarMenuItem>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton className='flex items-center justify-between w-full focus:outline-none focus:ring-0 ring-0 hover:ring-0 group-hover:ring-0 border-none'>
+                          <div className='flex items-center gap-2'>
+                            <Icon className='w-4 h-4' />
+                            <span className='font-normal'>{title}</span>
+                          </div>
+                          <ChevronDown className='w-4 h-4 transition-transform group-data-[state=open]/collapsible:rotate-180' />
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className='overflow-hidden transition-all data-[state=closed]:max-h-0 data-[state=open]:max-h-40'>
+                        <SidebarMenu className='gap-0'>
+                          {submenu.map(({ title: subTitle, path: subPath }) => (
+                            <SidebarMenuItem key={subTitle} className='pl-6 m-0'>
+                              <SidebarMenuButton asChild>
+                                <Link to={subPath}>{subTitle}</Link>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                          ))}
+                        </SidebarMenu>
+                      </CollapsibleContent>
+                    </SidebarMenuItem>
+                  </Collapsible>
+                ) : (
+                  <SidebarMenuItem key={title}>
+                    <SidebarMenuButton asChild>
+                      <Link to={path} className='flex items-center gap-2'>
+                        <Icon className='w-5 h-5' />
+                        <span>{title}</span>
+                      </Link>
                     </SidebarMenuButton>
-                  </CollapsibleTrigger>
-
-                  {/* Transição de abertura dos submenus */}
-                  <CollapsibleContent className='overflow-hidden transition-all duration-300 data-[state=closed]:max-h-0 data-[state=open]:max-h-40'>
-                    <SidebarMenu className='gap-0'>
-                      <SidebarMenuItem className='pl-6 m-0'>
-                        <SidebarMenuButton asChild>
-                          <Link to={`/${clinica}/medicos`}>Listar</Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem className='pl-6 m-0'>
-                        <SidebarMenuButton asChild>
-                          <Link to={`/${clinica}/medicos/cadastrar`}>
-                            Cadastrar
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
+                  </SidebarMenuItem>
+                )
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
