@@ -200,7 +200,7 @@ export function PacienteForm({
                 <FormItem className='md:col-span-2'>
                   <FormLabel>Foto</FormLabel>
                   <FormControl>
-                    <>
+                    <div>
                       <Input
                         type='file'
                         accept='image/*'
@@ -240,7 +240,7 @@ export function PacienteForm({
                           Sem imagem
                         </div>
                       )}
-                    </>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
