@@ -72,3 +72,17 @@ def atualizar_paciente(
     db.commit()
     db.refresh(paciente)
     return paciente
+
+# 🔹 Deletar paciente
+@router.delete("/{id}")
+def deletar_paciente(
+    id: int,
+    current_user: User = Depends(get_current_user_com_clinica),
+    db: Session = Depends(get_db)
+):
+    paciente = db.query(Paciente).filter_by(id=id, clinica_id=current_user.clinica_id).first()
+    if not paciente:
+        raise HTTPException(status_code=404, detail="Paciente não encontrado")
+    db.delete(paciente)
+    db.commit()
+    return {"detail": "Paciente deletado com sucesso"}
