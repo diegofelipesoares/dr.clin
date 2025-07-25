@@ -35,16 +35,21 @@ export function LoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
     try {
-      const response = await api.post('/auth/login', data);
+      // 🔐 Login no backend
+      const response = await api.post(`/clinicas/${clinica}/auth/login`, data);
       const token = response.data.access_token;
+
+      // 💾 Salva token e define Authorization para próximas requisições
       localStorage.setItem('token', token);
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-      const userResponse = await api.get('/auth/me');
+      // 📥 Obtem os dados do usuário autenticado com subdomínio na URL
+      const userResponse = await api.get(`/${clinica}/auth/me`);
       setUser(userResponse.data);
 
+      // ✅ Redirecionamento com base no perfil
       toast.success('Seja bem vindo! Login realizado com sucesso!');
-      if (userResponse.data.role === 'admin') {
+      if (userResponse.data.perfil === 'admin') {
         navigate(`/${clinica}/dashboard`);
       } else {
         navigate(`/${clinica}/agendamentos`);
@@ -83,10 +88,10 @@ export function LoginForm() {
         {loading ? 'Entrando...' : 'Entrar'}
       </Button>
       <Button
-        type="button"
-        variant="ghost"
-        className="w-full text-blue-600 hover:text-blue-800"
-        onClick={() => navigate("/")}
+        type='button'
+        variant='ghost'
+        className='w-full text-blue-600 hover:text-blue-800'
+        onClick={() => navigate('/')}
       >
         Voltar para o início
       </Button>

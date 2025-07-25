@@ -52,15 +52,12 @@ export function RegisterForm() {
     setLoading(true);
     try {
       // 1. Criação do usuário
-      const response = await api.post(
-        `/auth/clinicas/${clinica}/register`,
-        data,
-      );
+      const response = await api.post(`/clinicas/${clinica}/register`, data);
       console.log('🔧 Usuário criado:', response.data);
       toast.success('Conta criada com sucesso!');
 
       // 2. Login automático
-      const loginResponse = await api.post('/auth/login', {
+      const loginResponse = await api.post(`/clinicas/${clinica}/auth/login`, {
         email: data.email,
         password: data.password,
       });
@@ -70,7 +67,7 @@ export function RegisterForm() {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       // 3. Busca os dados do usuário
-      const userResponse = await api.get('/auth/me');
+      const userResponse = await api.get(`/${clinica}/auth/me`);
       setUser(userResponse.data);
 
       // 4. Redirecionamento baseado no tipo de usuário
@@ -121,10 +118,10 @@ export function RegisterForm() {
         {loading ? 'Criando conta...' : 'Criar conta'}
       </Button>
       <Button
-        type="button"
-        variant="ghost"
-        className="w-full text-blue-600 hover:text-blue-800"
-        onClick={() => navigate("/")}
+        type='button'
+        variant='ghost'
+        className='w-full text-blue-600 hover:text-blue-800'
+        onClick={() => navigate('/')}
       >
         Voltar para o início
       </Button>

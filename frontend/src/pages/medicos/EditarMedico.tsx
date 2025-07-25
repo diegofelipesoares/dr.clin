@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
+import api from '@/lib/api';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -45,9 +45,7 @@ export default function EditarMedico() {
   useEffect(() => {
     async function fetchMedico() {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/${clinica}/medicos/${id}`,
-        );
+        const response = await api.get(`/${clinica}/medicos/${id}`);
         const dados = response.data;
         form.reset(dados);
         if (dados.foto) {
@@ -102,13 +100,9 @@ export default function EditarMedico() {
     }
 
     try {
-      await axios.put(
-        `http://localhost:8000/${clinica}/medicos/${id}`,
-        formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        },
-      );
+      await api.put(`/${clinica}/medicos/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       toast.success('Cadastro alterado com sucesso!');
       navigate(`/${clinica}/medicos`);
     } catch (error) {
@@ -132,7 +126,7 @@ export default function EditarMedico() {
 
   async function excluirMedico() {
     try {
-      await axios.delete(`http://localhost:8000/${clinica}/medicos/${id}`);
+      await api.delete(`/${clinica}/medicos/${id}`);
       toast.success('Médico excluído com sucesso!');
       navigate(`/${clinica}/medicos`);
     } catch (error) {
