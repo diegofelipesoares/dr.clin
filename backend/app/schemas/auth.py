@@ -17,3 +17,10 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+# Configuração do AuthJWT
+class Settings(BaseModel):
+    authjwt_secret_key: str = "w4hNz2UJk_3P7mw0qQx6vNf1U5dSL9YoM3ChF9aXE14Q"  # pode pegar do .env
+
+    class Config:
+        env_file = ".env"

@@ -15,6 +15,9 @@ from app.schemas.auth import UserCreate, UserLogin
 from app.models.user_model import User  # ✅ Importando diretamente o modelo
 from app.models.clinica_model import Clinica  # ✅ Importando o modelo de Clínica
 
+# Importação do método de autenticação personalizado
+from app.dependencies.auth import get_current_user_com_clinica
+
 # Criação do roteador para as rotas de autenticação
 router = APIRouter()
 
@@ -72,21 +75,12 @@ def login(user: UserLogin, db: Session = Depends(get_db), Authorize: AuthJWT = D
 
 # 🔹 Rota para obter o usuário autenticado (GET /auth/me)
 @router.get("/me")
-def get_me(Authorize: AuthJWT = Depends(), db: Session = Depends(get_db)):
-    try:
-        Authorize.jwt_required()  # Garante que o token está presente e válido
-        email = Authorize.get_jwt_subject()  # Extrai o email do token
-        user = db.query(User).filter_by(email=email).first()
-
-        if not user:
-            raise HTTPException(status_code=404, detail="Usuário não encontrado")
-
-        return {
-            "id": user.id,
-            "name": user.name,
-            "email": user.email
-        }
-    except Exception as e:
-        raise HTTPException(status_code=401, detail="Token inválido ou expirado")
+def get_me(current_user: User = Depends(get_current_user_com_clinica)):
+    return {
+        "id": current_user.id,
+        "name": current_user.name,
+        "email": current_user.email,
+        "perfil": current_user.perfil,
+    }
 
 

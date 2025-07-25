@@ -1,29 +1,33 @@
 // src/pages/Assinatura.tsx
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
-import CnpjMaskInput from "@/components/Form/CnpjMaskInput";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import axios, { AxiosError } from 'axios';
+import CnpjMaskInput from '@/components/Form/CnpjMaskInput';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'react-toastify';
+//import { useParams } from 'react-router-dom';
+import api from '@/lib/api';
 
 export default function AssinaturaPage() {
   const [etapa, setEtapa] = useState(1);
   const [erroAdmin, setErroAdmin] = useState<string | null>(null);
 
-  const proximaEtapa = () => setEtapa((prev) => Math.min(prev + 1, 4));
-  const etapaAnterior = () => setEtapa((prev) => Math.max(prev - 1, 1));
+  const proximaEtapa = () => setEtapa(prev => Math.min(prev + 1, 4));
+  const etapaAnterior = () => setEtapa(prev => Math.max(prev - 1, 1));
   const navigate = useNavigate();
 
   const [planoSelecionado, setPlanoSelecionado] = useState<string | null>(null);
   const [formaPagamento, setFormaPagamento] = useState<string | null>(null);
   const [dadosClinica, setDadosClinica] = useState({
-    nome: "",
-    cnpj: "",
-    dominio: "",
+    nome: '',
+    cnpj: '',
+    dominio: '',
   });
   const [admin, setAdmin] = useState({
-    nome: "",
-    email: "",
-    senha: "",
+    nome: '',
+    email: '',
+    senha: '',
   });
 
   const [errosClinica, setErrosClinica] = useState<{
@@ -34,7 +38,7 @@ export default function AssinaturaPage() {
 
   const validarClinica = async (): Promise<boolean> => {
     try {
-      await axios.post("http://localhost:8000/validar-clinica", {
+      await axios.post('http://localhost:8000/validar-clinica', {
         nome: dadosClinica.nome,
         cnpj: dadosClinica.cnpj,
         dominio: dadosClinica.dominio,
@@ -45,25 +49,26 @@ export default function AssinaturaPage() {
       const err = error as AxiosError;
       const field = (err.response?.data as { detail?: string })?.detail;
 
-      if (field === "nome") {
-        setErrosClinica({ nome: "Este nome de clínica já está em uso." });
-      } else if (field === "cnpj") {
-        setErrosClinica({ cnpj: "Este CNPJ já está cadastrado." });
-      } else if (field === "dominio") {
+      if (field === 'nome') {
+        setErrosClinica({ nome: 'Este nome de clínica já está em uso.' });
+      } else if (field === 'cnpj') {
+        setErrosClinica({ cnpj: 'Este CNPJ já está cadastrado.' });
+      } else if (field === 'dominio') {
         setErrosClinica({
-          dominio: "Este endereço de subdomínio já está em uso.",
+          dominio: 'Este endereço de subdomínio já está em uso.',
         });
       } else {
-        alert("Erro desconhecido ao validar clínica.");
+        alert('Erro desconhecido ao validar clínica.');
       }
 
       return false;
     }
   };
 
+  const { setUser } = useAuth();
   const finalizarCadastro = async () => {
     const confirmado = window.confirm(
-      "💳 Pagamento simulado com sucesso!\n\nDeseja prosseguir com a criação da clínica?"
+      '💳 Pagamento simulado com sucesso!\n\nDeseja prosseguir com a criação da clínica?',
     );
 
     if (!confirmado) return;
@@ -77,66 +82,80 @@ export default function AssinaturaPage() {
       };
 
       setErroAdmin(null);
-      setErrosClinica({}); // limpa erros anteriores
+      setErrosClinica({});
 
-      const response = await axios.post<{ subdominio: string }>(
-        "http://localhost:8000/registro-clinica",
-        payload
-      );
+      const response = await api.post('/registro-clinica', payload);
+      const { access_token, subdominio, user } = response.data;
 
-      const { subdominio } = response.data;
-      window.location.href = `http://localhost:5173/${subdominio}/login`;
-    } catch (error) {
-      const err = error as AxiosError;
-      const detail = (err.response?.data as { detail?: string })?.detail;
+      // ✅ Salva token e usuário
+      localStorage.setItem('token', access_token);
+      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
 
-      if (detail === "Subdomínio já está em uso") {
-        setErrosClinica({ dominio: "Este subdomínio já está em uso." });
-      } else if (detail === "Nome da clínica já está em uso") {
-        setErrosClinica({ nome: "Este nome de clínica já está em uso." });
-      } else if (detail === "CNPJ já cadastrado") {
-        setErrosClinica({ cnpj: "Este CNPJ já está cadastrado." });
-      } else if (detail === "Este e-mail já está em uso nesta clínica.") {
-        setErroAdmin("Este e-mail já está em uso nesta clínica.");
+      // ✅ Força Axios a usar novo token nas próximas requisições
+      api.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+
+      // ✅ Redireciona com base no perfil
+      if (user.perfil === 'admin') {
+        navigate(`/${subdominio}/dashboard`);
       } else {
-        alert("Erro inesperado: " + (detail || "Tente novamente."));
+        navigate(`/${subdominio}/agendamentos`);
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const detail = (error.response?.data as { detail?: string })?.detail;
+
+        if (detail === 'Subdomínio já está em uso') {
+          setErrosClinica({ dominio: 'Este subdomínio já está em uso.' });
+        } else if (detail === 'Nome da clínica já está em uso') {
+          setErrosClinica({ nome: 'Este nome de clínica já está em uso.' });
+        } else if (detail === 'CNPJ já cadastrado') {
+          setErrosClinica({ cnpj: 'Este CNPJ já está cadastrado.' });
+        } else if (detail === 'Este e-mail já está em uso nesta clínica.') {
+          setErroAdmin('Este e-mail já está em uso nesta clínica.');
+        } else {
+          toast.error(detail || 'Erro ao registrar clínica');
+        }
+      } else {
+        toast.error('Erro inesperado. Tente novamente.');
       }
     }
   };
+
   // Renderização do componente
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold text-center mb-8">
+    <div className='max-w-2xl mx-auto px-4 py-10'>
+      <h1 className='text-3xl font-bold text-center mb-8'>
         Adquira seu plano Dr.Clin
       </h1>
 
       {/* Etapas */}
-      <div className="mb-6">
-        <div className="flex justify-between items-center text-sm text-gray-600">
-          <span className={etapa === 1 ? "font-bold text-blue-600" : ""}>
+      <div className='mb-6'>
+        <div className='flex justify-between items-center text-sm text-gray-600'>
+          <span className={etapa === 1 ? 'font-bold text-blue-600' : ''}>
             Plano
           </span>
-          <span className={etapa === 2 ? "font-bold text-blue-600" : ""}>
+          <span className={etapa === 2 ? 'font-bold text-blue-600' : ''}>
             Pagamento
           </span>
-          <span className={etapa === 3 ? "font-bold text-blue-600" : ""}>
+          <span className={etapa === 3 ? 'font-bold text-blue-600' : ''}>
             Clínica
           </span>
-          <span className={etapa === 4 ? "font-bold text-blue-600" : ""}>
+          <span className={etapa === 4 ? 'font-bold text-blue-600' : ''}>
             Administrador
           </span>
         </div>
-        <div className="w-full h-2 bg-gray-200 rounded-full mt-2">
+        <div className='w-full h-2 bg-gray-200 rounded-full mt-2'>
           <div
-            className="h-full bg-blue-600 rounded-full transition-all duration-300"
+            className='h-full bg-blue-600 rounded-full transition-all duration-300'
             style={{ width: `${(etapa - 1) * 33.33 + 1}%` }}
           />
         </div>
       </div>
 
       {/* Conteúdo da Etapa */}
-      <div className="border rounded-xl p-6 bg-white shadow">
+      <div className='border rounded-xl p-6 bg-white shadow'>
         {etapa === 1 && (
           <EtapaPlano
             planoSelecionado={planoSelecionado}
@@ -163,19 +182,19 @@ export default function AssinaturaPage() {
       </div>
 
       {/* Botões */}
-      <div className="flex justify-between mt-6 items-center">
-        <div className="flex gap-2">
+      <div className='flex justify-between mt-6 items-center'>
+        <div className='flex gap-2'>
           <Button
             onClick={etapaAnterior}
             disabled={etapa === 1}
-            variant="outline"
+            variant='outline'
           >
             Voltar
           </Button>
           <Button
-            variant="ghost"
-            onClick={() => navigate("/")}
-            className="text-black bor hover:text-red-600"
+            variant='ghost'
+            onClick={() => navigate('/')}
+            className='text-black bor hover:text-red-600'
           >
             Cancelar
           </Button>
@@ -190,15 +209,18 @@ export default function AssinaturaPage() {
             } else {
               proximaEtapa();
             }
-          }}//Validação para habilitar o botão
+          }} //Validação para habilitar o botão
           disabled={
             (etapa === 1 && !planoSelecionado) ||
             (etapa === 2 && !formaPagamento) ||
-            (etapa === 3 && (!dadosClinica.nome || !dadosClinica.dominio || !dadosClinica.cnpj)) ||
+            (etapa === 3 &&
+              (!dadosClinica.nome ||
+                !dadosClinica.dominio ||
+                !dadosClinica.cnpj)) ||
             (etapa === 4 && (!admin.nome || !admin.email || !admin.senha))
           }
         >
-          {etapa === 4 ? "Finalizar" : "Avançar"}
+          {etapa === 4 ? 'Finalizar' : 'Avançar'}
         </Button>
       </div>
     </div>
@@ -215,28 +237,28 @@ function EtapaPlano({
 }) {
   const planos = [
     {
-      id: "lite",
-      nome: "Lite",
-      preco: "R$ 59/mês",
-      descricao: "Ideal para pequenas clínicas com até 1 profissional.",
+      id: 'lite',
+      nome: 'Lite',
+      preco: 'R$ 59/mês',
+      descricao: 'Ideal para pequenas clínicas com até 1 profissional.',
     },
     {
-      id: "professional",
-      nome: "Professional",
-      preco: "R$ 129/mês",
-      descricao: "Para clínicas com múltiplos profissionais e agenda cheia.",
+      id: 'professional',
+      nome: 'Professional',
+      preco: 'R$ 129/mês',
+      descricao: 'Para clínicas com múltiplos profissionais e agenda cheia.',
     },
     {
-      id: "premium",
-      nome: "Premium",
-      preco: "R$ 199/mês",
-      descricao: "Solução completa com suporte prioritário e personalizações.",
+      id: 'premium',
+      nome: 'Premium',
+      preco: 'R$ 199/mês',
+      descricao: 'Solução completa com suporte prioritário e personalizações.',
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {planos.map((plano) => {
+    <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+      {planos.map(plano => {
         const selecionado = plano.id === planoSelecionado;
 
         return (
@@ -245,13 +267,13 @@ function EtapaPlano({
             onClick={() => setPlanoSelecionado(plano.id)}
             className={`rounded-xl border p-6 text-left shadow-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
               selecionado
-                ? "border-blue-600 bg-blue-50"
-                : "border-gray-200 hover:border-blue-400"
+                ? 'border-blue-600 bg-blue-50'
+                : 'border-gray-200 hover:border-blue-400'
             }`}
           >
-            <h3 className="text-xl font-bold text-blue-700">{plano.nome}</h3>
-            <p className="text-2xl font-semibold my-2">{plano.preco}</p>
-            <p className="text-gray-600 text-sm">{plano.descricao}</p>
+            <h3 className='text-xl font-bold text-blue-700'>{plano.nome}</h3>
+            <p className='text-2xl font-semibold my-2'>{plano.preco}</p>
+            <p className='text-gray-600 text-sm'>{plano.descricao}</p>
           </button>
         );
       })}
@@ -268,20 +290,20 @@ function EtapaPagamento({
 }) {
   const opcoes = [
     {
-      id: "cartao",
-      titulo: "Cartão de Crédito",
-      descricao: "Pague com cartão e tenha ativação imediata.",
+      id: 'cartao',
+      titulo: 'Cartão de Crédito',
+      descricao: 'Pague com cartão e tenha ativação imediata.',
     },
     {
-      id: "pix",
-      titulo: "Pix",
-      descricao: "Envie o comprovante e ative em até 24h.",
+      id: 'pix',
+      titulo: 'Pix',
+      descricao: 'Envie o comprovante e ative em até 24h.',
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
-      {opcoes.map((opcao) => {
+    <div className='grid grid-cols-1 md:grid-cols-2 gap-6 '>
+      {opcoes.map(opcao => {
         const ativo = opcao.id === formaPagamento;
 
         return (
@@ -290,14 +312,14 @@ function EtapaPagamento({
             onClick={() => setFormaPagamento(opcao.id)}
             className={`rounded-xl border p-6 text-left shadow-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-blue-500 ${
               ativo
-                ? "border-blue-600 bg-blue-50"
-                : "border-gray-200 hover:border-blue-400"
+                ? 'border-blue-600 bg-blue-50'
+                : 'border-gray-200 hover:border-blue-400'
             }`}
           >
-            <h3 className="text-lg font-semibold text-blue-700">
+            <h3 className='text-lg font-semibold text-blue-700'>
               {opcao.titulo}
             </h3>
-            <p className="text-gray-600 text-sm mt-2">{opcao.descricao}</p>
+            <p className='text-gray-600 text-sm mt-2'>{opcao.descricao}</p>
           </button>
         );
       })}
@@ -322,57 +344,57 @@ function EtapaClinica({
   };
 
   return (
-    <div className="space-y-4">
+    <div className='space-y-4'>
       <div>
-        <label className="block font-medium mb-1">Nome da clínica *</label>
+        <label className='block font-medium mb-1'>Nome da clínica *</label>
         <input
-          type="text"
+          type='text'
           value={dadosClinica.nome}
-          onChange={(e) => atualizarCampo("nome", e.target.value)}
-          className="w-full border rounded-md px-4 py-2"
-          placeholder="Ex: Clínica São José"
+          onChange={e => atualizarCampo('nome', e.target.value)}
+          className='w-full border rounded-md px-4 py-2'
+          placeholder='Ex: Clínica São José'
           required
         />
         {errosClinica.nome && (
-          <p className="text-sm text-red-500 mt-1">{errosClinica.nome}</p>
+          <p className='text-sm text-red-500 mt-1'>{errosClinica.nome}</p>
         )}
       </div>
 
       <div>
-        <label className="block font-medium mb-1">CNPJ *</label>
+        <label className='block font-medium mb-1'>CNPJ *</label>
         <CnpjMaskInput
           value={dadosClinica.cnpj}
-          onChange={(e) => atualizarCampo("cnpj", e.target.value)}
-          name="cnpj"
-          placeholder="00.000.000/0000-00"
+          onChange={e => atualizarCampo('cnpj', e.target.value)}
+          name='cnpj'
+          placeholder='00.000.000/0000-00'
         />
         {errosClinica.cnpj && (
-          <p className="text-sm text-red-500 mt-1">{errosClinica.cnpj}</p>
+          <p className='text-sm text-red-500 mt-1'>{errosClinica.cnpj}</p>
         )}
       </div>
 
       <div>
-        <label className="block font-medium mb-1">
+        <label className='block font-medium mb-1'>
           Endereço do subdomínio desejado *
         </label>
-        <div className="flex items-center gap-2">
+        <div className='flex items-center gap-2'>
           <input
-            type="text"
+            type='text'
             value={dadosClinica.dominio}
-            onChange={(e) => {
+            onChange={e => {
               const valor = e.target.value
                 .toLowerCase()
-                .replace(/[^a-z0-9-]/g, "");
-              atualizarCampo("dominio", valor);
+                .replace(/[^a-z0-9-]/g, '');
+              atualizarCampo('dominio', valor);
             }}
-            className="w-full border rounded-md px-4 py-2"
-            placeholder="ex: endwebclinica"
+            className='w-full border rounded-md px-4 py-2'
+            placeholder='ex: endwebclinica'
             required
           />
-          <span className="text-gray-600 text-sm">.drclin.com</span>
+          <span className='text-gray-600 text-sm'>.drclin.com</span>
         </div>
         {errosClinica.dominio && (
-          <p className="text-sm text-red-500 mt-1">{errosClinica.dominio}</p>
+          <p className='text-sm text-red-500 mt-1'>{errosClinica.dominio}</p>
         )}
       </div>
     </div>
@@ -393,40 +415,40 @@ function EtapaAdmin({
   };
 
   return (
-    <div className="space-y-4">
+    <div className='space-y-4'>
       <div>
-        <label className="block font-medium mb-1">Nome completo *</label>
+        <label className='block font-medium mb-1'>Nome completo *</label>
         <input
-          type="text"
+          type='text'
           value={admin.nome}
-          onChange={(e) => atualizarCampo("nome", e.target.value)}
-          className="w-full border rounded-md px-4 py-2"
-          placeholder="Ex: João da Silva"
+          onChange={e => atualizarCampo('nome', e.target.value)}
+          className='w-full border rounded-md px-4 py-2'
+          placeholder='Ex: João da Silva'
           required
         />
       </div>
 
       <div>
-        <label className="block font-medium mb-1">E-mail *</label>
+        <label className='block font-medium mb-1'>E-mail *</label>
         <input
-          type="email"
+          type='email'
           value={admin.email}
-          onChange={(e) => atualizarCampo("email", e.target.value)}
-          className="w-full border rounded-md px-4 py-2"
-          placeholder="joao@email.com"
+          onChange={e => atualizarCampo('email', e.target.value)}
+          className='w-full border rounded-md px-4 py-2'
+          placeholder='joao@email.com'
           required
         />
-        {erroAdmin && <p className="text-sm text-red-500 mt-1">{erroAdmin}</p>}
+        {erroAdmin && <p className='text-sm text-red-500 mt-1'>{erroAdmin}</p>}
       </div>
 
       <div>
-        <label className="block font-medium mb-1">Senha *</label>
+        <label className='block font-medium mb-1'>Senha *</label>
         <input
-          type="password"
+          type='password'
           value={admin.senha}
-          onChange={(e) => atualizarCampo("senha", e.target.value)}
-          className="w-full border rounded-md px-4 py-2"
-          placeholder="Mínimo 6 caracteres"
+          onChange={e => atualizarCampo('senha', e.target.value)}
+          className='w-full border rounded-md px-4 py-2'
+          placeholder='Mínimo 6 caracteres'
           required
         />
       </div>

@@ -14,49 +14,52 @@ import { PublicRoutes } from './PublicRoutes';
 
 import ValidarClinica from '../pages/clinicas/validarClinica';
 import HomePage from '@/pages/portal/Home';
-import CriarClinicaPage from '@/pages/portal/CriarClinica';
 import AssinaturaPage from '@/pages/portal/Assinatura';
 import ClinicaNaoEncontrada from '@/pages/clinicas/ClinicaNaoEncontrada';
-import SelecionarClinicaPage from "@/pages/portal/SelecionarClinica";
+import SelecionarClinicaPage from '@/pages/portal/SelecionarClinica';
 
 import { ClinicaProvider } from '@/context/ClinicaContext';
-
 
 export function AppRoutes() {
   return (
     <Routes>
       {/* Rotas do portal */}
-      <Route path="/" element={<HomePage />} />
-      <Route path="/cadastro" element={<CriarClinicaPage />} />
-      <Route path="/planos" element={<AssinaturaPage />} />
-      <Route path="/clinica-nao-encontrada" element={<ClinicaNaoEncontrada />} />
-      <Route path="/entrar" element={<SelecionarClinicaPage />} />
+      <Route path='/' element={<HomePage />} />
+      <Route path='/planos' element={<AssinaturaPage />} />
+      <Route
+        path='/clinica-nao-encontrada'
+        element={<ClinicaNaoEncontrada />}
+      />
+      <Route path='/entrar' element={<SelecionarClinicaPage />} />
 
       {/* Valida qualquer nome de clínica digitado (antes do login) */}
-      <Route path="/:clinica" element={<ValidarClinica />} />
+      <Route path='/:clinica' element={<ValidarClinica />} />
 
       {/* Rotas da clínica (com contexto habilitado) */}
       <Route
-        path="/:clinica/*"
+        path='/:clinica/*'
         element={
           <ClinicaProvider>
             <Routes>
               {/* Rotas públicas */}
               <Route element={<PublicRoutes />}>
-                <Route path="login" element={<LoginPage />} />
+                <Route path='login' element={<LoginPage />} />
               </Route>
 
               {/* Rotas privadas (autenticadas) */}
               <Route element={<PrivateRoutes />}>
-                <Route path="dashboard" element={<DashboardPage />} />
-                <Route path="agendamentos" element={<AgendamentosPage />} />
-                <Route path="pacientes" element={<PacientesPage />} />
+                <Route path='dashboard' element={<DashboardPage />} />
+                <Route path='agendamentos' element={<AgendamentosPage />} />
+                <Route path='pacientes' element={<PacientesPage />} />
                 {/* <Route path="/pacientes" element={<ListaPacientesPage />} /> */}
-                <Route path="/pacientes/cadastrar" element={<PacientesPage />} />
+                <Route
+                  path='/pacientes/cadastrar'
+                  element={<PacientesPage />}
+                />
                 {/* <Route path="/pacientes/:id/editar" element={<EditarPacientePage />} /> */}
-                <Route path="medicos" element={<MedicosPage />} />
-                <Route path="medicos/cadastrar" element={<CadastrarMedico />} />
-                <Route path="/medicos/:id" element={<EditarMedico />} />
+                <Route path='medicos' element={<MedicosPage />} />
+                <Route path='medicos/cadastrar' element={<CadastrarMedico />} />
+                <Route path='/medicos/:id' element={<EditarMedico />} />
               </Route>
             </Routes>
           </ClinicaProvider>
@@ -64,7 +67,7 @@ export function AppRoutes() {
       />
 
       {/* Redireciona qualquer rota inválida para o portal */}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path='*' element={<Navigate to='/' replace />} />
     </Routes>
   );
 }

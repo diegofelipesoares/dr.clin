@@ -16,6 +16,9 @@ from app.routes import router as api_router # importa o router centralizado
 from app.database import Base, engine 
 # StaticFiles: permite servir arquivos estáticos (como imagens, CSS, JS)
 from fastapi.staticfiles import StaticFiles
+
+from fastapi_jwt_auth import AuthJWT
+from app.schemas.auth import Settings
 # precisa importar para JWT funcionar, mesmo sem usar diretamente
 import app.config 
 
@@ -54,3 +57,7 @@ app.include_router(api_router)
 @app.get("/")
 def root():
     return {"message": "Bem-vindo ao backend Dr.Clin"}
+
+@AuthJWT.load_config
+def get_config():
+    return Settings()

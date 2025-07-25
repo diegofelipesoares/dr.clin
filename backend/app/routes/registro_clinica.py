@@ -1,9 +1,9 @@
-# app/routes/registro_clinica.py
-
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 from sqlalchemy.orm import Session
+from fastapi_jwt_auth import AuthJWT
+
 from app.database import get_db
 from app.models.clinica_model import Clinica
 from app.models.user_model import User
@@ -11,16 +11,19 @@ from passlib.hash import bcrypt
 
 router = APIRouter()
 
+
 # ----- SCHEMAS DE ENTRADA -----
 class ClinicaData(BaseModel):
     nome: str
     cnpj: Optional[str]
     dominio: str
 
+
 class AdminData(BaseModel):
     nome: str
     email: EmailStr
     senha: str
+
 
 class RegistroRequest(BaseModel):
     plano: str
@@ -28,18 +31,23 @@ class RegistroRequest(BaseModel):
     clinica: ClinicaData
     admin: AdminData
 
-# ----- ENDPOINT -----
+
+# ----- ENDPOINT DE REGISTRO COMPLETO COM TOKEN -----
 @router.post("/registro-clinica")
-def registrar_clinica(payload: RegistroRequest, db: Session = Depends(get_db)):
-    # 🔒 Verifica se já existe subdomínio em uso
+def registrar_clinica(
+    payload: RegistroRequest,
+    db: Session = Depends(get_db),
+    Authorize: AuthJWT = Depends()  # usado apenas para gerar o token
+):
+    # 🔒 Verifica se subdomínio está em uso
     if db.query(Clinica).filter(Clinica.dominio == payload.clinica.dominio).first():
         raise HTTPException(status_code=400, detail="Subdomínio já está em uso")
 
-    # 🔒 Verifica se já existe nome de clínica
+    # 🔒 Verifica se nome de clínica está em uso
     if db.query(Clinica).filter(Clinica.nome == payload.clinica.nome).first():
         raise HTTPException(status_code=400, detail="Nome da clínica já está em uso")
 
-    # 🔒 Verifica se CNPJ já está cadastrado (se foi fornecido)
+    # 🔒 Verifica se CNPJ está em uso
     if payload.clinica.cnpj:
         if db.query(Clinica).filter(Clinica.cnpj == payload.clinica.cnpj).first():
             raise HTTPException(status_code=400, detail="CNPJ já cadastrado")
@@ -56,7 +64,7 @@ def registrar_clinica(payload: RegistroRequest, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(nova_clinica)
 
-    # 🔒 Verifica se já existe um administrador com mesmo e-mail nessa clínica
+    # 🔒 Verifica se e-mail do admin já existe para esta clínica
     admin_existente = (
         db.query(User)
         .filter(User.email == payload.admin.email, User.clinica_id == nova_clinica.id)
@@ -65,9 +73,8 @@ def registrar_clinica(payload: RegistroRequest, db: Session = Depends(get_db)):
     if admin_existente:
         raise HTTPException(status_code=400, detail="Este e-mail já está em uso nesta clínica.")
 
-    # ✅ Cria o novo administrador
+    # ✅ Cria o admin
     hashed_senha = bcrypt.hash(payload.admin.senha)
-
     novo_admin = User(
         name=payload.admin.nome,
         email=payload.admin.email,
@@ -77,5 +84,19 @@ def registrar_clinica(payload: RegistroRequest, db: Session = Depends(get_db)):
     )
     db.add(novo_admin)
     db.commit()
+    db.refresh(novo_admin)
 
-    return {"subdominio": payload.clinica.dominio}
+    # ✅ Gera o token JWT — sem exigir token de entrada!
+    access_token = Authorize.create_access_token(subject=novo_admin.email)
+
+    # ✅ Retorna token + subdomínio + dados do admin
+    return {
+        "access_token": access_token,
+        "subdominio": nova_clinica.dominio,
+        "user": {
+            "id": novo_admin.id,
+            "nome": novo_admin.name,
+            "email": novo_admin.email,
+            "perfil": novo_admin.perfil,
+        }
+    }
