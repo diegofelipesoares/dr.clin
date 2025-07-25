@@ -87,7 +87,10 @@ def registrar_clinica(
     db.refresh(novo_admin)
 
     # ✅ Gera o token JWT — sem exigir token de entrada!
-    access_token = Authorize.create_access_token(subject=novo_admin.email)
+    access_token = Authorize.create_access_token(
+    subject=novo_admin.email,
+    user_claims={"clinica_id": nova_clinica.id}
+)
 
     # ✅ Retorna token + subdomínio + dados do admin
     return {

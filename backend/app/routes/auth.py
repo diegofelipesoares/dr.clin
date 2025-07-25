@@ -59,7 +59,10 @@ def login(user: UserLogin, db: Session = Depends(get_db), Authorize: AuthJWT = D
     if not db_user or not bcrypt.verify(user.password, db_user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
 
-    access_token = Authorize.create_access_token(subject=user.email)
+    access_token = Authorize.create_access_token(
+        subject=user.email,
+        user_claims={"clinica_id": db_user.clinica_id}
+    )
 
     # 🔹 Busca o domínio da clínica associada ao usuário
     clinica = db.query(Clinica).filter(Clinica.id == db_user.clinica_id).first()

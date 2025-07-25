@@ -4,7 +4,7 @@
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
+import api from '@/lib/api';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -71,7 +71,7 @@ export default function CadastrarMedico() {
     }
 
     try {
-      await axios.post(`http://localhost:8000/${clinica}/medicos`, formData, {
+      await api.post(`/${clinica}/medicos`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       toast.success('Médico cadastrado com sucesso!');
