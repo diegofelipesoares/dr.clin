@@ -41,16 +41,16 @@ export default function PacientesListPage() {
         </Button>
       </div>
 
-      <div className="rounded-md border bg-white">
+      <div className="rounded-md border bg-white p-5">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>NOME</TableHead>
+            <TableRow className="bg-blue-50 text-xs uppercase text-muted-foreground font-semibold">
+              <TableHead className="rounded-tl-md bg-blue-50">NOME</TableHead>
               <TableHead>E-MAIL</TableHead>
               <TableHead>NÚMERO DE CELULAR</TableHead>
               <TableHead>SEXO</TableHead>
               <TableHead>PERFIL</TableHead>
-              <TableHead className="w-10" />
+              <TableHead className="w-10" /> 
             </TableRow>
           </TableHeader>
           <TableBody>
