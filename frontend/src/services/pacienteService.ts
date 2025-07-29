@@ -7,11 +7,18 @@ export async function cadastrarPaciente(
 ) {
   const formData = new FormData();
 
+  //transform the date from dd/mm/yyyy to yyyy-mm-dd
+  // This is necessary because the backend expects the date in ISO format
+  function formatDateToISO(dataBR: string): string {
+  const [dia, mes, ano] = dataBR.split('/');
+  return `${ano}-${mes}-${dia}`; // yyyy-mm-dd
+}
+
   formData.append('nome', data.nome);
   formData.append('email', data.email);
   formData.append('cpf', data.cpf);
   formData.append('telefone', data.telefone);
-  formData.append('dataNascimento', data.dataNascimento);
+  formData.append('data_nascimento', formatDateToISO(data.dataNascimento));
   formData.append('sexo', data.sexo);
   formData.append('endereco', data.endereco);
 
