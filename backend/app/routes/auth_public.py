@@ -28,7 +28,7 @@ def register(nome: str, user: UserCreate, db: Session = Depends(get_db)):
         name=user.name,
         email=user.email,
         hashed_password=hashed_pw,
-        perfil="paciente",
+        perfil="usuario",
         clinica_id=clinica.id
     )
     db.add(db_user)
