@@ -5,6 +5,13 @@ from sqlalchemy import pool
 
 from alembic import context
 from app.models.base import Base
+from app.models import (
+    paciente_model,
+    user_model,
+    clinica_model,
+    medico_model,
+    consultorio_model,
+)
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -21,6 +21,8 @@ def criar_paciente(
     sexo: Optional[str] = Form(None),
     data_nascimento: Optional[date] = Form(None),
     cpf: Optional[str] = Form(None),
+    endereco: Optional[str] = Form(None),
+    convenio: Optional[str] = Form(None),
     observacoes: Optional[str] = Form(None),
     foto: Optional[UploadFile] = File(None),
     current_user: User = Depends(get_current_user_com_clinica),
@@ -68,6 +70,8 @@ def criar_paciente(
         data_nascimento=data_nascimento,
         cpf=cpf,
         observacoes=observacoes,
+        endereco=endereco,
+        convenio=convenio,
     )
     db.add(paciente)
     db.commit()
@@ -91,6 +95,8 @@ def atualizar_paciente(
     sexo: Optional[str] = Form(None),
     data_nascimento: Optional[date] = Form(None),
     cpf: Optional[str] = Form(None),
+    endereco: Optional[str] = Form(None),
+    convenio: Optional[str] = Form(None),
     observacoes: Optional[str] = Form(None),
     foto: Optional[UploadFile] = File(None),
     current_user: User = Depends(get_current_user_com_clinica),
@@ -107,6 +113,8 @@ def atualizar_paciente(
     paciente.data_nascimento = data_nascimento
     paciente.cpf = cpf
     paciente.observacoes = observacoes
+    paciente.endereco = endereco
+    paciente.convenio = convenio
 
     # Se veio nova imagem, substitui
     if foto:
