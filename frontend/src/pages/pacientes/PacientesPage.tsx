@@ -2,11 +2,11 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRef, useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { PacienteForm } from '@/components/paciente/PacienteForm';
 import { PacienteFormValues, pacienteSchema } from '@/schemas/pacienteSchema';
+import { cadastrarPaciente } from '@/services/pacienteService';
 
 export default function PacientesPage() {
   const { clinica } = useParams();
@@ -30,31 +30,13 @@ export default function PacientesPage() {
   });
 
   async function onSubmit(data: PacienteFormValues) {
-    const formData = new FormData();
-    formData.append('nome', data.nome);
-    formData.append('email', data.email);
-    formData.append('cpf', data.cpf);
-    formData.append('telefone', data.telefone);
-    formData.append('dataNascimento', data.dataNascimento);
-    formData.append('sexo', data.sexo);
-    formData.append('endereco', data.endereco);
-
-    if (data.convenio) {
-      formData.append('convenio', data.convenio);
-    }
-
-    if (data.foto && data.foto instanceof File) {
-      formData.append('foto', data.foto);
-    }
-
     try {
-      await axios.post(
-        `http://localhost:8000/${clinica}/pacientes/`,
-        formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        },
-      );
+      if (!clinica) {
+        toast.error('Clínica não encontrada na URL.');
+        return;
+      }
+
+      await cadastrarPaciente(clinica, data); // ✅ uso do service
       toast.success('Paciente cadastrado com sucesso!');
       navigate(`/${clinica}/dashboard`);
     } catch (error) {

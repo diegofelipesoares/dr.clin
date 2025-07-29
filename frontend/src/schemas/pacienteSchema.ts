@@ -5,7 +5,12 @@ import { z } from 'zod';
 const dataRegex = /^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[0-2])[/]\d{4}$/;
 
 export const pacienteSchema = z.object({
-  nome: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
+  nome: z
+  .string()
+  .min(3, 'Nome deve ter pelo menos 3 caracteres')
+  .refine((val) => val.trim().includes(' '), {
+    message: 'Informe o nome completo',
+  }),
   email: z.string().email('E-mail inválido'),
   cpf: z
     .string()
@@ -21,6 +26,7 @@ export const pacienteSchema = z.object({
   }),
   endereco: z.string().min(5, 'Endereço deve conter pelo menos 5 caracteres'),
   convenio: z.string().optional(),
+  observacoes: z.string().optional(),
 
   // Foto pode ser opcional e nula (como File ou undefined)
   foto: z

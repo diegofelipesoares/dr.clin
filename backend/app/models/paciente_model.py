@@ -16,6 +16,8 @@ class Paciente(Base):
     data_nascimento = Column(Date, nullable=True)
     cpf = Column(String, nullable=True)
     observacoes = Column(String, nullable=True)
+    foto_path = Column(String, nullable=True)
+
 
     user = relationship("User", back_populates="paciente")
     clinica = relationship("Clinica", back_populates="pacientes")
