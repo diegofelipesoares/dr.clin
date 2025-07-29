@@ -27,3 +27,14 @@ class PacienteResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+class PacienteListaResponse(BaseModel):
+    id: int
+    nome: str
+    email: str
+    telefone: Optional[str]
+    sexo: Optional[str]
+    perfil: str
+
+    class Config:
+        orm_mode = True

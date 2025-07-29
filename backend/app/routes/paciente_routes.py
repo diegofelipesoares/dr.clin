@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from typing import Optional
 from datetime import date
 import os
+from app.schemas.paciente_schema import PacienteListaResponse
+from sqlalchemy import select, join
+from fastapi import Response
 
 from app.database import get_db
 from app.models.paciente_model import Paciente
@@ -128,3 +131,25 @@ def atualizar_paciente(
     db.refresh(paciente)
 
     return paciente
+
+@router.get("/", response_model=list[PacienteListaResponse])
+def listar_pacientes(
+    current_user: User = Depends(get_current_user_com_clinica),
+    db: Session = Depends(get_db),
+):
+    # JOIN entre paciente e usuário
+    pacientes = (
+        db.query(
+            Paciente.id.label("id"),
+            User.name.label("nome"),
+            User.email.label("email"),
+            User.perfil.label("perfil"),
+            Paciente.telefone,
+            Paciente.sexo,
+        )
+        .join(User, Paciente.user_id == User.id)
+        .filter(Paciente.clinica_id == current_user.clinica_id)
+        .all()
+    )
+
+    return pacientes

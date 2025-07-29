@@ -7,7 +7,8 @@ import AgendamentosPage from '../pages/agendamentos/AgendamentosPage';
 import MedicosPage from '../pages/medicos/MedicosPage';
 import CadastrarMedico from '../pages/medicos/CadastrarMedico';
 import EditarMedico from '../pages/medicos/EditarMedico';
-import PacientesPage from '@/pages/pacientes/PacientesPage';
+import CadastrarPaciente from '@/pages/pacientes/CadastrarPacientes';
+import PacientesListPage from "@/pages/pacientes/PacientesListPage";
 
 import { PrivateRoutes } from './PrivateRoutes';
 import { PublicRoutes } from './PublicRoutes';
@@ -50,11 +51,11 @@ export function AppRoutes() {
               <Route element={<PrivateRoutes />}>
                 <Route path='dashboard' element={<DashboardPage />} />
                 <Route path='agendamentos' element={<AgendamentosPage />} />
-                <Route path='pacientes' element={<PacientesPage />} />
-                {/* <Route path="/pacientes" element={<ListaPacientesPage />} /> */}
+                <Route path='pacientes' element={<PacientesListPage />} />
+                <Route path="/pacientes/listar" element={<PacientesListPage />} />
                 <Route
                   path='/pacientes/cadastrar'
-                  element={<PacientesPage />}
+                  element={<CadastrarPaciente />}
                 />
                 {/* <Route path="/pacientes/:id/editar" element={<EditarPacientePage />} /> */}
                 <Route path='medicos' element={<MedicosPage />} />

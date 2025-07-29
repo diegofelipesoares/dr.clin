@@ -8,7 +8,7 @@ import { PacienteForm } from '@/components/paciente/PacienteForm';
 import { PacienteFormValues, pacienteSchema } from '@/schemas/pacienteSchema';
 import { cadastrarPaciente } from '@/services/pacienteService';
 
-export default function PacientesPage() {
+export default function CadastrarPaciente() {
   const { clinica } = useParams();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);

@@ -40,3 +40,11 @@ export async function cadastrarPaciente(
 
   return response.data;
 }
+
+import api from '@/lib/api';
+import { PacienteLista } from '@/types/paciente';
+
+export async function getPacientes(clinica: string): Promise<PacienteLista[]> {
+  const response = await api.get(`/${clinica}/pacientes`);
+  return response.data;
+}
