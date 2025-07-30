@@ -33,26 +33,28 @@ import { cn } from '@/lib/utils';
 interface PacienteFormProps {
   form: UseFormReturn<PacienteFormValues>;
   onSubmit: (data: PacienteFormValues) => void;
-  isEdit?: boolean;
+  modo?: 'cadastrar' | 'editar'; // <-- aqui
   preview?: string | null;
   setPreview?: (url: string | null) => void;
   fileInputRef?: RefObject<HTMLInputElement | null>;
   onDelete?: () => void;
+  onCancel?: () => void; // <-- novo prop opcional
 }
 
 export function PacienteForm({
   form,
   onSubmit,
-  isEdit = false,
+  modo,
   preview,
   setPreview,
   fileInputRef,
   onDelete,
+  onCancel,
 }: PacienteFormProps) {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">
-        {isEdit ? 'Editar Paciente' : 'Cadastrar Paciente'}
+        {modo === 'editar' ? 'Editar Paciente' : 'Cadastrar Paciente'}
       </h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
@@ -285,16 +287,30 @@ export function PacienteForm({
           </Card>
 
           {/* Botões */}
-          <div className='flex justify-between px-1 mt-4'>
-            {isEdit && (
-              <Button type='button' variant='destructive' onClick={onDelete}>
-                Excluir
+          <div className="flex justify-between items-center gap-4 px-1 mt-4">
+            {modo === 'editar' && (
+              <div className="flex gap-2">
+                {onDelete && (
+                  <Button type="button" variant="destructive" onClick={onDelete}>
+                    Excluir
+                  </Button>
+                )}
+                <Button type="button" variant="secondary" onClick={onCancel}>
+                  Cancelar
+                </Button>
+                <Button type="submit">
+                  Salvar Alterações
+                </Button>
+              </div>
+            )}
+
+            {modo !== 'editar' && (
+              <Button type="submit">
+                Cadastrar
               </Button>
             )}
-            <Button type='submit'>
-              {isEdit ? 'Salvar Alterações' : 'Cadastrar'}
-            </Button>
           </div>
+
         </form>
       </Form>
     </div>

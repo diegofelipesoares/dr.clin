@@ -19,11 +19,17 @@ class PacienteCreate(BaseModel):
 
 class PacienteResponse(BaseModel):
     id: int
+    nome: str
+    email: EmailStr
+    perfil: str
     telefone: Optional[str]
     sexo: Optional[str]
-    data_nascimento: Optional[date]
+    dataNascimento: Optional[date]
     cpf: Optional[str]
+    endereco: Optional[str]
+    convenio: Optional[str]
     observacoes: Optional[str]
+    fotoUrl: Optional[str]
 
     class Config:
         orm_mode = True

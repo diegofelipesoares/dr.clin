@@ -18,6 +18,7 @@ import HomePage from '@/pages/portal/Home';
 import AssinaturaPage from '@/pages/portal/Assinatura';
 import ClinicaNaoEncontrada from '@/pages/clinicas/ClinicaNaoEncontrada';
 import SelecionarClinicaPage from '@/pages/portal/SelecionarClinica';
+import EditarPaciente from '@/pages/pacientes/EditarPaciente';
 
 import { ClinicaProvider } from '@/context/ClinicaContext';
 
@@ -57,7 +58,8 @@ export function AppRoutes() {
                   path='/pacientes/cadastrar'
                   element={<CadastrarPaciente />}
                 />
-                {/* <Route path="/pacientes/:id/editar" element={<EditarPacientePage />} /> */}
+                <Route path="pacientes/:id" element={<EditarPaciente />} />
+                
                 <Route path='medicos' element={<MedicosPage />} />
                 <Route path='medicos/cadastrar' element={<CadastrarMedico />} />
                 <Route path='/medicos/:id' element={<EditarMedico />} />

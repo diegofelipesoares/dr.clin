@@ -4,13 +4,14 @@ from typing import Optional
 from datetime import date
 import os
 from app.schemas.paciente_schema import PacienteListaResponse
+from app.schemas.paciente_schema import PacienteResponse
 from sqlalchemy import select, join
 from fastapi import Response
 
 from app.database import get_db
 from app.models.paciente_model import Paciente
 from app.models.user_model import User
-from app.schemas.paciente_schema import PacienteResponse
+
 from app.dependencies.auth import get_current_user_com_clinica
 from app.utils.image_utils import salvar_foto  # 👈 reutilizando o utilitário já usado em médicos
 
@@ -130,7 +131,23 @@ def atualizar_paciente(
     db.commit()
     db.refresh(paciente)
 
-    return paciente
+    # Acessa o usuário associado ao paciente
+    usuario = db.query(User).filter(User.id == paciente.user_id).first()
+
+    return {
+        "id": paciente.id,
+        "nome": usuario.name,
+        "email": usuario.email,
+        "perfil": usuario.perfil,
+        "telefone": paciente.telefone,
+        "sexo": paciente.sexo,
+        "dataNascimento": paciente.data_nascimento,
+        "cpf": paciente.cpf,
+        "endereco": paciente.endereco,
+        "convenio": paciente.convenio,
+        "observacoes": paciente.observacoes,
+        "fotoUrl": paciente.foto_path,
+    }
 
 @router.get("/", response_model=list[PacienteListaResponse])
 def listar_pacientes(
@@ -153,3 +170,35 @@ def listar_pacientes(
     )
 
     return pacientes
+
+@router.get("/{id}/detalhes", response_model=PacienteResponse)
+def obter_paciente_por_id(
+    id: int,
+    db: Session = Depends(get_db),
+    user_data: User = Depends(get_current_user_com_clinica),
+):
+    paciente = db.query(Paciente).filter(
+        Paciente.id == id,
+        Paciente.clinica_id == user_data.clinica_id
+    ).first()
+
+    if not paciente:
+        raise HTTPException(status_code=404, detail="Paciente não encontrado")
+
+    # Acessa o usuário associado ao paciente
+    usuario = db.query(User).filter(User.id == paciente.user_id).first()
+
+    return PacienteResponse(
+        id=paciente.id,
+        nome=usuario.name,
+        email=usuario.email,
+        perfil=usuario.perfil,
+        telefone=paciente.telefone,
+        sexo=paciente.sexo,
+        dataNascimento=paciente.data_nascimento,
+        cpf=paciente.cpf,
+        endereco=paciente.endereco,
+        convenio=paciente.convenio,
+        observacoes=paciente.observacoes,
+        fotoUrl=paciente.foto_path
+    )
