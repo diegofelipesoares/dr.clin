@@ -18,6 +18,8 @@ from app.database import Base, engine
 from fastapi.staticfiles import StaticFiles
 
 from fastapi_jwt_auth import AuthJWT
+from fastapi.responses import JSONResponse
+from fastapi_jwt_auth.exceptions import AuthJWTException
 from app.schemas.auth import Settings
 # precisa importar para JWT funcionar, mesmo sem usar diretamente
 import app.config 
@@ -38,7 +40,7 @@ app = FastAPI()
 # Necessário quando back roda em um domínio diferente do front (ex: localhost:8000 vs localhost:5173)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # domínio permitido para comunicação com a API (React em desenvolvimento) (Vercel mais tarde)
+    allow_origins=["http://localhost:5173", "http://localhost:5173/"],  # domínio permitido para comunicação com a API (React em desenvolvimento) (Vercel mais tarde)
     allow_credentials=True, # permite envio de cookies/autenticação
     allow_methods=["*"], # permitem todos os métodos.
     allow_headers=["*"], # permitem todos os cabeçalhos.
@@ -61,3 +63,10 @@ def root():
 @AuthJWT.load_config
 def get_config():
     return Settings()
+
+@app.exception_handler(AuthJWTException)
+def authjwt_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.message}
+    )

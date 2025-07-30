@@ -36,7 +36,7 @@ export default function PacientesListPage() {
             Acesse os detalhes de cada paciente
           </p>
         </div>
-        <Button onClick={() => navigate(`/${clinica}/pacientes/novo`)}>
+        <Button onClick={() => navigate(`/${clinica}/pacientes/cadastrar`)}>
           + Adicionar paciente
         </Button>
       </div>
