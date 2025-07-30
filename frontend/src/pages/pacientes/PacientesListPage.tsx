@@ -33,7 +33,7 @@ export default function PacientesListPage() {
         <div>
           <h2 className="text-2xl font-bold">Pacientes</h2>
           <p className="text-muted-foreground text-sm">
-            Access a detailed overview of key metrics and patient outcomes
+            Acesse os detalhes de cada paciente
           </p>
         </div>
         <Button onClick={() => navigate(`/${clinica}/pacientes/novo`)}>
@@ -44,24 +44,24 @@ export default function PacientesListPage() {
       <div className="rounded-md border bg-white p-5">
         <Table>
           <TableHeader>
-            <TableRow className="bg-blue-50 text-xs uppercase text-muted-foreground font-semibold">
-              <TableHead className="rounded-tl-md bg-blue-50">NOME</TableHead>
-              <TableHead>E-MAIL</TableHead>
-              <TableHead>NÚMERO DE CELULAR</TableHead>
-              <TableHead>SEXO</TableHead>
-              <TableHead>PERFIL</TableHead>
-              <TableHead className="w-10" /> 
+            <TableRow className="bg-blue-50 text-xs uppercase text-muted-foreground font-semibold border-none">
+              <TableHead className="rounded-l-lg bg-blue-50 px-4 py-3">Nome</TableHead>
+              <TableHead className="bg-blue-50 px-4 py-3">E-mail</TableHead>
+              <TableHead className="bg-blue-50 px-4 py-3">Número de celular</TableHead>
+              <TableHead className="bg-blue-50 px-4 py-3">Sexo</TableHead>
+              <TableHead className="bg-blue-50 px-4 py-3">Perfil</TableHead>
+              <TableHead className="rounded-r-lg bg-blue-50 w-10 px-4 py-3">Editar</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {pacientes.map((paciente) => (
-              <TableRow key={paciente.id}>
-                <TableCell>{paciente.nome}</TableCell>
-                <TableCell>{paciente.email}</TableCell>
-                <TableCell>{paciente.telefone}</TableCell>
-                <TableCell>{paciente.sexo}</TableCell>
-                <TableCell>{paciente.perfil}</TableCell>
-                <TableCell>
+              <TableRow key={paciente.id} className="hover:bg-muted transition">
+                <TableCell className="px-4">{paciente.nome}</TableCell>
+                <TableCell className="px-4">{paciente.email}</TableCell>
+                <TableCell className="px-4">{paciente.telefone}</TableCell>
+                <TableCell className="px-4">{paciente.sexo}</TableCell>
+                <TableCell className="px-4">{paciente.perfil}</TableCell>
+                <TableCell className="px-4">
                   <Button
                     variant="ghost"
                     size="icon"
