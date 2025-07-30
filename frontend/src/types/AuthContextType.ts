@@ -9,8 +9,9 @@ export type User = {
   clinica_id?: number | null;
 };
 
-// Tipo do contexto de autenticação com o usuário e o setter
 export type AuthContextType = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  logout: () => void;
+  isAuthenticated: boolean;
 };

@@ -1,12 +1,9 @@
-//Criando o provider (Informação q vai dentro do CONTEXT)
-//É o elemento que será compartilhado para toda a aplicação.
-//Permite que toda a aplicação veja se o usuário está ou não logado.
-
 import type { FC, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { AuthContext } from './AuthContext';
-import type { User } from '../types/AuthContextType';
+import type { User, AuthContextType } from '../types/AuthContextType';
 import api from '../lib/api';
+import { decodeJwt } from 'jose'; // ✅ substituindo jwt-decode
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -15,22 +12,42 @@ interface AuthProviderProps {
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refresh_token');
+    setUser(null);
+    window.location.href = '/login';
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
+
     if (token) {
-      api
-        .get('/auth/me')
-        .then(res => setUser(res.data))
-        .catch(() => {
-          setUser(null);
-          localStorage.removeItem('token');
-        });
+      try {
+        const decoded = decodeJwt(token) as { exp: number };
+        const isExpired = Date.now() >= decoded.exp * 1000;
+
+        if (isExpired) {
+          logout();
+        } else {
+          api
+            .get('/auth/me')
+            .then(res => setUser(res.data))
+            .catch(() => logout());
+        }
+      } catch (err) {
+        console.error('Erro ao decodificar JWT:', err);
+        logout();
+      }
     }
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const contextValue: AuthContextType = {
+    user,
+    setUser,
+    logout,
+    isAuthenticated: !!user,
+  };
+
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };

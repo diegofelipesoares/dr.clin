@@ -51,17 +51,20 @@ def login(subdominio: str, user: UserLogin, db: Session = Depends(get_db), Autho
     if not db_user or not bcrypt.verify(user.password, db_user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
 
-    # 🔐 Cria token com clinica_id
+    # 🔐 Gera access e refresh token
     access_token = Authorize.create_access_token(
         subject=user.email,
         user_claims={"clinica_id": db_user.clinica_id}
     )
+    refresh_token = Authorize.create_refresh_token(subject=user.email)
 
     return {
         "access_token": access_token,
+        "refresh_token": refresh_token,
         "clinica_dominio": clinica.dominio,
         "perfil": db_user.perfil,
         "name": db_user.name,
         "email": db_user.email
     }
+
 

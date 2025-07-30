@@ -1,9 +1,7 @@
-//HOOK useAuth
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import type { AuthContextType } from '../types/AuthContextType';
 
-// Hook personalizado para acessar o contexto de autenticação
 export function useAuth(): AuthContextType {
   const context = useContext(AuthContext);
   if (!context) {

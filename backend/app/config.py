@@ -10,11 +10,11 @@ load_dotenv()
 
 # Configuração do FastAPI JWT Auth'
 class Settings(BaseModel):
-    authjwt_secret_key: str = os.getenv("SECRET_KEY") # Chave secreta para assinatura do token
-    authjwt_access_token_expires: timedelta = timedelta(minutes=60)  # 1h expiração do token
-    authjwt_algorithm: str = "HS256" # Algoritmo de assinatura do token
+    authjwt_secret_key: str = os.getenv("SECRET_KEY")  # 🔐 Chave para assinatura do token
+    authjwt_access_token_expires: timedelta = timedelta(minutes=60)  # ⏱️ Access token: 1 hora
+    authjwt_refresh_token_expires: timedelta = timedelta(days=7)     # 🔁 Refresh token: 7 dias
+    authjwt_algorithm: str = "HS256"
 
-#
 @AuthJWT.load_config
 def get_config() -> Settings:
     return Settings()
