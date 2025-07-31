@@ -52,8 +52,8 @@ export function PacienteForm({
   onCancel,
 }: PacienteFormProps) {
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">
+    <div className='p-6 max-w-4xl mx-auto'>
+      <h2 className='text-2xl font-bold mb-4'>
         {modo === 'editar' ? 'Editar Paciente' : 'Cadastrar Paciente'}
       </h2>
       <Form {...form}>
@@ -68,7 +68,10 @@ export function PacienteForm({
                   <FormItem>
                     <FormLabel>Nome completo</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder='Digite o nome do paciente' />
+                      <Input
+                        {...field}
+                        placeholder='Digite o nome do paciente'
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -118,16 +121,16 @@ export function PacienteForm({
                     <FormLabel>Telefone</FormLabel>
                     <FormControl>
                       <InputMaskControlled
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder='(xx) xxxxx-xxxx'
-                          name={field.name}
-                          ref={field.ref}
-                          className={cn(
-                            'flex h-10 w-full rounded-md border border-input bg-card px-3 py-2 text-sm ring-offset-background',
-                            'placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-                          )}
-                        />
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder='(xx) xxxxx-xxxx'
+                        name={field.name}
+                        ref={field.ref}
+                        className={cn(
+                          'flex h-10 w-full rounded-md border border-input bg-card px-3 py-2 text-sm ring-offset-background',
+                          'placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                        )}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -202,7 +205,10 @@ export function PacienteForm({
                   <FormItem>
                     <FormLabel>Convênio / Plano</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder='Nome do plano ou convênio' />
+                      <Input
+                        {...field}
+                        placeholder='Nome do plano ou convênio'
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -219,7 +225,12 @@ export function PacienteForm({
                       <textarea
                         {...field}
                         placeholder='Escreva observações relevantes do paciente...'
-                        className='w-full h-24 border border-input rounded-md px-3 py-2 text-sm resize-y'
+                        className='
+                        bg-white 
+                        text-gray-900 
+                        focus-visible:ring-ring 
+                        placeholder:text-muted-foreground 
+                        w-full h-24 border border-input rounded-md px-3 py-2 text-sm shadow-sm resize-y'
                       />
                     </FormControl>
                     <FormMessage />
@@ -282,35 +293,31 @@ export function PacienteForm({
                   </FormItem>
                 )}
               />
-
             </CardContent>
           </Card>
 
           {/* Botões */}
-          <div className="flex justify-between items-center gap-4 px-1 mt-4">
+          <div className='flex justify-between items-center gap-4 px-1 mt-4'>
             {modo === 'editar' && (
-              <div className="flex gap-2">
+              <div className='flex gap-2'>
                 {onDelete && (
-                  <Button type="button" variant="destructive" onClick={onDelete}>
+                  <Button
+                    type='button'
+                    variant='destructive'
+                    onClick={onDelete}
+                  >
                     Excluir
                   </Button>
                 )}
-                <Button type="button" variant="secondary" onClick={onCancel}>
+                <Button type='button' variant='secondary' onClick={onCancel}>
                   Cancelar
                 </Button>
-                <Button type="submit">
-                  Salvar Alterações
-                </Button>
+                <Button type='submit'>Salvar Alterações</Button>
               </div>
             )}
 
-            {modo !== 'editar' && (
-              <Button type="submit">
-                Cadastrar
-              </Button>
-            )}
+            {modo !== 'editar' && <Button type='submit'>Cadastrar</Button>}
           </div>
-
         </form>
       </Form>
     </div>
