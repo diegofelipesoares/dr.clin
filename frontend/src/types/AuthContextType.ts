@@ -7,6 +7,7 @@ export type User = {
   email: string;
   perfil: 'paciente' | 'medico' | 'ajudante' | 'secretario' | 'admin';
   clinica_id?: number | null;
+  fotoUrl?: string;
 };
 
 export type AuthContextType = {
