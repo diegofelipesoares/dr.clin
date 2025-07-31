@@ -61,10 +61,6 @@ app.include_router(api_router)
 def root():
     return {"message": "Bem-vindo ao backend Dr.Clin"}
 
-@AuthJWT.load_config
-def get_config():
-    return Settings()
-
 @app.exception_handler(AuthJWTException)
 def authjwt_exception_handler(request, exc):
     return JSONResponse(
