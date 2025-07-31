@@ -41,12 +41,25 @@ export default function EditarPaciente() {
     const pacienteId = Number(id); // Agora é number
 
     async function fetchPaciente() {
+      function formatDateToBR(isoDate: string): string {
+        const [ano, mes, dia] = isoDate.split('-');
+        return `${dia}/${mes}/${ano}`; // dd/mm/yyyy
+      }
+
       try {
         const paciente = await getPacientePorId(clinicaId, pacienteId);
-        form.reset(paciente);
-
+        form.reset({
+          ...paciente,
+          dataNascimento: paciente.dataNascimento
+            ? formatDateToBR(paciente.dataNascimento)
+            : '',
+        });
+        const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
         if (paciente.fotoUrl) {
-          setPreview(paciente.fotoUrl);
+          const urlFinal = paciente.fotoUrl.startsWith('http')
+            ? paciente.fotoUrl
+            : `${baseURL}/${paciente.fotoUrl}`;
+          setPreview(urlFinal);
         }
       } catch (error) {
         console.error(error);
@@ -64,12 +77,12 @@ export default function EditarPaciente() {
     const pacienteId = Number(id);
 
     try {
-        await atualizarPaciente(clinicaId, pacienteId, data);
-        toast.success('Paciente atualizado com sucesso!');
-        navigate(`/${clinica}/pacientes`);
+      await atualizarPaciente(clinicaId, pacienteId, data);
+      toast.success('Paciente atualizado com sucesso!');
+      navigate(`/${clinica}/pacientes`);
     } catch (error) {
-        console.error(error);
-        toast.error('Erro ao atualizar paciente.');
+      console.error(error);
+      toast.error('Erro ao atualizar paciente.');
     }
   }
 
@@ -78,7 +91,9 @@ export default function EditarPaciente() {
     const clinicaId = clinica;
     const pacienteId = Number(id);
 
-    const confirm = window.confirm('Tem certeza que deseja excluir este paciente?');
+    const confirm = window.confirm(
+      'Tem certeza que deseja excluir este paciente?',
+    );
     if (!confirm) return;
 
     try {
@@ -93,7 +108,7 @@ export default function EditarPaciente() {
 
   // ⚠️ Verifica se os parâmetros ainda são indefinidos (após os hooks!)
   if (!clinica || !id) {
-    return <div className="p-6 text-red-500">Parâmetros inválidos na URL.</div>;
+    return <div className='p-6 text-red-500'>Parâmetros inválidos na URL.</div>;
   }
 
   return (
@@ -105,7 +120,7 @@ export default function EditarPaciente() {
       onSubmit={onSubmit}
       onCancel={() => navigate(`/${clinica}/pacientes`)}
       onDelete={handleDelete}
-      modo="editar"
+      modo='editar'
     />
   );
 }

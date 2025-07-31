@@ -50,6 +50,7 @@ app.add_middleware(
 # Isso permite acessar arquivos enviados pelo usuário (como fotos de médicos) via URL
 # Exemplo de acesso: http://localhost:8000/uploads/nome_da_foto.jpg
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Registra as rotas importadas via api_router
 app.include_router(api_router)

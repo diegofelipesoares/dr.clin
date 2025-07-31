@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 import { PacienteForm } from '@/components/paciente/PacienteForm';
 import { PacienteFormValues, pacienteSchema } from '@/schemas/pacienteSchema';
@@ -39,8 +40,13 @@ export default function CadastrarPaciente() {
       await cadastrarPaciente(clinica, data); // ✅ uso do service
       toast.success('Paciente cadastrado com sucesso!');
       navigate(`/${clinica}/dashboard`);
-    } catch (error) {
-      console.error('Erro ao cadastrar paciente:', error);
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      console.error('Erro ao cadastrar paciente:', axiosError);
+      console.log(
+        '❌ Detalhes da resposta do erro:',
+        axiosError.response?.data,
+      );
       toast.error('Erro ao cadastrar paciente. Verifique os dados.');
     }
   }

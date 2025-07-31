@@ -36,7 +36,13 @@ export async function cadastrarPaciente(
   if (data.telefone) formData.append('telefone', data.telefone);
 
   const dataISO = formatDateToISO(data.dataNascimento);
-  if (dataISO) formData.append('data_nascimento', dataISO);
+
+  console.log('🧪 Valor original dataNascimento:', data.dataNascimento);
+  console.log('🧪 Conteúdo formatDateToISO:', dataISO);
+
+  if (dataISO) {
+    formData.append('data_nascimento', dataISO);
+  }
 
   if (data.sexo) formData.append('sexo', data.sexo);
   if (data.endereco) formData.append('endereco', data.endereco);
