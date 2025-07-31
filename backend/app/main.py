@@ -40,7 +40,7 @@ app = FastAPI()
 # Necessário quando back roda em um domínio diferente do front (ex: localhost:8000 vs localhost:5173)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # domínio permitido para comunicação com a API (React em desenvolvimento) (Vercel mais tarde)
+    allow_origins=["*"],  # domínio permitido para comunicação com a API (React em desenvolvimento) (Vercel mais tarde)
     allow_credentials=True, # permite envio de cookies/autenticação
     allow_methods=["*"], # permitem todos os métodos.
     allow_headers=["*"], # permitem todos os cabeçalhos.

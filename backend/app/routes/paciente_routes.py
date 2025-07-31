@@ -90,7 +90,25 @@ def criar_paciente(
         paciente.foto_path = caminho_arquivo
         db.commit()
 
-    return paciente
+    # 📌 Determina o usuário final para preencher o retorno
+    usuario_final = usuario or novo_usuario
+
+    return {
+        "id": paciente.id,
+        "nome": usuario_final.name,
+        "email": usuario_final.email,
+        "perfil": usuario_final.perfil,
+        "telefone": paciente.telefone,
+        "sexo": paciente.sexo,
+        "dataNascimento": paciente.data_nascimento,
+        "cpf": paciente.cpf,
+        "endereco": paciente.endereco,
+        "convenio": paciente.convenio,
+        "observacoes": paciente.observacoes,
+        "fotoUrl": paciente.foto_path,
+    }
+
+
 
 @router.put("/{id}", response_model=PacienteResponse)
 def atualizar_paciente(
