@@ -2,8 +2,10 @@ import { SidebarProvider, SidebarTrigger } from '../components/ui/sidebar';
 import { AppSidebar } from '../components/sidebar/app-sidebar';
 import { AppBreadcrumb } from '../components/BreadCrumb/app-breadcrumb'; // Importe o Breadcrumb
 import { Outlet } from 'react-router-dom';
+import { useSessaoExpirada } from '@/hooks/useSessaoExpirada';
 
 export function MainLayout() {
+  useSessaoExpirada(); // ⏳ Monitora e redireciona após expiração do refresh_token
   return (
     <div className='flex min-h-screen'>
       <SidebarProvider>

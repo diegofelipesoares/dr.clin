@@ -40,6 +40,9 @@ import {
 import Logo from '../../assets/logo.svg';
 import { useClinica } from '@/hooks/useClinica';
 
+//contador de expiração da sessão
+import { SessaoExpiraEm } from '@/components/ui/SessaoExpiraEm';
+
 export function AppSidebar() {
   const { state } = useSidebar(); // ← detecta se o sidebar está aberto ou colapsado
   const nomeClinica = useClinica();
@@ -123,7 +126,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {/* Itens do menu principal via MAP */}
-              {menuItems.map(({ title, path, icon: Icon, submenu }) => (
+              {menuItems.map(({ title, path, icon: Icon, submenu }) =>
                 submenu ? (
                   <Collapsible key={title} className='group/collapsible'>
                     <SidebarMenuItem>
@@ -139,7 +142,10 @@ export function AppSidebar() {
                       <CollapsibleContent className='overflow-hidden transition-all data-[state=closed]:max-h-0 data-[state=open]:max-h-40'>
                         <SidebarMenu className='gap-0'>
                           {submenu.map(({ title: subTitle, path: subPath }) => (
-                            <SidebarMenuItem key={subTitle} className='pl-6 m-0'>
+                            <SidebarMenuItem
+                              key={subTitle}
+                              className='pl-6 m-0'
+                            >
                               <SidebarMenuButton asChild>
                                 <Link to={subPath}>{subTitle}</Link>
                               </SidebarMenuButton>
@@ -158,8 +164,8 @@ export function AppSidebar() {
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                )
-              ))}
+                ),
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -182,24 +188,26 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
+      <SessaoExpiraEm />
       <SidebarSeparator />
 
       <SidebarFooter>
         {state === 'expanded' && (
-          <div className='px-4 py-4 flex items-center gap-2 text-sm text-muted-foreground mt-auto'>
-            <img
-              src={Logo}
-              alt='Logo Dr.Clin'
-              className='w-6 h-6 object-contain'
-            />
-            <div className='flex flex-col leading-tight'>
-              <span className='font-semibold'>Dr.Clin</span>
-              <span className='text-xs text-muted-foreground'>
-                www.drclin.com.br
-              </span>
+          <>
+            <div className='px-4 py-4 flex items-center gap-2 text-sm text-muted-foreground mt-auto'>
+              <img
+                src={Logo}
+                alt='Logo Dr.Clin'
+                className='w-6 h-6 object-contain'
+              />
+              <div className='flex flex-col leading-tight'>
+                <span className='font-semibold'>Dr.Clin</span>
+                <span className='text-xs text-muted-foreground'>
+                  www.drclin.com.br
+                </span>
+              </div>
             </div>
-          </div>
+          </>
         )}
       </SidebarFooter>
     </Sidebar>
