@@ -56,9 +56,12 @@ export default function EditarPaciente() {
         });
         const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
         if (paciente.fotoUrl) {
-          const urlFinal = paciente.fotoUrl.startsWith('http')
+          const urlBase = paciente.fotoUrl.startsWith('http')
             ? paciente.fotoUrl
             : `${baseURL}/${paciente.fotoUrl}`;
+
+          // Adiciona timestamp para evitar cache
+          const urlFinal = `${urlBase}?v=${Date.now()}`;
           setPreview(urlFinal);
         }
       } catch (error) {

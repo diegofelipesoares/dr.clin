@@ -9,16 +9,21 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LogOut, Settings, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { executarLogout } from '@/lib/logout';
 
 export function UserMenu() {
-  const { user, logout } = useAuth();
-  console.log('👤 user:', user);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className='outline-none'>
         <Avatar className='h-9 w-9'>
-          <AvatarImage src={user?.fotoUrl ?? ''} alt={user?.name} />
+          <AvatarImage
+            src={user?.fotoUrl ? `${user.fotoUrl}?v=${Date.now()}` : ''}
+            alt={user?.name}
+          />
           <AvatarFallback>
             <User className='h-5 w-5 text-muted-foreground' />
           </AvatarFallback>
@@ -50,7 +55,7 @@ export function UserMenu() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={logout}>
+        <DropdownMenuItem onClick={() => executarLogout(navigate)}>
           <LogOut className='mr-2 h-4 w-4' />
           Sair
         </DropdownMenuItem>
