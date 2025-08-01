@@ -13,12 +13,27 @@ import {
 } from '@/services/pacienteService';
 import { PacienteForm } from '@/components/paciente/PacienteForm';
 
+import {
+  AlertDialog,
+  //AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from '@/components/ui/alert-dialog';
+
+//import { Button } from '@/components/ui/button';
+
 export default function EditarPaciente() {
   const { clinica, id } = useParams<{ clinica?: string; id?: string }>();
   const navigate = useNavigate();
 
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const form = useForm<PacienteFormValues>({
     resolver: zodResolver(pacienteSchema),
@@ -37,13 +52,13 @@ export default function EditarPaciente() {
 
   useEffect(() => {
     if (!clinica || !id) return;
-    const clinicaId = clinica; // Agora é do tipo string
-    const pacienteId = Number(id); // Agora é number
+    const clinicaId = clinica;
+    const pacienteId = Number(id);
 
     async function fetchPaciente() {
       function formatDateToBR(isoDate: string): string {
         const [ano, mes, dia] = isoDate.split('-');
-        return `${dia}/${mes}/${ano}`; // dd/mm/yyyy
+        return `${dia}/${mes}/${ano}`;
       }
 
       try {
@@ -54,13 +69,13 @@ export default function EditarPaciente() {
             ? formatDateToBR(paciente.dataNascimento)
             : '',
         });
+
         const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
         if (paciente.fotoUrl) {
           const urlBase = paciente.fotoUrl.startsWith('http')
             ? paciente.fotoUrl
             : `${baseURL}/${paciente.fotoUrl}`;
 
-          // Adiciona timestamp para evitar cache
           const urlFinal = `${urlBase}?v=${Date.now()}`;
           setPreview(urlFinal);
         }
@@ -76,11 +91,8 @@ export default function EditarPaciente() {
   async function onSubmit(data: PacienteFormValues) {
     if (!clinica || !id) return;
 
-    const clinicaId = clinica;
-    const pacienteId = Number(id);
-
     try {
-      await atualizarPaciente(clinicaId, pacienteId, data);
+      await atualizarPaciente(clinica, Number(id), data);
       toast.success('Paciente atualizado com sucesso!');
       navigate(`/${clinica}/pacientes`);
     } catch (error) {
@@ -91,16 +103,9 @@ export default function EditarPaciente() {
 
   async function handleDelete() {
     if (!clinica || !id) return;
-    const clinicaId = clinica;
-    const pacienteId = Number(id);
-
-    const confirm = window.confirm(
-      'Tem certeza que deseja excluir este paciente?',
-    );
-    if (!confirm) return;
 
     try {
-      await deletePaciente(clinicaId, pacienteId);
+      await deletePaciente(clinica, Number(id));
       toast.success('Paciente excluído com sucesso!');
       navigate(`/${clinica}/pacientes`);
     } catch (error) {
@@ -109,21 +114,45 @@ export default function EditarPaciente() {
     }
   }
 
-  // ⚠️ Verifica se os parâmetros ainda são indefinidos (após os hooks!)
   if (!clinica || !id) {
     return <div className='p-6 text-red-500'>Parâmetros inválidos na URL.</div>;
   }
 
   return (
-    <PacienteForm
-      form={form}
-      preview={preview}
-      setPreview={setPreview}
-      fileInputRef={fileInputRef}
-      onSubmit={onSubmit}
-      onCancel={() => navigate(`/${clinica}/pacientes`)}
-      onDelete={handleDelete}
-      modo='editar'
-    />
+    <>
+      <PacienteForm
+        form={form}
+        preview={preview}
+        setPreview={setPreview}
+        fileInputRef={fileInputRef}
+        onSubmit={onSubmit}
+        onCancel={() => navigate(`/${clinica}/pacientes`)}
+        onDelete={() => setConfirmOpen(true)}
+        modo='editar'
+      />
+
+      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja excluir este paciente? Essa ação não poderá
+              ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setConfirmOpen(false);
+                handleDelete();
+              }}
+            >
+              Sim, excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

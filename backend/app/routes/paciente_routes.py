@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Path
 from sqlalchemy.orm import Session
 from typing import Optional
 from datetime import date
@@ -14,6 +14,7 @@ from app.models.user_model import User
 
 from app.dependencies.auth import get_current_user_com_clinica
 from app.utils.image_utils import salvar_foto  # 👈 reutilizando o utilitário já usado em médicos
+
 
 router = APIRouter(prefix="/{clinica}/pacientes", tags=["Pacientes"])
 
@@ -220,3 +221,25 @@ def obter_paciente_por_id(
         observacoes=paciente.observacoes,
         fotoUrl=paciente.foto_path
     )
+
+
+
+@router.delete("/{paciente_id}", status_code=204)
+def excluir_paciente(
+    paciente_id: int = Path(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user_com_clinica),
+):
+    paciente = (
+        db.query(Paciente)
+        .filter_by(id=paciente_id, clinica_id=current_user.clinica_id)
+        .first()
+    )
+
+    if not paciente:
+        raise HTTPException(status_code=404, detail="Paciente não encontrado")
+
+    db.delete(paciente)
+    db.commit()
+    return Response(status_code=204)
+
