@@ -34,6 +34,7 @@ import {
   Users,
   Gem,
   ChevronDown,
+  UserCog2,
 } from 'lucide-react';
 
 //Importação do logo da aplicação
@@ -48,7 +49,8 @@ export function AppSidebar() {
   const nomeClinica = useClinica();
   const { clinica } = useParams();
 
-  // Aqui você define os itens do menu principal e os path para rotas
+  // Aqui você define os itens do menu e os path para rotas
+  // Menu principal: Dashboard e Agendamentos
   const menuItems = [
     {
       title: 'Dashboard',
@@ -60,6 +62,10 @@ export function AppSidebar() {
       path: `/${clinica}/agendamentos`,
       icon: CalendarDays,
     },
+  ];
+
+  // Menu de usuários: Pacientes, Médicos, Gestores
+  const userItems = [
     {
       title: 'Pacientes',
       icon: Users,
@@ -69,11 +75,19 @@ export function AppSidebar() {
       ],
     },
     {
-      title: 'Medicos',
+      title: 'Médicos',
       icon: Stethoscope,
       submenu: [
         { title: 'Listar', path: `/${clinica}/medicos` },
         { title: 'Cadastrar', path: `/${clinica}/medicos/cadastrar` },
+      ],
+    },
+    {
+      title: 'Gestores',
+      icon: UserCog2,
+      submenu: [
+        { title: 'Listar', path: `/${clinica}/gestores` },
+        { title: 'Cadastrar', path: `/${clinica}/gestores/cadastrar` },
       ],
     },
   ];
@@ -120,57 +134,62 @@ export function AppSidebar() {
       {/* Conteúdo do Sidebar */}
       {/* Aqui você pode colocar os grupos de menu e outros itens que deseja exibir */}
       <SidebarContent>
+        {/* Grupo - Menu Principal */}
         <SidebarGroup>
-          {/* Grupo - Menu principal */}
           <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {/* Itens do menu principal via MAP */}
-              {menuItems.map(({ title, path, icon: Icon, submenu }) =>
-                submenu ? (
-                  <Collapsible key={title} className='group/collapsible'>
-                    <SidebarMenuItem>
-                      <CollapsibleTrigger asChild>
-                        <SidebarMenuButton className='flex items-center justify-between w-full focus:outline-none focus:ring-0 ring-0 hover:ring-0 group-hover:ring-0 border-none'>
-                          <div className='flex items-center gap-2'>
-                            <Icon className='w-4 h-4' />
-                            <span className='font-normal'>{title}</span>
-                          </div>
-                          <ChevronDown className='w-4 h-4 transition-transform group-data-[state=open]/collapsible:rotate-180' />
-                        </SidebarMenuButton>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className='overflow-hidden transition-all data-[state=closed]:max-h-0 data-[state=open]:max-h-40'>
-                        <SidebarMenu className='gap-0'>
-                          {submenu.map(({ title: subTitle, path: subPath }) => (
-                            <SidebarMenuItem
-                              key={subTitle}
-                              className='pl-6 m-0'
-                            >
-                              <SidebarMenuButton asChild>
-                                <Link to={subPath}>{subTitle}</Link>
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                          ))}
-                        </SidebarMenu>
-                      </CollapsibleContent>
-                    </SidebarMenuItem>
-                  </Collapsible>
-                ) : (
-                  <SidebarMenuItem key={title}>
-                    <SidebarMenuButton asChild>
-                      <Link to={path} className='flex items-center gap-2'>
-                        <Icon className='w-5 h-5' />
-                        <span>{title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ),
-              )}
+              {menuItems.map(({ title, path, icon: Icon }) => (
+                <SidebarMenuItem key={title}>
+                  <SidebarMenuButton asChild>
+                    <Link to={path} className='flex items-center gap-2'>
+                      <Icon className='w-5 h-5' />
+                      <span>{title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Grupo - Usuários */}
         <SidebarGroup>
-          {/* Grupo - Outros */}
+          <SidebarGroupLabel>Usuários</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {userItems.map(({ title, icon: Icon, submenu }) => (
+                <Collapsible key={title} className='group/collapsible'>
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton className='flex items-center justify-between w-full focus:outline-none'>
+                        <div className='flex items-center gap-2'>
+                          <Icon className='w-4 h-4' />
+                          <span className='font-normal'>{title}</span>
+                        </div>
+                        <ChevronDown className='w-4 h-4 transition-transform group-data-[state=open]/collapsible:rotate-180' />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className='overflow-hidden transition-all data-[state=closed]:max-h-0 data-[state=open]:max-h-40'>
+                      <SidebarMenu className='gap-0'>
+                        {submenu?.map(({ title: subTitle, path: subPath }) => (
+                          <SidebarMenuItem key={subTitle} className='pl-6 m-0'>
+                            <SidebarMenuButton asChild>
+                              <Link to={subPath}>{subTitle}</Link>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        ))}
+                      </SidebarMenu>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Grupo - Outros */}
+        <SidebarGroup>
           <SidebarGroupLabel>Outros</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -188,6 +207,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
       <SessaoExpiraEm />
       <SidebarSeparator />
 
