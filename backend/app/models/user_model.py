@@ -14,7 +14,6 @@ class User(Base): #Classe user como tabela baseada na classe Base do SQLAlchemy
 
     perfil = Column(String, nullable=False)  # paciente, medico, ajudante, secretario, admin
     clinica_id = Column(Integer, ForeignKey("clinicas.id"))
-    foto = Column(String, nullable=True)
     
     clinica = relationship("Clinica", back_populates="usuarios")  # Relacionamento com a tabela Clinica
     paciente = relationship("Paciente", uselist=False, back_populates="user")
