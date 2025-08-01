@@ -14,7 +14,8 @@ protected_auth_router = APIRouter(prefix="/{clinica}/auth", tags=["Auth"])
 def get_me(request: Request, current_user: User = Depends(get_current_user_com_clinica)):
     foto_url = None
     if current_user.foto:
-        foto_url = request.url_for("static", path=f"pacientes/{current_user.id}/{current_user.foto}")
+        foto_url = f"{request.base_url}static/users/{current_user.id}/{current_user.foto}"
+        #foto_url = request.url_for("static", path=f"pacientes/{current_user.id}/{current_user.foto}")
 
     return {
         "id": current_user.id,

@@ -44,7 +44,7 @@ export function LoginForm() {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       // 📥 Obtem os dados do usuário autenticado com subdomínio na URL
-      const userResponse = await api.get(`/${clinica}/auth/me`);
+      const userResponse = await api.get(`/${clinica}/perfil`);
       setUser(userResponse.data);
 
       // ✅ Redirecionamento com base no perfil

@@ -13,6 +13,7 @@ from .registro_clinica import router as registro_router
 from .validar_clinica import router as validar_clinica_router
 from .clinica_router import router as clinica_router
 from .paciente_routes import router as paciente_router
+from .perfil_router import perfil_router
 
 # Instância principal de rotas
 router = APIRouter()
@@ -27,3 +28,4 @@ router.include_router(registro_router)
 router.include_router(validar_clinica_router)
 router.include_router(clinica_router)
 router.include_router(paciente_router)
+router.include_router(perfil_router)

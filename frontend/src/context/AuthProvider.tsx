@@ -4,7 +4,6 @@ import { AuthContext } from './AuthContext';
 import type { User, AuthContextType } from '../types/AuthContextType';
 import api from '../lib/api';
 import { decodeJwt } from 'jose'; // ✅ substituindo jwt-decode
-
 interface AuthProviderProps {
   children: ReactNode;
 }
@@ -30,8 +29,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         if (isExpired) {
           logout();
         } else {
+          const clinica = window.location.pathname.split('/')[1];
+
           api
-            .get('/auth/me')
+            .get(`/${clinica}/perfil`)
             .then(res => setUser(res.data))
             .catch(() => logout());
         }
@@ -49,5 +50,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     isAuthenticated: !!user,
   };
 
-  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+  );
 };
